@@ -65,6 +65,7 @@ export function GameCard({ brand, mode, onComplete }: GameCardProps) {
       const correctOption: ColorOption = { primary: brand.hex, secondary: brand.secondaryHex };
       const distractors: ColorOption[] = [];
 
+
       // Distractor 1: Hue Shift (e.g. "Warmer/Cooler")
       // Rotate by +/- 5-10 degrees (approx 3% of 360)
       const hueShift = (Math.random() > 0.5 ? 1 : -1) * (5 + Math.random() * 5);
@@ -223,6 +224,7 @@ export function GameCard({ brand, mode, onComplete }: GameCardProps) {
 
           <div className="py-4">
             {mode === "easy" ? (
+              <>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 {options.map((option, idx) => {
                     const isCorrect = option.primary === brand.hex && option.secondary === brand.secondaryHex;
@@ -283,6 +285,7 @@ export function GameCard({ brand, mode, onComplete }: GameCardProps) {
                     </div>
                 </motion.div>
               )}
+              </>
             ) : (
               <div className="space-y-8">
                 {/* Preview Swatches Area */}
