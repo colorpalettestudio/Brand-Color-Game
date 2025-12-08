@@ -101,11 +101,13 @@ export function GameCard({ brand, mode, onComplete }: GameCardProps) {
       let start, end;
       
       if (variation === 'hue') {
-          const range = 120;
+          // Reduced range to ensure RGB interpolation doesn't desaturate the center too much
+          // (RGB mix cuts through the color wheel, so wide angles lose saturation)
+          const range = 40; 
           start = baseColor.rotate(-range * targetPos).toHex();
           end = baseColor.rotate(range * (1 - targetPos)).toHex();
       } else {
-          const range = 0.6;
+          const range = 0.4; // Reduced lightness range for finer control
           start = baseColor.darken(range * targetPos).toHex();
           end = baseColor.lighten(range * (1 - targetPos)).toHex();
       }
