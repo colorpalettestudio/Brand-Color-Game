@@ -62,31 +62,38 @@ export function GameCard({ brand, mode, onComplete }: GameCardProps) {
 
     if (mode === "easy") {
       const correctOption: ColorOption = { primary: brand.hex, secondary: brand.secondaryHex };
-      
-      // Generate 2 distractors
       const distractors: ColorOption[] = [];
-      
-      for (let i = 0; i < 2; i++) {
-          if (brand.secondaryHex) {
-              // Dual color distractor
-              // Sometimes change primary, sometimes secondary, sometimes both
-              const changeType = Math.random();
-              let newPrimary = brand.hex;
-              let newSecondary = brand.secondaryHex;
 
-              if (changeType < 0.4) {
-                  newPrimary = generateSimilarColor(brand.hex);
-              } else if (changeType < 0.8) {
-                  newSecondary = generateSimilarColor(brand.secondaryHex);
-              } else {
-                  newPrimary = generateSimilarColor(brand.hex);
-                  newSecondary = generateSimilarColor(brand.secondaryHex);
-              }
-              distractors.push({ primary: newPrimary, secondary: newSecondary });
-          } else {
-              // Single color distractor
-              distractors.push({ primary: generateSimilarColor(brand.hex) });
-          }
+      // Distractor 1: Hue Shift (e.g. "Warmer/Cooler")
+      // Rotate by +/- 15-25 degrees to make it distinct but similar
+      const hueShift = (Math.random() > 0.5 ? 1 : -1) * (15 + Math.random() * 10);
+      
+      if (brand.secondaryHex) {
+          // For dual brands, shift the primary color's hue
+          distractors.push({
+              primary: colord(brand.hex).rotate(hueShift).toHex(),
+              secondary: brand.secondaryHex
+          });
+      } else {
+          distractors.push({
+              primary: colord(brand.hex).rotate(hueShift).toHex()
+          });
+      }
+
+      // Distractor 2: Lightness Shift (e.g. "Lighter/Darker")
+      // Shift lightness by +/- 10-15% to be clearly visible
+      const lightShift = (Math.random() > 0.5 ? 1 : -1) * (0.1 + Math.random() * 0.05);
+
+      if (brand.secondaryHex) {
+           // For dual brands, shift the SECONDARY color's lightness to create a different kind of wrong pair
+           distractors.push({
+               primary: brand.hex,
+               secondary: colord(brand.secondaryHex).lighten(lightShift).toHex()
+           });
+      } else {
+           distractors.push({
+               primary: colord(brand.hex).lighten(lightShift).toHex()
+           });
       }
 
       // Shuffle
