@@ -16,35 +16,85 @@ interface GameCardProps {
   onComplete: (score: number) => void;
 }
 
+interface ColorOption {
+    primary: string;
+    secondary?: string;
+}
+
 export function GameCard({ brand, mode, onComplete }: GameCardProps) {
-  const [selectedColor, setSelectedColor] = useState<string | null>(null);
-  const [currentHex, setCurrentHex] = useState<string>("#888888"); // For live preview
-  const [options, setOptions] = useState<string[]>([]);
+  const [selectedOption, setSelectedOption] = useState<ColorOption | null>(null);
+  const [currentHex, setCurrentHex] = useState<string>("#888888"); // For live preview in hard mode
+  const [options, setOptions] = useState<ColorOption[]>([]);
   const [sliderValue, setSliderValue] = useState(50);
   const [hasSubmitted, setHasSubmitted] = useState(false);
   const [hardModeGradient, setHardModeGradient] = useState<{ start: string; end: string }>({ start: "#000", end: "#fff" });
   const [resultStats, setResultStats] = useState<{ accuracy: number; points: number } | null>(null);
 
+  // Helper to generate a similar color
+  const generateSimilarColor = (hex: string) => {
+      const base = colord(hex);
+      // Randomly tweak hue, saturation, or lightness slightly
+      // We want them to be tricky!
+      const type = Math.random();
+      if (type < 0.33) {
+          // Hue shift (+/- 10-30 degrees)
+          const shift = (Math.random() > 0.5 ? 1 : -1) * (10 + Math.random() * 20);
+          return base.rotate(shift).toHex();
+      } else if (type < 0.66) {
+          // Saturation shift (+/- 10-20%)
+          const shift = (Math.random() > 0.5 ? 0.1 : -0.1) * (0.1 + Math.random() * 0.1);
+          return base.saturate(shift).toHex();
+      } else {
+           // Lightness shift (+/- 5-15%)
+           const shift = (Math.random() > 0.5 ? 0.05 : -0.05) * (0.05 + Math.random() * 0.1);
+           return base.lighten(shift).toHex();
+      }
+  };
+
   // Generate options or gradient on brand change
   useEffect(() => {
     setHasSubmitted(false);
-    setSelectedColor(null);
+    setSelectedOption(null);
     setSliderValue(50);
     setResultStats(null);
 
     const baseColor = colord(brand.hex);
 
     if (mode === "easy") {
+      const correctOption: ColorOption = { primary: brand.hex, secondary: brand.secondaryHex };
+      
       // Generate 2 distractors
-      const distractors = [
-        baseColor.rotate(30).saturate(10).toHex(),
-        baseColor.rotate(-30).lighten(10).toHex(),
-      ];
+      const distractors: ColorOption[] = [];
+      
+      for (let i = 0; i < 2; i++) {
+          if (brand.secondaryHex) {
+              // Dual color distractor
+              // Sometimes change primary, sometimes secondary, sometimes both
+              const changeType = Math.random();
+              let newPrimary = brand.hex;
+              let newSecondary = brand.secondaryHex;
+
+              if (changeType < 0.4) {
+                  newPrimary = generateSimilarColor(brand.hex);
+              } else if (changeType < 0.8) {
+                  newSecondary = generateSimilarColor(brand.secondaryHex);
+              } else {
+                  newPrimary = generateSimilarColor(brand.hex);
+                  newSecondary = generateSimilarColor(brand.secondaryHex);
+              }
+              distractors.push({ primary: newPrimary, secondary: newSecondary });
+          } else {
+              // Single color distractor
+              distractors.push({ primary: generateSimilarColor(brand.hex) });
+          }
+      }
+
       // Shuffle
-      const allOptions = [brand.hex, ...distractors].sort(() => Math.random() - 0.5);
+      const allOptions = [correctOption, ...distractors].sort(() => Math.random() - 0.5);
       setOptions(allOptions);
     } else {
       // Hard mode: Gradient setup
+      // Note: For dual color brands in hard mode, we currently only test the PRIMARY color to keep the UI manageable.
       const variation = Math.random() > 0.5 ? 'hue' : 'lightness';
       const targetPos = 0.2 + (Math.random() * 0.6); 
       
@@ -75,12 +125,12 @@ export function GameCard({ brand, mode, onComplete }: GameCardProps) {
     setCurrentHex(pickedColor.toHex());
   };
 
-  const handleEasySubmit = (color: string) => {
+  const handleEasySubmit = (option: ColorOption) => {
     if (hasSubmitted) return;
     setHasSubmitted(true);
-    setSelectedColor(color);
+    setSelectedOption(option);
 
-    const isCorrect = color === brand.hex;
+    const isCorrect = option.primary === brand.hex && option.secondary === brand.secondaryHex;
     const points = isCorrect ? 100 : 0;
     
     if (isCorrect) {
@@ -88,7 +138,7 @@ export function GameCard({ brand, mode, onComplete }: GameCardProps) {
         particleCount: 100,
         spread: 70,
         origin: { y: 0.6 },
-        colors: [brand.hex, "#ffffff"]
+        colors: brand.secondaryHex ? [brand.hex, brand.secondaryHex] : [brand.hex, "#ffffff"]
       });
     }
     
@@ -98,7 +148,7 @@ export function GameCard({ brand, mode, onComplete }: GameCardProps) {
   const handleHardSubmit = () => {
     if (hasSubmitted) return;
     setHasSubmitted(true);
-    setSelectedColor(currentHex);
+    setSelectedOption({ primary: currentHex }); // Just for consistency state tracking
 
     // Calculate score based on RGB distance
     const rgb1 = colord(currentHex).toRgb();
@@ -110,10 +160,6 @@ export function GameCard({ brand, mode, onComplete }: GameCardProps) {
         Math.pow(rgb1.b - rgb2.b, 2)
     );
     
-    // Max theoretical distance is ~441. 
-    // Convert to accuracy percentage (0-100%)
-    // Let's be generous: if distance is 0, accuracy is 100%. 
-    // If distance is > 100 (which is quite far visually), accuracy drops to 0.
     const maxForgivableDistance = 100;
     let accuracy = Math.max(0, 100 - (distance / maxForgivableDistance * 100));
     accuracy = Math.round(accuracy);
@@ -157,33 +203,51 @@ export function GameCard({ brand, mode, onComplete }: GameCardProps) {
             <h1 className="text-5xl md:text-7xl font-display font-bold tracking-tighter text-foreground">
               {brand.name}
             </h1>
+            {mode === 'hard' && brand.secondaryHex && (
+                <p className="text-sm text-muted-foreground">(Match the primary color)</p>
+            )}
           </div>
 
           <div className="py-4">
             {mode === "easy" ? (
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {options.map((color, idx) => (
-                  <motion.button
-                    key={idx}
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    onClick={() => handleEasySubmit(color)}
-                    disabled={hasSubmitted}
-                    className="h-32 rounded-xl shadow-sm border border-transparent hover:border-black/10 transition-all relative group cursor-pointer"
-                    style={{ backgroundColor: color }}
-                  >
-                    {hasSubmitted && color === brand.hex && (
-                       <div className="absolute inset-0 flex items-center justify-center bg-black/20 text-white rounded-xl">
-                         <Check className="w-10 h-10" />
-                       </div>
-                    )}
-                     {hasSubmitted && selectedColor === color && color !== brand.hex && (
-                       <div className="absolute inset-0 flex items-center justify-center bg-black/20 text-white rounded-xl">
-                         <X className="w-10 h-10" />
-                       </div>
-                    )}
-                  </motion.button>
-                ))}
+                {options.map((option, idx) => {
+                    const isCorrect = option.primary === brand.hex && option.secondary === brand.secondaryHex;
+                    const isSelected = selectedOption === option;
+                    
+                    return (
+                      <motion.button
+                        key={idx}
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        onClick={() => handleEasySubmit(option)}
+                        disabled={hasSubmitted}
+                        className="h-32 rounded-xl shadow-sm border border-transparent hover:border-black/10 transition-all relative group cursor-pointer overflow-hidden flex"
+                      >
+                         {/* Render Logic: Single or Dual Color */}
+                         {option.secondary ? (
+                             <>
+                                <div className="flex-1 h-full" style={{ backgroundColor: option.primary }} />
+                                <div className="flex-1 h-full" style={{ backgroundColor: option.secondary }} />
+                             </>
+                         ) : (
+                             <div className="w-full h-full" style={{ backgroundColor: option.primary }} />
+                         )}
+
+                         {/* Feedback Overlay */}
+                         {hasSubmitted && isCorrect && (
+                           <div className="absolute inset-0 flex items-center justify-center bg-black/20 text-white z-10">
+                             <Check className="w-10 h-10 drop-shadow-md" />
+                           </div>
+                         )}
+                         {hasSubmitted && isSelected && !isCorrect && (
+                           <div className="absolute inset-0 flex items-center justify-center bg-black/20 text-white z-10">
+                             <X className="w-10 h-10 drop-shadow-md" />
+                           </div>
+                         )}
+                      </motion.button>
+                    );
+                })}
               </div>
             ) : (
               <div className="space-y-8">
