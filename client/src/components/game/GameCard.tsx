@@ -6,7 +6,7 @@ import { Brand } from "@/data/brands";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
 import confetti from "canvas-confetti";
-import { Check, X } from "lucide-react";
+import { Check, X, ArrowRight } from "lucide-react";
 
 extend([mixPlugin]);
 
@@ -18,16 +18,19 @@ interface GameCardProps {
 
 export function GameCard({ brand, mode, onComplete }: GameCardProps) {
   const [selectedColor, setSelectedColor] = useState<string | null>(null);
+  const [currentHex, setCurrentHex] = useState<string>("#888888"); // For live preview
   const [options, setOptions] = useState<string[]>([]);
   const [sliderValue, setSliderValue] = useState(50);
   const [hasSubmitted, setHasSubmitted] = useState(false);
   const [hardModeGradient, setHardModeGradient] = useState<{ start: string; end: string }>({ start: "#000", end: "#fff" });
+  const [resultStats, setResultStats] = useState<{ accuracy: number; points: number } | null>(null);
 
   // Generate options or gradient on brand change
   useEffect(() => {
     setHasSubmitted(false);
     setSelectedColor(null);
     setSliderValue(50);
+    setResultStats(null);
 
     const baseColor = colord(brand.hex);
 
@@ -41,30 +44,36 @@ export function GameCard({ brand, mode, onComplete }: GameCardProps) {
       const allOptions = [brand.hex, ...distractors].sort(() => Math.random() - 0.5);
       setOptions(allOptions);
     } else {
-      // Hard mode: Gradient setup with randomized target position
+      // Hard mode: Gradient setup
       const variation = Math.random() > 0.5 ? 'hue' : 'lightness';
-      
-      // Random position for the target between 20% and 80%
       const targetPos = 0.2 + (Math.random() * 0.6); 
       
       let start, end;
       
       if (variation === 'hue') {
-          // Total range of 120 degrees
           const range = 120;
           start = baseColor.rotate(-range * targetPos).toHex();
           end = baseColor.rotate(range * (1 - targetPos)).toHex();
       } else {
-          // Total lightness range of 0.6
           const range = 0.6;
-          // Ensure we don't go out of bounds (0-1) - clamping handles this implicitly in colord usually but good to be safe
           start = baseColor.darken(range * targetPos).toHex();
           end = baseColor.lighten(range * (1 - targetPos)).toHex();
       }
       
       setHardModeGradient({ start, end });
+      // Set initial preview color
+      const initialColor = colord(start).mix(end, 0.5).toHex();
+      setCurrentHex(initialColor);
     }
   }, [brand, mode]);
+
+  // Update live preview when slider moves
+  const handleSliderChange = (vals: number[]) => {
+    setSliderValue(vals[0]);
+    const mix = vals[0] / 100;
+    const pickedColor = colord(hardModeGradient.start).mix(hardModeGradient.end, mix);
+    setCurrentHex(pickedColor.toHex());
+  };
 
   const handleEasySubmit = (color: string) => {
     if (hasSubmitted) return;
@@ -72,6 +81,8 @@ export function GameCard({ brand, mode, onComplete }: GameCardProps) {
     setSelectedColor(color);
 
     const isCorrect = color === brand.hex;
+    const points = isCorrect ? 100 : 0;
+    
     if (isCorrect) {
       confetti({
         particleCount: 100,
@@ -79,53 +90,53 @@ export function GameCard({ brand, mode, onComplete }: GameCardProps) {
         origin: { y: 0.6 },
         colors: [brand.hex, "#ffffff"]
       });
-      setTimeout(() => onComplete(100), 1500);
-    } else {
-      setTimeout(() => onComplete(0), 1500);
     }
+    
+    setTimeout(() => onComplete(points), 1500);
   };
 
   const handleHardSubmit = () => {
     if (hasSubmitted) return;
     setHasSubmitted(true);
-
-    // Calculate color at slider position
-    const mix = sliderValue / 100;
-    const pickedColor = colord(hardModeGradient.start).mix(hardModeGradient.end, mix);
-    setSelectedColor(pickedColor.toHex());
+    setSelectedColor(currentHex);
 
     // Calculate score based on RGB distance
-    const rgb1 = pickedColor.toRgb();
+    const rgb1 = colord(currentHex).toRgb();
     const rgb2 = colord(brand.hex).toRgb();
     
-    // Euclidean distance in RGB space
     const distance = Math.sqrt(
         Math.pow(rgb1.r - rgb2.r, 2) +
         Math.pow(rgb1.g - rgb2.g, 2) +
         Math.pow(rgb1.b - rgb2.b, 2)
     );
     
-    // Max distance is roughly 441 (sqrt(255^2 * 3))
-    // We want a steep curve. 
-    // Distance < 10 is amazing. < 30 is good.
+    // Max theoretical distance is ~441. 
+    // Convert to accuracy percentage (0-100%)
+    // Let's be generous: if distance is 0, accuracy is 100%. 
+    // If distance is > 100 (which is quite far visually), accuracy drops to 0.
+    const maxForgivableDistance = 100;
+    let accuracy = Math.max(0, 100 - (distance / maxForgivableDistance * 100));
+    accuracy = Math.round(accuracy);
     
-    let score = 0;
-    if (distance <= 10) score = 100;
-    else if (distance <= 30) score = 80;
-    else if (distance <= 60) score = 50;
-    else if (distance <= 100) score = 20;
-    else score = 0;
+    // Points mapping
+    let points = 0;
+    if (accuracy >= 95) points = 100;
+    else if (accuracy >= 90) points = 80;
+    else if (accuracy >= 80) points = 60;
+    else if (accuracy >= 50) points = 40;
+    else if (accuracy >= 20) points = 10;
+    else points = 0;
 
-    if (score >= 80) {
+    setResultStats({ accuracy, points });
+
+    if (points >= 60) {
       confetti({
         particleCount: 100,
         spread: 70,
         origin: { y: 0.6 },
-        colors: [brand.hex, pickedColor.toHex()]
+        colors: [brand.hex, currentHex]
       });
     }
-
-    setTimeout(() => onComplete(score), 2000);
   };
 
   return (
@@ -136,15 +147,19 @@ export function GameCard({ brand, mode, onComplete }: GameCardProps) {
         exit={{ opacity: 0, y: -20 }}
         className="bg-card border border-border rounded-xl shadow-xl overflow-hidden"
       >
-        <div className="p-12 text-center space-y-8">
+        <div className="p-8 md:p-12 text-center space-y-8">
           <div className="space-y-2">
-            <h2 className="text-sm font-medium text-muted-foreground uppercase tracking-widest">Match the Brand</h2>
+            <div className="flex items-center justify-center gap-2 mb-4">
+                 <span className={`text-xs font-bold px-2 py-1 rounded uppercase tracking-wider ${mode === 'easy' ? 'bg-green-100 text-green-700' : 'bg-orange-100 text-orange-700'}`}>
+                    {mode} Mode
+                 </span>
+            </div>
             <h1 className="text-5xl md:text-7xl font-display font-bold tracking-tighter text-foreground">
               {brand.name}
             </h1>
           </div>
 
-          <div className="py-8">
+          <div className="py-4">
             {mode === "easy" ? (
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 {options.map((color, idx) => (
@@ -172,8 +187,36 @@ export function GameCard({ brand, mode, onComplete }: GameCardProps) {
               </div>
             ) : (
               <div className="space-y-8">
+                {/* Preview Swatches Area */}
+                <div className="flex justify-center gap-4 md:gap-12 items-end h-32 mb-8">
+                    {/* Live Preview */}
+                    <div className="flex flex-col items-center gap-2">
+                        <motion.div 
+                            className="w-24 h-24 rounded-full shadow-lg border-4 border-white ring-1 ring-black/5"
+                            style={{ backgroundColor: currentHex }}
+                            animate={{ scale: hasSubmitted ? 0.9 : 1 }}
+                        />
+                        <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">Your Pick</span>
+                    </div>
+
+                    {/* Correct Answer (Hidden until submit) */}
+                     {hasSubmitted && (
+                        <motion.div 
+                            initial={{ opacity: 0, x: 20 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            className="flex flex-col items-center gap-2"
+                        >
+                            <div 
+                                className="w-24 h-24 rounded-full shadow-lg border-4 border-white ring-1 ring-black/5"
+                                style={{ backgroundColor: brand.hex }}
+                            />
+                            <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">Correct Match</span>
+                        </motion.div>
+                    )}
+                </div>
+
                 <div 
-                  className="h-32 rounded-xl w-full shadow-inner border border-border relative overflow-hidden"
+                  className="h-16 rounded-xl w-full shadow-inner border border-border relative overflow-hidden mx-auto max-w-lg"
                 >
                    <div 
                       className="absolute inset-0 w-full h-full"
@@ -181,50 +224,56 @@ export function GameCard({ brand, mode, onComplete }: GameCardProps) {
                         background: `linear-gradient(to right, ${hardModeGradient.start}, ${hardModeGradient.end})` 
                       }} 
                    />
-                   {/* Indicator of where they are sliding */}
-                   {!hasSubmitted && (
-                     <div 
-                        className="absolute top-0 bottom-0 w-1 bg-white shadow-[0_0_10px_rgba(0,0,0,0.5)] pointer-events-none transition-all duration-75"
-                        style={{ left: `${sliderValue}%` }}
-                     />
-                   )}
                 </div>
 
-                <div className="px-4">
+                <div className="px-4 max-w-lg mx-auto">
                     <Slider 
                       value={[sliderValue]} 
-                      onValueChange={(vals) => setSliderValue(vals[0])} 
+                      onValueChange={handleSliderChange} 
                       max={100} 
                       step={0.1}
                       disabled={hasSubmitted}
                       className="cursor-pointer"
                     />
-                    <p className="text-xs text-muted-foreground mt-2 text-center">Drag the slider to find the exact brand color</p>
-                </div>
-
-                <div className="flex justify-center">
-                    <Button 
-                        size="lg" 
-                        onClick={handleHardSubmit} 
-                        disabled={hasSubmitted}
-                        className="font-display text-lg px-8 py-6 rounded-full"
-                    >
-                        {hasSubmitted ? "Analyzing..." : "Confirm Color"}
-                    </Button>
+                    {!hasSubmitted && (
+                        <p className="text-xs text-muted-foreground mt-4">Slide to match the brand color above</p>
+                    )}
                 </div>
                 
-                {hasSubmitted && (
-                    <div className="flex justify-center gap-8 mt-4 animate-in fade-in slide-in-from-bottom-4 duration-500">
-                        <div className="text-center">
-                            <div className="w-16 h-16 rounded-full shadow mb-2 mx-auto border-4 border-white" style={{ backgroundColor: selectedColor || '#fff' }} />
-                            <p className="text-sm font-medium">You</p>
-                            <p className="text-xs text-muted-foreground font-mono">{selectedColor}</p>
+                {hasSubmitted && resultStats && (
+                    <motion.div 
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="bg-secondary/50 rounded-lg p-6 max-w-sm mx-auto space-y-4"
+                    >
+                        <div className="flex justify-between items-center border-b border-border pb-4">
+                            <span className="text-muted-foreground">Accuracy</span>
+                            <span className={`font-bold text-xl ${resultStats.accuracy > 80 ? 'text-green-600' : 'text-orange-600'}`}>
+                                {resultStats.accuracy}% Match
+                            </span>
                         </div>
-                        <div className="text-center">
-                            <div className="w-16 h-16 rounded-full shadow mb-2 mx-auto border-4 border-white" style={{ backgroundColor: brand.hex }} />
-                            <p className="text-sm font-medium">Correct</p>
-                            <p className="text-xs text-muted-foreground font-mono">{brand.hex}</p>
+                        <div className="flex justify-between items-center">
+                            <span className="text-muted-foreground">Points Earned</span>
+                            <span className="font-bold text-xl">+{resultStats.points}</span>
                         </div>
+                        <Button 
+                            className="w-full mt-4" 
+                            onClick={() => onComplete(resultStats.points)}
+                        >
+                            Next Brand <ArrowRight className="w-4 h-4 ml-2" />
+                        </Button>
+                    </motion.div>
+                )}
+
+                {!hasSubmitted && (
+                    <div className="flex justify-center pt-4">
+                        <Button 
+                            size="lg" 
+                            onClick={handleHardSubmit} 
+                            className="font-display text-lg px-12 py-6 rounded-full shadow-lg hover:shadow-xl transition-all"
+                        >
+                            Confirm Match
+                        </Button>
                     </div>
                 )}
               </div>
