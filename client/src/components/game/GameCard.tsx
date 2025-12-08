@@ -233,33 +233,47 @@ export function GameCard({ brand, mode, onComplete }: GameCardProps) {
                     return (
                       <motion.button
                         key={idx}
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
                         onClick={() => handleEasySubmit(option)}
                         disabled={hasSubmitted}
-                        className="h-32 rounded-xl shadow-sm border border-transparent hover:border-black/10 transition-all relative group cursor-pointer overflow-hidden flex"
+                        className="h-40 rounded-2xl shadow-sm border-2 border-transparent hover:border-black/5 hover:shadow-md transition-all relative group cursor-pointer overflow-hidden flex bg-white"
                       >
                          {/* Render Logic: Single or Dual Color */}
                          {option.secondary ? (
-                             <>
-                                <div className="flex-1 h-full" style={{ backgroundColor: option.primary }} />
-                                <div className="flex-1 h-full" style={{ backgroundColor: option.secondary }} />
-                             </>
+                             <div className="flex w-full h-full">
+                                <div className="flex-1 h-full transition-colors duration-300" style={{ backgroundColor: option.primary }} />
+                                <div className="flex-1 h-full transition-colors duration-300" style={{ backgroundColor: option.secondary }} />
+                             </div>
                          ) : (
-                             <div className="w-full h-full" style={{ backgroundColor: option.primary }} />
+                             <div className="w-full h-full transition-colors duration-300" style={{ backgroundColor: option.primary }} />
                          )}
 
                          {/* Feedback Overlay */}
+                         <AnimatePresence>
                          {hasSubmitted && isCorrect && (
-                           <div className="absolute inset-0 flex items-center justify-center bg-black/20 text-white z-10">
-                             <Check className="w-10 h-10 drop-shadow-md" />
-                           </div>
+                           <motion.div 
+                            initial={{ opacity: 0 }} 
+                            animate={{ opacity: 1 }}
+                            className="absolute inset-0 flex items-center justify-center bg-black/10 backdrop-blur-[2px] z-10"
+                           >
+                             <div className="bg-white rounded-full p-3 shadow-xl">
+                                <Check className="w-8 h-8 text-green-600" />
+                             </div>
+                           </motion.div>
                          )}
                          {hasSubmitted && isSelected && !isCorrect && (
-                           <div className="absolute inset-0 flex items-center justify-center bg-black/20 text-white z-10">
-                             <X className="w-10 h-10 drop-shadow-md" />
-                           </div>
+                           <motion.div 
+                            initial={{ opacity: 0 }} 
+                            animate={{ opacity: 1 }}
+                            className="absolute inset-0 flex items-center justify-center bg-black/10 backdrop-blur-[2px] z-10"
+                           >
+                             <div className="bg-white rounded-full p-3 shadow-xl">
+                                <X className="w-8 h-8 text-red-500" />
+                             </div>
+                           </motion.div>
                          )}
+                         </AnimatePresence>
                       </motion.button>
                     );
                 })}

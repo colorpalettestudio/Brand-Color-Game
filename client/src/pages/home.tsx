@@ -167,17 +167,19 @@ export default function Home() {
       <div className="absolute top-1/2 -right-20 w-80 h-80 bg-purple-500/10 rounded-full blur-3xl pointer-events-none" />
 
       <header className="absolute top-0 left-0 w-full p-6 flex justify-between items-center z-10">
-        <div className="flex items-center gap-2 font-display font-bold text-xl tracking-tight">
-          <Palette className="w-6 h-6" />
+        <div className="flex items-center gap-2 font-display font-bold text-xl tracking-tight text-foreground/80 hover:text-foreground transition-colors cursor-pointer" onClick={() => window.location.reload()}>
+          <div className="bg-primary/10 p-2 rounded-lg">
+             <Palette className="w-5 h-5 text-primary" />
+          </div>
           <span>ChromaBrand</span>
         </div>
         {gameState === "playing" && (
-            <div className="flex items-center gap-4">
-                <div className="font-mono text-sm bg-secondary px-4 py-1 rounded-full border border-border">
-                    Level {currentLevel}/4 {currentMode !== 'match' ? `• Round ${currentRound + 1}/5` : ''}
+            <div className="flex items-center gap-4 bg-background/50 backdrop-blur-md p-2 pr-4 rounded-full border border-border/50 shadow-sm">
+                <div className="font-medium text-xs text-muted-foreground px-3 py-1 bg-secondary rounded-full">
+                    Lvl {currentLevel} • {currentMode === 'match' ? 'Final' : `${currentRound + 1}/5`}
                 </div>
-                <div className="font-mono text-sm bg-primary text-primary-foreground px-4 py-1 rounded-full">
-                    Score: {score}
+                <div className="font-bold text-sm text-primary">
+                    {score} pts
                 </div>
             </div>
         )}
@@ -209,41 +211,41 @@ export default function Home() {
               </Button>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4 max-w-4xl mx-auto text-left text-sm text-muted-foreground bg-card/50 p-6 rounded-2xl border border-border/50">
-               <div className="flex flex-col gap-3 p-4 rounded-xl hover:bg-white/50 transition-colors">
-                  <div className="bg-blue-100 p-2 rounded-lg w-fit text-blue-700">
-                     <Palette className="w-5 h-5" />
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4 max-w-5xl mx-auto text-left text-sm text-muted-foreground">
+               <div className="flex flex-col gap-3 p-6 rounded-2xl bg-card border border-border/50 hover:border-primary/20 hover:shadow-lg transition-all duration-300 group cursor-default">
+                  <div className="bg-blue-50 p-3 rounded-xl w-fit text-blue-600 group-hover:scale-110 transition-transform">
+                     <Palette className="w-6 h-6" />
                   </div>
                   <div>
-                      <span className="font-bold text-foreground block text-lg mb-1">Level 1</span>
-                      <span className="font-medium text-foreground">Single Colors</span>
+                      <span className="font-bold text-foreground block text-lg mb-1">Single Color</span>
+                      <p className="text-muted-foreground/80 leading-relaxed">Identify the primary brand color from similar shades.</p>
                   </div>
                </div>
-               <div className="flex flex-col gap-3 p-4 rounded-xl hover:bg-white/50 transition-colors">
-                  <div className="bg-purple-100 p-2 rounded-lg w-fit text-purple-700">
-                     <Layers className="w-5 h-5" />
+               <div className="flex flex-col gap-3 p-6 rounded-2xl bg-card border border-border/50 hover:border-primary/20 hover:shadow-lg transition-all duration-300 group cursor-default">
+                  <div className="bg-purple-50 p-3 rounded-xl w-fit text-purple-600 group-hover:scale-110 transition-transform">
+                     <Layers className="w-6 h-6" />
                   </div>
                   <div>
-                      <span className="font-bold text-foreground block text-lg mb-1">Level 2</span>
-                      <span className="font-medium text-foreground">Dual Colors</span>
+                      <span className="font-bold text-foreground block text-lg mb-1">Dual Colors</span>
+                      <p className="text-muted-foreground/80 leading-relaxed">Find the correct secondary color pairing.</p>
                   </div>
                </div>
-               <div className="flex flex-col gap-3 p-4 rounded-xl hover:bg-white/50 transition-colors">
-                  <div className="bg-orange-100 p-2 rounded-lg w-fit text-orange-700">
-                     <Sliders className="w-5 h-5" />
+               <div className="flex flex-col gap-3 p-6 rounded-2xl bg-card border border-border/50 hover:border-primary/20 hover:shadow-lg transition-all duration-300 group cursor-default">
+                  <div className="bg-orange-50 p-3 rounded-xl w-fit text-orange-600 group-hover:scale-110 transition-transform">
+                     <Sliders className="w-6 h-6" />
                   </div>
                   <div>
-                      <span className="font-bold text-foreground block text-lg mb-1">Level 3</span>
-                      <span className="font-medium text-foreground">Slider</span>
+                      <span className="font-bold text-foreground block text-lg mb-1">Slider</span>
+                      <p className="text-muted-foreground/80 leading-relaxed">Pinpoint the exact hex code on a gradient.</p>
                   </div>
                </div>
-               <div className="flex flex-col gap-3 p-4 rounded-xl hover:bg-white/50 transition-colors">
-                  <div className="bg-red-100 p-2 rounded-lg w-fit text-red-700">
-                     <Grid3X3 className="w-5 h-5" />
+               <div className="flex flex-col gap-3 p-6 rounded-2xl bg-card border border-border/50 hover:border-primary/20 hover:shadow-lg transition-all duration-300 group cursor-default">
+                  <div className="bg-red-50 p-3 rounded-xl w-fit text-red-600 group-hover:scale-110 transition-transform">
+                     <Grid3X3 className="w-6 h-6" />
                   </div>
                   <div>
-                      <span className="font-bold text-foreground block text-lg mb-1">Level 4</span>
-                      <span className="font-medium text-foreground">Color Match</span>
+                      <span className="font-bold text-foreground block text-lg mb-1">Match</span>
+                      <p className="text-muted-foreground/80 leading-relaxed">Group 5 brands with their specific hex codes.</p>
                   </div>
                </div>
             </div>

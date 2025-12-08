@@ -86,9 +86,9 @@ export function MatchingRound({ brands, onComplete, colorFamilyName }: MatchingR
             <p className="text-muted-foreground">Tap a brand on the left, then its matching color on the right.</p>
         </div>
 
-        <div className="grid grid-cols-2 gap-8 md:gap-16 relative">
+        <div className="grid grid-cols-2 gap-8 md:gap-12 relative max-w-3xl mx-auto">
             {/* Brands Column */}
-            <div className="space-y-4">
+            <div className="space-y-3">
                 {brands.map((brand) => {
                     const isMatched = !!matches[brand.id];
                     const isSelected = selectedBrand?.id === brand.id;
@@ -97,29 +97,30 @@ export function MatchingRound({ brands, onComplete, colorFamilyName }: MatchingR
                     return (
                         <motion.button
                             key={brand.id}
-                            whileHover={{ scale: 1.02 }}
+                            layout
+                            whileHover={{ scale: 1.02, x: 5 }}
                             whileTap={{ scale: 0.98 }}
                             onClick={() => handleBrandClick(brand)}
                             disabled={isMatched || completed}
-                            className={`w-full h-20 px-6 rounded-xl border-2 flex items-center justify-between transition-all relative ${
+                            className={`w-full h-16 px-6 rounded-xl border flex items-center justify-between transition-all relative shadow-sm ${
                                 isMatched 
-                                    ? 'border-green-500 bg-green-50 opacity-50' 
+                                    ? 'border-transparent bg-muted/50 text-muted-foreground' 
                                     : isSelected
-                                        ? 'border-primary bg-primary/5 ring-2 ring-primary/20'
+                                        ? 'border-primary bg-primary/5 ring-1 ring-primary/20 shadow-md'
                                         : isWrong
                                             ? 'border-red-500 bg-red-50'
-                                            : 'border-border bg-card hover:border-primary/50'
+                                            : 'border-border bg-card hover:border-primary/30 hover:shadow-md'
                             }`}
                         >
-                            <span className="font-bold text-lg">{brand.name}</span>
-                            {isMatched && <Check className="w-5 h-5 text-green-600" />}
+                            <span className={`font-medium text-base ${isMatched ? 'line-through decoration-border' : ''}`}>{brand.name}</span>
+                            {isMatched && <Check className="w-4 h-4 text-green-600/50" />}
                         </motion.button>
                     );
                 })}
             </div>
 
             {/* Colors Column */}
-            <div className="space-y-4">
+            <div className="space-y-3">
                 {shuffledColors.map((hex, idx) => {
                     const isMatched = Object.values(matches).includes(hex);
                     // Find which brand matched this color
@@ -129,36 +130,29 @@ export function MatchingRound({ brands, onComplete, colorFamilyName }: MatchingR
                     return (
                         <motion.button
                             key={`${hex}-${idx}`}
-                            whileHover={{ scale: 1.02 }}
-                            whileTap={{ scale: 0.98 }}
+                            layout
+                            whileHover={!isMatched && !completed ? { scale: 1.05 } : {}}
+                            whileTap={!isMatched && !completed ? { scale: 0.95 } : {}}
                             onClick={() => handleColorClick(hex)}
                             disabled={isMatched || completed}
-                            className={`w-full h-20 rounded-xl shadow-sm border-4 transition-all relative overflow-hidden ${
+                            className={`w-full h-16 rounded-xl shadow-sm border-2 transition-all relative overflow-hidden ${
                                 isMatched 
-                                    ? 'border-green-500 opacity-100 ring-2 ring-green-200' 
+                                    ? 'border-transparent opacity-50 grayscale-[0.5]' 
                                     : selectedBrand
-                                        ? 'border-transparent hover:scale-105 cursor-pointer ring-2 ring-transparent hover:ring-primary/50'
-                                        : 'border-transparent opacity-80'
+                                        ? 'border-transparent hover:border-primary/50 cursor-pointer shadow-md'
+                                        : 'border-transparent'
                             }`}
                             style={{ backgroundColor: hex }}
                         >
                             {isMatched && matchedBrand && (
-                                <motion.div 
-                                    initial={{ opacity: 0 }} 
-                                    animate={{ opacity: 1 }}
-                                    className="absolute inset-0 flex items-center justify-center bg-black/10"
-                                >
-                                    <span className="text-white font-bold text-sm drop-shadow-md bg-black/20 px-2 py-1 rounded">
-                                        {matchedBrand.name}
-                                    </span>
-                                </motion.div>
+                                <div className="absolute inset-0 flex items-center justify-center bg-black/20">
+                                    <Check className="w-6 h-6 text-white drop-shadow-md" />
+                                </div>
                             )}
                         </motion.button>
                     );
                 })}
             </div>
-
-            {/* Connecting Lines SVG Layer (Optional - maybe too complex for quick mockup, leaving out for now) */}
         </div>
 
         {completed && (
