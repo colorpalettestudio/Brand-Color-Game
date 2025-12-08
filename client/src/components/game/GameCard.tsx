@@ -29,6 +29,7 @@ export function GameCard({ brand, mode, onComplete }: GameCardProps) {
   const [hasSubmitted, setHasSubmitted] = useState(false);
   const [hardModeGradient, setHardModeGradient] = useState<{ start: string; end: string }>({ start: "#000", end: "#fff" });
   const [resultStats, setResultStats] = useState<{ accuracy: number; points: number } | null>(null);
+  const [targetPosition, setTargetPosition] = useState<number>(50);
 
   // Helper to generate a similar color
   const generateSimilarColor = (hex: string) => {
@@ -104,7 +105,8 @@ export function GameCard({ brand, mode, onComplete }: GameCardProps) {
       // Note: For dual color brands in hard mode, we currently only test the PRIMARY color to keep the UI manageable.
       const variation = Math.random() > 0.5 ? 'hue' : 'lightness';
       const targetPos = 0.2 + (Math.random() * 0.6); 
-      
+      setTargetPosition(targetPos * 100);
+
       let start, end;
       
       if (variation === 'hue') {
@@ -299,7 +301,7 @@ export function GameCard({ brand, mode, onComplete }: GameCardProps) {
                    />
                 </div>
 
-                <div className="px-4 max-w-lg mx-auto">
+                <div className="px-4 max-w-lg mx-auto relative">
                     <Slider 
                       value={[sliderValue]} 
                       onValueChange={handleSliderChange} 
@@ -308,6 +310,28 @@ export function GameCard({ brand, mode, onComplete }: GameCardProps) {
                       disabled={hasSubmitted}
                       className="cursor-pointer"
                     />
+                    
+                    {/* Correct Position Marker */}
+                    {hasSubmitted && (
+                       <div className="absolute top-0 w-full px-0 left-0 h-5 pointer-events-none">
+                            <motion.div 
+                                initial={{ opacity: 0, scale: 0 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                className="absolute top-1/2 -translate-y-1/2 w-4 h-4 bg-green-500 rounded-full border-2 border-white shadow-lg z-10"
+                                style={{ left: `calc(${targetPosition}% - 8px)` }}
+                            />
+                             <motion.div 
+                                initial={{ opacity: 0, y: 10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: 0.2 }}
+                                className="absolute top-6 -translate-x-1/2 text-[10px] font-bold text-green-600 bg-green-100 px-2 py-0.5 rounded-full whitespace-nowrap"
+                                style={{ left: `${targetPosition}%` }}
+                            >
+                                Correct
+                            </motion.div>
+                       </div>
+                    )}
+
                     {!hasSubmitted && (
                         <p className="text-xs text-muted-foreground mt-4">Slide to match the brand color above</p>
                     )}
