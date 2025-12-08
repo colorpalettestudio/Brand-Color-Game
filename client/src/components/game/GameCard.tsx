@@ -249,17 +249,9 @@ export function GameCard({ brand, mode, onComplete }: GameCardProps) {
 
                          {/* Feedback Overlay */}
                          {hasSubmitted && isCorrect && (
-                           <motion.div 
-                             initial={{ opacity: 0, scale: 0.8 }}
-                             animate={{ opacity: 1, scale: 1 }}
-                             className="absolute inset-0 flex flex-col items-center justify-center bg-black/80 text-white z-10 p-4 text-center"
-                           >
-                             <Check className="w-8 h-8 mb-2 text-green-400" />
-                             <p className="font-bold text-lg mb-1">Correct!</p>
-                             {brand.trivia && (
-                                <p className="text-xs text-gray-300 line-clamp-3">{brand.trivia}</p>
-                             )}
-                           </motion.div>
+                           <div className="absolute inset-0 flex items-center justify-center bg-black/20 text-white z-10">
+                             <Check className="w-10 h-10 drop-shadow-md" />
+                           </div>
                          )}
                          {hasSubmitted && isSelected && !isCorrect && (
                            <div className="absolute inset-0 flex items-center justify-center bg-black/20 text-white z-10">
@@ -270,6 +262,27 @@ export function GameCard({ brand, mode, onComplete }: GameCardProps) {
                     );
                 })}
               </div>
+
+              {/* Success Message for Easy Mode */}
+              {hasSubmitted && options.find(o => o.primary === brand.hex && o.secondary === brand.secondaryHex) === selectedOption && (
+                <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="mt-8 bg-secondary/50 rounded-lg p-6 border border-border text-center"
+                >
+                    <div className="flex flex-col items-center gap-2">
+                        <div className="flex items-center gap-2 text-green-600 font-bold text-xl">
+                            <Check className="w-6 h-6" /> Correct!
+                        </div>
+                        {brand.trivia && (
+                            <div className="mt-2 space-y-1">
+                                <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Did you know?</span>
+                                <p className="text-foreground max-w-md mx-auto">{brand.trivia}</p>
+                            </div>
+                        )}
+                    </div>
+                </motion.div>
+              )}
             ) : (
               <div className="space-y-8">
                 {/* Preview Swatches Area */}
