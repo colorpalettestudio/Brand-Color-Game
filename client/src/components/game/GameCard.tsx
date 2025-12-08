@@ -153,7 +153,9 @@ export function GameCard({ brand, mode, onComplete }: GameCardProps) {
       });
     }
     
-    setTimeout(() => onComplete(points), 1500);
+    // Wait longer if correct to read trivia, else shorter
+    const delay = isCorrect && brand.trivia ? 3500 : 1500;
+    setTimeout(() => onComplete(points), delay);
   };
 
   const handleHardSubmit = () => {
@@ -247,9 +249,17 @@ export function GameCard({ brand, mode, onComplete }: GameCardProps) {
 
                          {/* Feedback Overlay */}
                          {hasSubmitted && isCorrect && (
-                           <div className="absolute inset-0 flex items-center justify-center bg-black/20 text-white z-10">
-                             <Check className="w-10 h-10 drop-shadow-md" />
-                           </div>
+                           <motion.div 
+                             initial={{ opacity: 0, scale: 0.8 }}
+                             animate={{ opacity: 1, scale: 1 }}
+                             className="absolute inset-0 flex flex-col items-center justify-center bg-black/80 text-white z-10 p-4 text-center"
+                           >
+                             <Check className="w-8 h-8 mb-2 text-green-400" />
+                             <p className="font-bold text-lg mb-1">Correct!</p>
+                             {brand.trivia && (
+                                <p className="text-xs text-gray-300 line-clamp-3">{brand.trivia}</p>
+                             )}
+                           </motion.div>
                          )}
                          {hasSubmitted && isSelected && !isCorrect && (
                            <div className="absolute inset-0 flex items-center justify-center bg-black/20 text-white z-10">
@@ -353,6 +363,14 @@ export function GameCard({ brand, mode, onComplete }: GameCardProps) {
                             <span className="text-muted-foreground">Points Earned</span>
                             <span className="font-bold text-xl">+{resultStats.points}</span>
                         </div>
+                        
+                        {brand.trivia && (
+                            <div className="bg-primary/5 p-3 rounded text-xs text-muted-foreground mt-2 border border-primary/10">
+                                <span className="font-bold text-primary block mb-1">Did you know?</span>
+                                {brand.trivia}
+                            </div>
+                        )}
+
                         <Button 
                             className="w-full mt-4" 
                             onClick={() => onComplete(resultStats.points)}
