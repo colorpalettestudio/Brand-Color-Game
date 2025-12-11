@@ -123,9 +123,17 @@ export function GameCard({ brand, mode, onComplete }: GameCardProps) {
       }
       
       setHardModeGradient({ start, end });
-      // Set initial preview color
-      const initialColor = colord(start).mix(end, 0.5).toHex();
-      setCurrentHex(initialColor);
+      // Set initial preview color - default to middle of slider, calculating correctly based on 3-stop logic
+      const initialMix = 0.5;
+      if (initialMix <= targetPos) {
+          // Map 0..targetPos to 0..1
+          const localMix = initialMix / targetPos;
+          setCurrentHex(colord(start).mix(brand.hex, localMix).toHex());
+      } else {
+          // Map targetPos..1 to 0..1
+          const localMix = (initialMix - targetPos) / (1 - targetPos);
+          setCurrentHex(colord(brand.hex).mix(end, localMix).toHex());
+      }
     }
   }, [brand, mode]);
 
@@ -133,7 +141,21 @@ export function GameCard({ brand, mode, onComplete }: GameCardProps) {
   const handleSliderChange = (vals: number[]) => {
     setSliderValue(vals[0]);
     const mix = vals[0] / 100;
-    const pickedColor = colord(hardModeGradient.start).mix(hardModeGradient.end, mix);
+    const targetPos = targetPosition / 100;
+    
+    // Use multi-stop interpolation to ensure we pass exactly through the brand color
+    // This prevents "muddy" or desaturated colors in the middle of RGB interpolation
+    let pickedColor;
+    if (mix <= targetPos) {
+        // Interpolate between Start and Brand
+        const localMix = mix / targetPos; // 0 to 1 within this segment
+        pickedColor = colord(hardModeGradient.start).mix(brand.hex, localMix);
+    } else {
+        // Interpolate between Brand and End
+        const localMix = (mix - targetPos) / (1 - targetPos); // 0 to 1 within this segment
+        pickedColor = colord(brand.hex).mix(hardModeGradient.end, localMix);
+    }
+    
     setCurrentHex(pickedColor.toHex());
   };
 
@@ -343,7 +365,7 @@ export function GameCard({ brand, mode, onComplete }: GameCardProps) {
                    <div 
                       className="absolute inset-0 w-full h-full"
                       style={{ 
-                        background: `linear-gradient(to right, ${hardModeGradient.start}, ${hardModeGradient.end})` 
+                        background: `linear-gradient(to right, ${hardModeGradient.start} 0%, ${brand.hex} ${targetPosition}%, ${hardModeGradient.end} 100%)` 
                       }} 
                    />
                 </div>
