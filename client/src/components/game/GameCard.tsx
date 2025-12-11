@@ -154,8 +154,8 @@ export function GameCard({ brand, mode, onComplete }: GameCardProps) {
       });
     }
     
-    // Wait longer if correct to read trivia, else shorter
-    const delay = isCorrect && brand.trivia ? 3500 : 1500;
+    // Wait longer to read trivia regardless of result
+    const delay = brand.trivia ? 4000 : 1500;
     setTimeout(() => onComplete(points), delay);
   };
 
@@ -279,17 +279,24 @@ export function GameCard({ brand, mode, onComplete }: GameCardProps) {
                 })}
               </div>
 
-              {/* Success Message for Easy Mode */}
-              {hasSubmitted && options.find(o => o.primary === brand.hex && o.secondary === brand.secondaryHex) === selectedOption && (
+              {/* Feedback Message for Easy Mode */}
+              {hasSubmitted && (
                 <motion.div
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     className="mt-8 bg-secondary/50 rounded-lg p-6 border border-border text-center"
                 >
                     <div className="flex flex-col items-center gap-2">
-                        <div className="flex items-center gap-2 text-green-600 font-bold text-xl">
-                            <Check className="w-6 h-6" /> Correct!
-                        </div>
+                        {options.find(o => o.primary === brand.hex && o.secondary === brand.secondaryHex) === selectedOption ? (
+                            <div className="flex items-center gap-2 text-green-600 font-bold text-xl">
+                                <Check className="w-6 h-6" /> Correct!
+                            </div>
+                        ) : (
+                            <div className="flex items-center gap-2 text-red-500 font-bold text-xl">
+                                <X className="w-6 h-6" /> Incorrect
+                            </div>
+                        )}
+                        
                         {brand.trivia && (
                             <div className="mt-2 space-y-1">
                                 <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Did you know?</span>
