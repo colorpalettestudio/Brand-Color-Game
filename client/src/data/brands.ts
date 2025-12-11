@@ -343,7 +343,7 @@ export const brands: Brand[] = [
     id: 'dunkin',
     name: "Dunkin'",
     hex: "#FF671F",
-    secondaryHex: "#DA291C",
+    secondaryHex: "#DA1884",
     textColor: "#FFFFFF",
     trivia: "The bright orange and pink colors were chosen to be fun, energetic, and to look like donuts and coffee."
   },
