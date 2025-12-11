@@ -166,35 +166,7 @@ export default function Home() {
       <div className="absolute -top-20 -left-20 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute top-1/2 -right-20 w-80 h-80 bg-purple-500/10 rounded-full blur-3xl pointer-events-none" />
 
-      <header className="absolute top-0 left-0 w-full p-6 flex justify-between items-center z-10">
-        <div className="flex items-center gap-2 font-display font-bold text-xl tracking-tight text-foreground/80 hover:text-foreground transition-colors cursor-pointer" onClick={() => window.location.reload()}>
-          <div className="bg-primary/10 p-2 rounded-lg">
-             <Palette className="w-5 h-5 text-primary" />
-          </div>
-          <span>ChromaBrand</span>
-        </div>
-        
-        {/* Progress Station */}
-        {gameState === "playing" && (
-            <div className="absolute left-1/2 -translate-x-1/2 hidden md:flex items-center gap-2 bg-background/50 backdrop-blur-md p-1.5 rounded-full border border-border/50 shadow-sm">
-                {[1, 2, 3, 4].map((level) => (
-                    <div 
-                        key={level}
-                        className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
-                            currentLevel === level 
-                                ? 'bg-primary text-primary-foreground shadow-sm' 
-                                : currentLevel > level 
-                                    ? 'bg-secondary text-muted-foreground opacity-50' 
-                                    : 'text-muted-foreground opacity-30'
-                        }`}
-                    >
-                        <span>Level {level}</span>
-                        {currentLevel > level && <Check className="w-3 h-3" />}
-                    </div>
-                ))}
-            </div>
-        )}
-
+      <header className="absolute top-0 left-0 w-full p-6 flex justify-end items-center z-10">
         {gameState === "playing" && (
             <div className="flex items-center gap-4 bg-background/50 backdrop-blur-md p-2 pr-4 rounded-full border border-border/50 shadow-sm">
                 <div className="font-bold text-sm text-primary">
