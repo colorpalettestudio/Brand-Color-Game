@@ -231,11 +231,6 @@ export function GameCard({ brand, mode, onComplete }: GameCardProps) {
       >
         <div className="p-8 md:p-12 text-center space-y-8">
           <div className="space-y-2">
-            <div className="flex items-center justify-center gap-2 mb-4">
-                 <span className={`text-xs font-bold px-2 py-1 rounded uppercase tracking-wider ${mode === 'easy' ? 'bg-green-100 text-green-700' : 'bg-orange-100 text-orange-700'}`}>
-                    {mode} Mode
-                 </span>
-            </div>
             <h1 className="text-5xl md:text-7xl font-display font-bold tracking-tighter text-foreground">
               {brand.name}
             </h1>
