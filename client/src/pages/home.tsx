@@ -202,40 +202,80 @@ export default function Home() {
               </Button>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4 max-w-5xl mx-auto text-left text-sm text-muted-foreground">
-               <div className="flex flex-col gap-3 p-6 rounded-2xl bg-card border border-border/50 hover:border-primary/20 hover:shadow-lg transition-all duration-300 group cursor-default">
-                  <div className="bg-blue-50 p-3 rounded-xl w-fit text-blue-600 group-hover:scale-110 transition-transform">
-                     <Palette className="w-6 h-6" />
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-6 max-w-6xl mx-auto text-left text-sm text-muted-foreground">
+               {/* Level 1 Card */}
+               <div className="flex flex-col gap-4 p-6 rounded-3xl bg-card border border-border/50 hover:border-primary/20 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group cursor-default h-full relative overflow-hidden">
+                  <div className="absolute top-0 right-0 p-4 opacity-10 font-display font-bold text-6xl group-hover:opacity-20 transition-opacity">1</div>
+                  
+                  {/* Visual: 3 Similar Shades */}
+                  <div className="h-24 w-full bg-secondary/30 rounded-2xl flex items-center justify-center gap-3 p-4 group-hover:bg-blue-50/50 transition-colors">
+                      <div className="w-8 h-8 rounded-lg bg-blue-500 shadow-sm transform group-hover:scale-110 transition-transform duration-500" />
+                      <div className="w-8 h-8 rounded-lg bg-blue-400 shadow-sm transform group-hover:scale-90 transition-transform duration-500 delay-75" />
+                      <div className="w-8 h-8 rounded-lg bg-blue-600 shadow-sm transform group-hover:scale-105 transition-transform duration-500 delay-150" />
                   </div>
+                  
                   <div>
-                      <span className="font-bold text-foreground block text-lg mb-1">Single Color</span>
+                      <div className="text-xs font-bold uppercase tracking-wider text-blue-600 mb-1">Level 1</div>
+                      <span className="font-bold text-foreground block text-xl mb-2">Single Color</span>
                       <p className="text-muted-foreground/80 leading-relaxed">Identify the primary brand color from similar shades.</p>
                   </div>
                </div>
-               <div className="flex flex-col gap-3 p-6 rounded-2xl bg-card border border-border/50 hover:border-primary/20 hover:shadow-lg transition-all duration-300 group cursor-default">
-                  <div className="bg-purple-50 p-3 rounded-xl w-fit text-purple-600 group-hover:scale-110 transition-transform">
-                     <Layers className="w-6 h-6" />
+
+               {/* Level 2 Card */}
+               <div className="flex flex-col gap-4 p-6 rounded-3xl bg-card border border-border/50 hover:border-primary/20 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group cursor-default h-full relative overflow-hidden">
+                  <div className="absolute top-0 right-0 p-4 opacity-10 font-display font-bold text-6xl group-hover:opacity-20 transition-opacity">2</div>
+
+                  {/* Visual: Split Card */}
+                  <div className="h-24 w-full bg-secondary/30 rounded-2xl flex items-center justify-center p-4 group-hover:bg-purple-50/50 transition-colors">
+                      <div className="w-16 h-16 rounded-xl overflow-hidden flex shadow-sm group-hover:rotate-3 transition-transform duration-500">
+                          <div className="w-1/2 h-full bg-purple-600" />
+                          <div className="w-1/2 h-full bg-purple-300" />
+                      </div>
                   </div>
+
                   <div>
-                      <span className="font-bold text-foreground block text-lg mb-1">Dual Colors</span>
+                      <div className="text-xs font-bold uppercase tracking-wider text-purple-600 mb-1">Level 2</div>
+                      <span className="font-bold text-foreground block text-xl mb-2">Dual Colors</span>
                       <p className="text-muted-foreground/80 leading-relaxed">Find the correct secondary color pairing.</p>
                   </div>
                </div>
-               <div className="flex flex-col gap-3 p-6 rounded-2xl bg-card border border-border/50 hover:border-primary/20 hover:shadow-lg transition-all duration-300 group cursor-default">
-                  <div className="bg-orange-50 p-3 rounded-xl w-fit text-orange-600 group-hover:scale-110 transition-transform">
-                     <Sliders className="w-6 h-6" />
+
+               {/* Level 3 Card */}
+               <div className="flex flex-col gap-4 p-6 rounded-3xl bg-card border border-border/50 hover:border-primary/20 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group cursor-default h-full relative overflow-hidden">
+                  <div className="absolute top-0 right-0 p-4 opacity-10 font-display font-bold text-6xl group-hover:opacity-20 transition-opacity">3</div>
+
+                  {/* Visual: Slider Gradient */}
+                  <div className="h-24 w-full bg-secondary/30 rounded-2xl flex flex-col items-center justify-center px-6 group-hover:bg-orange-50/50 transition-colors gap-2">
+                       <div className="w-full h-4 rounded-full bg-gradient-to-r from-orange-300 via-orange-500 to-red-500 shadow-sm" />
+                       <div className="w-full flex justify-center">
+                           <div className="w-1 h-3 bg-foreground/20 rounded-full group-hover:translate-x-4 transition-transform duration-1000 ease-in-out" />
+                       </div>
                   </div>
+
                   <div>
-                      <span className="font-bold text-foreground block text-lg mb-1">Slider</span>
+                      <div className="text-xs font-bold uppercase tracking-wider text-orange-600 mb-1">Level 3</div>
+                      <span className="font-bold text-foreground block text-xl mb-2">Slider</span>
                       <p className="text-muted-foreground/80 leading-relaxed">Pinpoint the exact hex code on a gradient.</p>
                   </div>
                </div>
-               <div className="flex flex-col gap-3 p-6 rounded-2xl bg-card border border-border/50 hover:border-primary/20 hover:shadow-lg transition-all duration-300 group cursor-default">
-                  <div className="bg-red-50 p-3 rounded-xl w-fit text-red-600 group-hover:scale-110 transition-transform">
-                     <Grid3X3 className="w-6 h-6" />
+
+               {/* Level 4 Card */}
+               <div className="flex flex-col gap-4 p-6 rounded-3xl bg-card border border-border/50 hover:border-primary/20 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group cursor-default h-full relative overflow-hidden">
+                  <div className="absolute top-0 right-0 p-4 opacity-10 font-display font-bold text-6xl group-hover:opacity-20 transition-opacity">4</div>
+
+                  {/* Visual: Grid Match */}
+                  <div className="h-24 w-full bg-secondary/30 rounded-2xl flex items-center justify-center p-4 group-hover:bg-red-50/50 transition-colors">
+                      <div className="grid grid-cols-2 gap-2 group-hover:gap-3 transition-all duration-500">
+                          <div className="w-6 h-6 rounded bg-red-500 shadow-sm" />
+                          <div className="w-6 h-6 rounded bg-green-500 shadow-sm" />
+                          <div className="w-6 h-6 rounded bg-blue-500 shadow-sm" />
+                          <div className="w-6 h-6 rounded bg-yellow-500 shadow-sm" />
+                      </div>
                   </div>
+
                   <div>
-                      <span className="font-bold text-foreground block text-lg mb-1">Match</span>
+                      <div className="text-xs font-bold uppercase tracking-wider text-red-600 mb-1">Level 4</div>
+                      <span className="font-bold text-foreground block text-xl mb-2">Match</span>
                       <p className="text-muted-foreground/80 leading-relaxed">Group 5 brands with their specific hex codes.</p>
                   </div>
                </div>
