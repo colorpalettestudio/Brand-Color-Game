@@ -255,7 +255,7 @@ export function GameCard({ brand, mode, onComplete }: GameCardProps) {
                            <motion.div 
                             initial={{ opacity: 0 }} 
                             animate={{ opacity: 1 }}
-                            className="absolute inset-0 flex items-center justify-center bg-black/10 backdrop-blur-[2px] z-10"
+                            className="absolute inset-0 flex items-center justify-center z-10"
                            >
                              <div className="bg-white rounded-full p-3 shadow-xl">
                                 <Check className="w-8 h-8 text-green-600" />
@@ -266,7 +266,7 @@ export function GameCard({ brand, mode, onComplete }: GameCardProps) {
                            <motion.div 
                             initial={{ opacity: 0 }} 
                             animate={{ opacity: 1 }}
-                            className="absolute inset-0 flex items-center justify-center bg-black/10 backdrop-blur-[2px] z-10"
+                            className="absolute inset-0 flex items-center justify-center z-10"
                            >
                              <div className="bg-white rounded-full p-3 shadow-xl">
                                 <X className="w-8 h-8 text-red-500" />
