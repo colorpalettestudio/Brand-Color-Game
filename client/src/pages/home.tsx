@@ -135,28 +135,57 @@ export default function Home() {
           case 1: return { 
               title: "Level 1: Single Color", 
               desc: "Identify the primary brand color.", 
-              icon: <Palette className="w-10 h-10" />,
-              color: "bg-blue-100 text-blue-600"
+              visual: (
+                  <div className="h-32 w-full bg-secondary/30 rounded-2xl flex items-center justify-center gap-4 p-6">
+                      <div className="w-12 h-12 rounded-xl bg-blue-500 shadow-sm animate-pulse" />
+                      <div className="w-12 h-12 rounded-xl bg-blue-400 shadow-sm" />
+                      <div className="w-12 h-12 rounded-xl bg-blue-600 shadow-sm" />
+                  </div>
+              ),
+              color: "text-blue-600"
           };
           case 2: return { 
               title: "Level 2: Dual Colors", 
               desc: "Match the correct pair of brand colors.", 
-              icon: <Layers className="w-10 h-10" />,
-              color: "bg-purple-100 text-purple-600"
+              visual: (
+                  <div className="h-32 w-full bg-secondary/30 rounded-2xl flex items-center justify-center p-6">
+                      <div className="w-24 h-24 rounded-2xl overflow-hidden flex shadow-lg rotate-3">
+                          <div className="w-1/2 h-full bg-purple-600" />
+                          <div className="w-1/2 h-full bg-purple-300" />
+                      </div>
+                  </div>
+              ),
+              color: "text-purple-600"
           };
           case 3: return { 
               title: "Level 3: Color Perfect", 
               desc: "Use the slider to match the exact hex code.", 
-              icon: <Sliders className="w-10 h-10" />,
-              color: "bg-orange-100 text-orange-600"
+              visual: (
+                  <div className="h-32 w-full bg-secondary/30 rounded-2xl flex flex-col items-center justify-center px-8 gap-4">
+                       <div className="w-full h-6 rounded-full bg-gradient-to-r from-orange-300 via-orange-500 to-red-500 shadow-sm" />
+                       <div className="w-full flex justify-center">
+                           <div className="w-1.5 h-4 bg-foreground/20 rounded-full animate-bounce" />
+                       </div>
+                  </div>
+              ),
+              color: "text-orange-600"
           };
           case 4: return {
               title: "Level 4: Color Match",
               desc: `Match 5 ${level4ColorName} brands to their exact shade.`,
-              icon: <Grid3X3 className="w-10 h-10" />,
-              color: "bg-red-100 text-red-600"
+              visual: (
+                  <div className="h-32 w-full bg-secondary/30 rounded-2xl flex items-center justify-center p-6">
+                      <div className="grid grid-cols-2 gap-3">
+                          <div className="w-10 h-10 rounded-lg bg-red-500 shadow-sm" />
+                          <div className="w-10 h-10 rounded-lg bg-green-500 shadow-sm" />
+                          <div className="w-10 h-10 rounded-lg bg-blue-500 shadow-sm" />
+                          <div className="w-10 h-10 rounded-lg bg-yellow-500 shadow-sm" />
+                      </div>
+                  </div>
+              ),
+              color: "text-red-600"
           };
-          default: return { title: "", desc: "", icon: null, color: "" };
+          default: return { title: "", desc: "", visual: null, color: "" };
       }
   };
 
@@ -291,8 +320,8 @@ export default function Home() {
                 exit={{ opacity: 0, scale: 1.1 }}
                 className="text-center space-y-6 max-w-md mx-auto bg-card p-12 rounded-3xl border border-border shadow-2xl"
              >
-                <div className={`w-20 h-20 mx-auto rounded-full flex items-center justify-center ${getLevelInfo(currentLevel).color}`}>
-                    {getLevelInfo(currentLevel).icon}
+                <div className="mx-auto flex justify-center mb-6">
+                    {getLevelInfo(currentLevel).visual}
                 </div>
                 <div>
                     <h2 className="text-3xl font-bold font-display mb-2">

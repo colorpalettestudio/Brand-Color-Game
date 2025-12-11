@@ -67,8 +67,8 @@ export function GameCard({ brand, mode, onComplete }: GameCardProps) {
 
 
       // Distractor 1: Hue Shift (e.g. "Warmer/Cooler")
-      // Rotate by +/- 15-25 degrees (increased from 5-10 for better visibility)
-      const hueShift = (Math.random() > 0.5 ? 1 : -1) * (15 + Math.random() * 10);
+      // Rotate by +/- 12-18 degrees (approx 4-5% of 360, per user request)
+      const hueShift = (Math.random() > 0.5 ? 1 : -1) * (12 + Math.random() * 6);
       
       if (brand.secondaryHex) {
           // For dual brands, shift the primary color's hue
@@ -83,8 +83,8 @@ export function GameCard({ brand, mode, onComplete }: GameCardProps) {
       }
 
       // Distractor 2: Lightness Shift (e.g. "Lighter/Darker")
-      // Shift lightness by +/- 10-15% (increased from 3-5%)
-      const lightShift = (Math.random() > 0.5 ? 1 : -1) * (0.1 + Math.random() * 0.05);
+      // Shift lightness by +/- 4-8% (per user request)
+      const lightShift = (Math.random() > 0.5 ? 1 : -1) * (0.04 + Math.random() * 0.04);
 
       if (brand.secondaryHex) {
            // For dual brands, shift the SECONDARY color's lightness to create a different kind of wrong pair
