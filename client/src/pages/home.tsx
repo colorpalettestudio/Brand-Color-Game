@@ -359,31 +359,99 @@ export default function Home() {
             key="end"
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="text-center space-y-8 bg-card border border-border p-12 rounded-3xl shadow-2xl max-w-xl mx-auto"
+            className="text-center space-y-8 bg-card border border-border p-8 md:p-12 rounded-3xl shadow-2xl max-w-xl mx-auto overflow-hidden relative"
           >
-            <div className="inline-flex items-center justify-center w-24 h-24 rounded-full bg-yellow-100 text-yellow-600 mb-4 animate-bounce">
-                <Trophy className="w-12 h-12" />
-            </div>
-            
-            <div className="space-y-2">
-                <h2 className="text-4xl font-display font-bold">Design Master!</h2>
-                <p className="text-muted-foreground">You completed all 4 levels.</p>
-                
-                <div className="py-6 space-y-2">
-                    <p className="text-sm uppercase tracking-widest text-muted-foreground">Final Score</p>
-                    <div className="text-7xl font-bold font-mono tracking-tight text-foreground">
-                        {score}
-                    </div>
-                    {/* Max score approx: 5*100 + 5*100 + 5*100 + 500 = 2000 */}
-                    <p className="text-sm text-muted-foreground">out of ~2000 possible points</p>
-                </div>
-            </div>
+            {/* Background Gradient */}
+            <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-red-500 via-yellow-500 via-green-500 via-blue-500 to-purple-500" />
 
-            <div className="flex justify-center gap-4 pt-4">
-                <Button size="lg" onClick={startGame} className="gap-2 px-8 rounded-full">
-                    Play Again
-                </Button>
-            </div>
+            {(() => {
+                const maxScore = 2000;
+                const percentage = Math.round((score / maxScore) * 100);
+                
+                let rank = "Design Intern";
+                let message = "Great start! Keep training your eye.";
+                let Icon = Palette;
+                let color = "text-blue-500";
+                
+                if (percentage >= 95) {
+                    rank = "Color God";
+                    message = "Perfection. You see hex codes in your sleep.";
+                    Icon = Trophy;
+                    color = "text-yellow-500";
+                } else if (percentage >= 85) {
+                    rank = "Creative Director";
+                    message = "Amazing! Your color vision is elite.";
+                    Icon = Layers;
+                    color = "text-purple-500";
+                } else if (percentage >= 70) {
+                    rank = "Senior Art Director";
+                    message = "Impressive! You know your brands.";
+                    Icon = Sliders;
+                    color = "text-pink-500";
+                } else if (percentage >= 50) {
+                    rank = "Junior Designer";
+                    message = "Not bad! You've got potential.";
+                    Icon = Grid3X3;
+                    color = "text-green-500";
+                }
+
+                return (
+                    <>
+                        <div className="space-y-2">
+                             <motion.div 
+                                initial={{ scale: 0, rotate: -20 }}
+                                animate={{ scale: 1, rotate: 0 }}
+                                transition={{ type: "spring", bounce: 0.5 }}
+                                className={`inline-flex items-center justify-center w-24 h-24 rounded-full bg-secondary/50 mb-4 ${color}`}
+                             >
+                                <Icon className="w-12 h-12" />
+                             </motion.div>
+                             
+                             <h2 className="text-4xl md:text-5xl font-display font-bold text-foreground">
+                                {rank}
+                             </h2>
+                             <p className="text-muted-foreground text-lg">{message}</p>
+                        </div>
+
+                        <div className="py-8 space-y-6 bg-secondary/20 rounded-2xl border border-border/50">
+                            <div className="grid grid-cols-2 gap-8 px-8">
+                                <div className="space-y-1">
+                                    <p className="text-xs uppercase tracking-widest text-muted-foreground font-bold">Total Score</p>
+                                    <div className="text-4xl font-bold font-mono tracking-tight text-foreground">
+                                        {score}
+                                    </div>
+                                    <p className="text-xs text-muted-foreground">/ {maxScore}</p>
+                                </div>
+                                <div className="space-y-1">
+                                    <p className="text-xs uppercase tracking-widest text-muted-foreground font-bold">Accuracy</p>
+                                    <div className={`text-4xl font-bold font-mono tracking-tight ${percentage >= 80 ? 'text-green-600' : 'text-foreground'}`}>
+                                        {percentage}%
+                                    </div>
+                                    <p className="text-xs text-muted-foreground">Precision</p>
+                                </div>
+                            </div>
+                            
+                            {/* Simple Progress Bar */}
+                            <div className="px-8">
+                                <div className="h-3 w-full bg-secondary rounded-full overflow-hidden">
+                                    <motion.div 
+                                        initial={{ width: 0 }}
+                                        animate={{ width: `${percentage}%` }}
+                                        transition={{ delay: 0.5, duration: 1, ease: "easeOut" }}
+                                        className={`h-full ${percentage >= 80 ? 'bg-green-500' : 'bg-primary'}`}
+                                    />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="flex justify-center gap-4">
+                            <Button size="lg" onClick={startGame} className="h-14 px-10 text-lg rounded-full shadow-lg hover:shadow-xl hover:scale-105 transition-all">
+                                Play Again <Play className="w-5 h-5 ml-2 fill-current" />
+                            </Button>
+                        </div>
+                    </>
+                );
+            })()}
           </motion.div>
         )}
         </AnimatePresence>
