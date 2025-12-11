@@ -67,8 +67,8 @@ export function GameCard({ brand, mode, onComplete }: GameCardProps) {
 
 
       // Distractor 1: Hue Shift (e.g. "Warmer/Cooler")
-      // Rotate by +/- 12-18 degrees (approx 4-5% of 360, per user request)
-      const hueShift = (Math.random() > 0.5 ? 1 : -1) * (12 + Math.random() * 6);
+      // Rotate by +/- 8-10 degrees (per user request)
+      const hueShift = (Math.random() > 0.5 ? 1 : -1) * (8 + Math.random() * 2);
       
       if (brand.secondaryHex) {
           // For dual brands, shift the primary color's hue
