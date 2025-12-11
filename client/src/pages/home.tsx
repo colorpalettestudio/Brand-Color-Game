@@ -4,7 +4,7 @@ import { MatchingRound } from "@/components/game/MatchingRound";
 import { brands, Brand } from "@/data/brands";
 import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowRight, Trophy, Palette, Play, Info, Layers, Sliders, Grid3X3 } from "lucide-react";
+import { ArrowRight, Trophy, Palette, Play, Info, Layers, Sliders, Grid3X3, Check } from "lucide-react";
 
 export default function Home() {
   const [gameState, setGameState] = useState<"start" | "level-intro" | "playing" | "end">("start");
@@ -173,11 +173,30 @@ export default function Home() {
           </div>
           <span>ChromaBrand</span>
         </div>
+        
+        {/* Progress Station */}
+        {gameState === "playing" && (
+            <div className="absolute left-1/2 -translate-x-1/2 hidden md:flex items-center gap-2 bg-background/50 backdrop-blur-md p-1.5 rounded-full border border-border/50 shadow-sm">
+                {[1, 2, 3, 4].map((level) => (
+                    <div 
+                        key={level}
+                        className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
+                            currentLevel === level 
+                                ? 'bg-primary text-primary-foreground shadow-sm' 
+                                : currentLevel > level 
+                                    ? 'bg-secondary text-muted-foreground opacity-50' 
+                                    : 'text-muted-foreground opacity-30'
+                        }`}
+                    >
+                        <span>Level {level}</span>
+                        {currentLevel > level && <Check className="w-3 h-3" />}
+                    </div>
+                ))}
+            </div>
+        )}
+
         {gameState === "playing" && (
             <div className="flex items-center gap-4 bg-background/50 backdrop-blur-md p-2 pr-4 rounded-full border border-border/50 shadow-sm">
-                <div className="font-medium text-xs text-muted-foreground px-3 py-1 bg-secondary rounded-full">
-                    Lvl {currentLevel} • {currentMode === 'match' ? 'Final' : `${currentRound + 1}/5`}
-                </div>
                 <div className="font-bold text-sm text-primary">
                     {score} pts
                 </div>
@@ -198,7 +217,7 @@ export default function Home() {
             <div className="space-y-4">
               <h1 className="text-6xl md:text-8xl font-display font-bold tracking-tighter text-foreground">
                 Do you know your <br/>
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600">colors?</span>
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 via-yellow-500 via-green-500 via-blue-500 to-purple-500 animate-gradient-x bg-[length:200%_200%]">brand colors?</span>
               </h1>
               <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
                 Test your designer eye by matching iconic brands to their official hex codes across 4 increasingly difficult levels.
