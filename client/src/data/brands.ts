@@ -128,7 +128,7 @@ export const brands: Brand[] = [
     name: "John Deere", 
     hex: "#367C2B", 
     secondaryHex: "#FCEE21", 
-    textColor: "#FFFFFF",
+    textColor: "#FFFFFF", 
     trivia: "The green and yellow scheme represents growing crops (green) and harvest time (yellow)."
   },
   { 
@@ -151,7 +151,292 @@ export const brands: Brand[] = [
     name: "FedEx", 
     hex: "#4D148C", 
     secondaryHex: "#FF6600", 
-    textColor: "#FFFFFF",
+    textColor: "#FFFFFF", 
     trivia: "Look closely: The negative space between the 'E' and 'x' forms an arrow, symbolizing speed and precision."
+  },
+  {
+    id: 'airbnb',
+    name: "Airbnb",
+    hex: "#FF5A5F",
+    textColor: "#FFFFFF",
+    trivia: "The 'Rausch' color is named after the street where the founders lived when starting the company."
+  },
+  {
+    id: 'pinterest',
+    name: "Pinterest",
+    hex: "#E60023",
+    textColor: "#FFFFFF",
+    trivia: "Pinterest chose this custom red to be vibrant and stimulating, encouraging users to take action."
+  },
+  {
+    id: 'youtube',
+    name: "YouTube",
+    hex: "#FF0000",
+    textColor: "#FFFFFF",
+    trivia: "YouTube's 'pure red' (#FF0000) represents the 'Record' button found on old camcorders."
+  },
+  {
+    id: 'lyft',
+    name: "Lyft",
+    hex: "#FF00BF",
+    textColor: "#FFFFFF",
+    trivia: "Lyft Pink was chosen to be visibly distinct from the yellow cabs and black cars dominating the streets."
+  },
+  {
+    id: 'slack',
+    name: "Slack",
+    hex: "#4A154B",
+    textColor: "#FFFFFF",
+    trivia: "Slack's aubergine purple provides a unique, calming backdrop for the colorful communication happening inside."
+  },
+  {
+    id: 'twitch',
+    name: "Twitch",
+    hex: "#9146FF",
+    textColor: "#FFFFFF",
+    trivia: "Twitch Purple was selected to stand out in the gaming world, which was dominated by black, red, and green."
+  },
+  {
+    id: 'discord',
+    name: "Discord",
+    hex: "#5865F2",
+    textColor: "#FFFFFF",
+    trivia: "Discord's 'Blurple' is a custom shade designed to be friendly and readable across both light and dark modes."
+  },
+  {
+    id: 'ibm',
+    name: "IBM",
+    hex: "#006699",
+    textColor: "#FFFFFF",
+    trivia: "Known as 'Big Blue', IBM's color represents stability, intelligence, and corporate strength."
+  },
+  {
+    id: 'dell',
+    name: "Dell",
+    hex: "#007DB8",
+    textColor: "#FFFFFF",
+    trivia: "Dell Blue is designed to convey technology, innovation, and reliability."
+  },
+  {
+    id: 'intel',
+    name: "Intel",
+    hex: "#0068B5",
+    textColor: "#FFFFFF",
+    trivia: "Intel Blue has been a core part of the brand for decades, symbolizing trust and engineering excellence."
+  },
+  {
+    id: 'bestbuy',
+    name: "Best Buy",
+    hex: "#0046BE",
+    textColor: "#FFFFFF",
+    trivia: "The bright blue tag is meant to be instantly recognizable and evoke the feeling of finding a great deal."
+  },
+  {
+    id: 'walmart',
+    name: "Walmart",
+    hex: "#0071CE",
+    textColor: "#FFFFFF",
+    trivia: "Walmart's blue is intended to be friendly and approachable, replacing the older, darker navy."
+  },
+  {
+    id: 'ford',
+    name: "Ford",
+    hex: "#003478",
+    textColor: "#FFFFFF",
+    trivia: "The Ford oval has used various shades of blue since 1927, symbolizing durability and American tradition."
+  },
+  {
+    id: 'pepsi',
+    name: "Pepsi",
+    hex: "#004B93",
+    textColor: "#FFFFFF",
+    trivia: "Pepsi introduced blue to their logo in 1950 to show support for the US during WWII (Red, White, and Blue)."
+  },
+  {
+    id: 'visa',
+    name: "Visa",
+    hex: "#1A1F71",
+    textColor: "#FFFFFF",
+    trivia: "Visa's blue represents the blue sky, symbolizing 'limitless possibilities' for customers."
+  },
+  {
+    id: 'lowes',
+    name: "Lowe's",
+    hex: "#004990",
+    textColor: "#FFFFFF",
+    trivia: "Lowe's dark blue house silhouette represents the stability and comfort of home."
+  },
+  {
+    id: 'gap',
+    name: "Gap",
+    hex: "#002868",
+    textColor: "#FFFFFF",
+    trivia: "The dark navy square was iconic for decades, representing classic American denim."
+  },
+  {
+    id: 'paypal',
+    name: "PayPal",
+    hex: "#003087",
+    textColor: "#FFFFFF",
+    trivia: "PayPal's blue is designed to look digital-native and trustworthy for online transactions."
+  },
+  {
+    id: 'heineken',
+    name: "Heineken",
+    hex: "#008200",
+    textColor: "#FFFFFF",
+    trivia: "Heineken switched to green bottles to distinguish their premium pilsner from the typical brown beer bottles."
+  },
+  {
+    id: 'wholefoods',
+    name: "Whole Foods",
+    hex: "#006747",
+    textColor: "#FFFFFF",
+    trivia: "The fresh green reflects the company's commitment to natural, organic, and healthy food."
+  },
+  {
+    id: 'android',
+    name: "Android",
+    hex: "#3DDC84",
+    textColor: "#000000",
+    trivia: "The Android robot is 'Android Green', representing growth, freshness, and the open-source nature of the OS."
+  },
+  {
+    id: 'nvidia',
+    name: "NVIDIA",
+    hex: "#76B900",
+    textColor: "#FFFFFF",
+    trivia: "NVIDIA Green symbolizes the company's vision of computing and graphics power."
+  },
+  {
+    id: 'subway',
+    name: "Subway",
+    hex: "#008C15",
+    secondaryHex: "#FFC20B",
+    textColor: "#FFFFFF",
+    trivia: "The green represents fresh vegetables, while the yellow represents the bread and cheese."
+  },
+  {
+    id: 'sprite',
+    name: "Sprite",
+    hex: "#008B47",
+    textColor: "#FFFFFF",
+    trivia: "Sprite uses green to convey lemon-lime refreshment and to stand out on shelves."
+  },
+  {
+    id: '7eleven',
+    name: "7-Eleven",
+    hex: "#F78F1E",
+    secondaryHex: "#008163",
+    textColor: "#FFFFFF",
+    trivia: "The orange, green, and red colors were chosen to be visible at any time of day, emphasizing convenience."
+  },
+  {
+    id: 'mastercard',
+    name: "Mastercard",
+    hex: "#EB001B",
+    secondaryHex: "#F79E1B",
+    textColor: "#FFFFFF",
+    trivia: "The interlocking red and orange circles represent connectivity and global reach."
+  },
+  {
+    id: 'dunkin',
+    name: "Dunkin'",
+    hex: "#FF671F",
+    secondaryHex: "#DA291C",
+    textColor: "#FFFFFF",
+    trivia: "The bright orange and pink colors were chosen to be fun, energetic, and to look like donuts and coffee."
+  },
+  {
+    id: 'fanta',
+    name: "Fanta",
+    hex: "#FF8300",
+    textColor: "#FFFFFF",
+    trivia: "Fanta's vibrant orange color reflects the bold, fruity taste of its most popular flavor."
+  },
+  {
+    id: 'nickelodeon',
+    name: "Nickelodeon",
+    hex: "#EC7A08",
+    textColor: "#FFFFFF",
+    trivia: "The famous 'splat' orange was chosen because it's the color least liked by adults, making it perfect for kids."
+  },
+  {
+    id: 'reeses',
+    name: "Reese's",
+    hex: "#FF6900",
+    textColor: "#FFFFFF",
+    trivia: "The iconic orange background makes the brown peanut butter cup illustration pop off the wrapper."
+  },
+  {
+    id: 'ferrari',
+    name: "Ferrari",
+    hex: "#FF2800",
+    textColor: "#FFFFFF",
+    trivia: "Rosso Corsa (Racing Red) was the national racing color of Italy, which Ferrari adopted for its race cars."
+  },
+  {
+    id: 'adobe',
+    name: "Adobe",
+    hex: "#FF0000",
+    textColor: "#FFFFFF",
+    trivia: "The red 'A' represents the creativity and passion of the design community."
+  },
+  {
+    id: 'cnn',
+    name: "CNN",
+    hex: "#CC0000",
+    textColor: "#FFFFFF",
+    trivia: "CNN Red is meant to be urgent and authoritative, signaling breaking news."
+  },
+  {
+    id: 'lego',
+    name: "LEGO",
+    hex: "#D01012",
+    secondaryHex: "#FFD500",
+    textColor: "#FFFFFF",
+    trivia: "The red, yellow, black, and white logo mimics the primary colors of the basic LEGO bricks."
+  },
+  {
+    id: 'natgeo',
+    name: "National Geographic",
+    hex: "#FFCC00",
+    textColor: "#000000",
+    trivia: "The yellow border represents a window to the world and the sun shining on the planet."
+  },
+  {
+    id: 'nikon',
+    name: "Nikon",
+    hex: "#FFE100",
+    textColor: "#000000",
+    trivia: "Nikon Yellow represents the 'width of possibility' and the passion of photography."
+  },
+  {
+    id: 'cadbury',
+    name: "Cadbury",
+    hex: "#482683",
+    textColor: "#FFFFFF",
+    trivia: "Cadbury purple (Pantone 2685C) was Queen Victoria's favorite color and has been used by the brand since 1914."
+  },
+  {
+    id: 'yahoo',
+    name: "Yahoo",
+    hex: "#410093",
+    textColor: "#FFFFFF",
+    trivia: "Yahoo used purple because it was a cheap paint color to buy for their office walls in the early startup days."
+  },
+  {
+    id: 'roku',
+    name: "Roku",
+    hex: "#662D91",
+    textColor: "#FFFFFF",
+    trivia: "Roku's purple stands out in a sea of black and silver home entertainment devices."
+  },
+  {
+    id: 'hallmark',
+    name: "Hallmark",
+    hex: "#623588",
+    textColor: "#FFFFFF",
+    trivia: "Hallmark's purple crown logo represents quality, royalty, and excellence in greeting cards."
   },
 ];
