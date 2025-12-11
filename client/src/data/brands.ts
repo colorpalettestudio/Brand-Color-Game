@@ -3,6 +3,7 @@ export interface Brand {
   name: string;
   hex: string;
   secondaryHex?: string; // For dual-color brands like IKEA
+  extraColors?: string[]; // For multi-color brands (3+ colors)
   textColor?: string; // For better contrast on the card
   trivia?: string; // Fun fact about the color/brand
 }
@@ -119,7 +120,7 @@ export const brands: Brand[] = [
     id: 'google', 
     name: "Google", 
     hex: "#4285F4", 
-    secondaryHex: "#EA4335", 
+    extraColors: ["#EA4335", "#FBBC05", "#34A853"],
     textColor: "#FFFFFF", 
     trivia: "Google's logo uses primary colors but breaks the pattern with a green 'l' to show they don't follow the rules."
   },
@@ -181,6 +182,30 @@ export const brands: Brand[] = [
     hex: "#FF00BF",
     textColor: "#FFFFFF",
     trivia: "Lyft Pink was chosen to be visibly distinct from the yellow cabs and black cars dominating the streets."
+  },
+  {
+    id: 'microsoft',
+    name: "Microsoft",
+    hex: "#F25022",
+    extraColors: ["#7FBA00", "#00A4EF", "#FFB900"],
+    textColor: "#FFFFFF",
+    trivia: "The four colors of the Microsoft square logo represent its major products: Windows (blue), Office (red), Xbox (green), and Bing (yellow)."
+  },
+  {
+    id: 'ebay',
+    name: "eBay",
+    hex: "#E53238",
+    extraColors: ["#0064D2", "#F5AF02", "#86B817"],
+    textColor: "#FFFFFF",
+    trivia: "eBay's colorful logo reflects the diverse and connected nature of its marketplace community."
+  },
+  {
+    id: 'nbc',
+    name: "NBC",
+    hex: "#FFC200", // Yellow
+    extraColors: ["#FF8700", "#D60019", "#78288C", "#0055A5", "#5FBD46"], // Orange, Red, Purple, Blue, Green
+    textColor: "#000000",
+    trivia: "The NBC peacock originally had 11 feathers to sell color TVs, but was simplified to 6 feathers representing the divisions of the network."
   },
   {
     id: 'slack',
@@ -327,7 +352,7 @@ export const brands: Brand[] = [
     id: '7eleven',
     name: "7-Eleven",
     hex: "#F78F1E",
-    secondaryHex: "#008163",
+    extraColors: ["#008163", "#EE2737"],
     textColor: "#FFFFFF",
     trivia: "The orange, green, and red colors were chosen to be visible at any time of day, emphasizing convenience."
   },

@@ -17,8 +17,7 @@ interface GameCardProps {
 }
 
 interface ColorOption {
-    primary: string;
-    secondary?: string;
+    colors: string[];
 }
 
 export function GameCard({ brand, mode, onComplete }: GameCardProps) {
@@ -62,7 +61,15 @@ export function GameCard({ brand, mode, onComplete }: GameCardProps) {
     const baseColor = colord(brand.hex);
 
     if (mode === "easy") {
-      const correctOption: ColorOption = { primary: brand.hex, secondary: brand.secondaryHex };
+      // Determine correct palette
+      const correctColors = [brand.hex];
+      if (brand.extraColors && brand.extraColors.length > 0) {
+        correctColors.push(...brand.extraColors);
+      } else if (brand.secondaryHex) {
+        correctColors.push(brand.secondaryHex);
+      }
+      
+      const correctOption: ColorOption = { colors: correctColors };
       const distractors: ColorOption[] = [];
 
 
@@ -70,40 +77,25 @@ export function GameCard({ brand, mode, onComplete }: GameCardProps) {
       // Rotate by +/- 8-10 degrees (per user request)
       const hueShift = (Math.random() > 0.5 ? 1 : -1) * (8 + Math.random() * 2);
       
-      if (brand.secondaryHex) {
-          // For dual brands, shift the primary color's hue
-          distractors.push({
-              primary: colord(brand.hex).rotate(hueShift).toHex(),
-              secondary: brand.secondaryHex
-          });
-      } else {
-          distractors.push({
-              primary: colord(brand.hex).rotate(hueShift).toHex()
-          });
-      }
+      distractors.push({
+          colors: correctColors.map(c => colord(c).rotate(hueShift).toHex())
+      });
 
       // Distractor 2: Lightness Shift (e.g. "Lighter/Darker")
       // Shift lightness by +/- 4-8% (per user request)
       const lightShift = (Math.random() > 0.5 ? 1 : -1) * (0.04 + Math.random() * 0.04);
 
-      if (brand.secondaryHex) {
-           // For dual brands, shift the SECONDARY color's lightness to create a different kind of wrong pair
-           distractors.push({
-               primary: brand.hex,
-               secondary: colord(brand.secondaryHex).lighten(lightShift).toHex()
-           });
-      } else {
-           distractors.push({
-               primary: colord(brand.hex).lighten(lightShift).toHex()
-           });
-      }
+      // For lightness shift, we want to maintain the relationship but shift the whole palette
+      distractors.push({
+          colors: correctColors.map(c => colord(c).lighten(lightShift).toHex())
+      });
 
       // Shuffle
       const allOptions = [correctOption, ...distractors].sort(() => Math.random() - 0.5);
       setOptions(allOptions);
     } else {
       // Hard mode: Gradient setup
-      // Note: For dual color brands in hard mode, we currently only test the PRIMARY color to keep the UI manageable.
+      // Note: For dual/multi color brands in hard mode, we currently only test the PRIMARY color to keep the UI manageable.
       const variation = Math.random() > 0.5 ? 'hue' : 'lightness';
       const targetPos = 0.2 + (Math.random() * 0.6); 
       setTargetPosition(targetPos * 100);
@@ -164,7 +156,15 @@ export function GameCard({ brand, mode, onComplete }: GameCardProps) {
     setHasSubmitted(true);
     setSelectedOption(option);
 
-    const isCorrect = option.primary === brand.hex && option.secondary === brand.secondaryHex;
+    // Simple array equality check for correctness
+    const correctColors = [brand.hex];
+    if (brand.extraColors && brand.extraColors.length > 0) {
+        correctColors.push(...brand.extraColors);
+    } else if (brand.secondaryHex) {
+        correctColors.push(brand.secondaryHex);
+    }
+    
+    const isCorrect = JSON.stringify(option.colors) === JSON.stringify(correctColors);
     const points = isCorrect ? 100 : 0;
     
     if (isCorrect) {
@@ -172,7 +172,7 @@ export function GameCard({ brand, mode, onComplete }: GameCardProps) {
         particleCount: 100,
         spread: 70,
         origin: { y: 0.6 },
-        colors: brand.secondaryHex ? [brand.hex, brand.secondaryHex] : [brand.hex, "#ffffff"]
+        colors: correctColors
       });
     }
     
@@ -184,7 +184,7 @@ export function GameCard({ brand, mode, onComplete }: GameCardProps) {
   const handleHardSubmit = () => {
     if (hasSubmitted) return;
     setHasSubmitted(true);
-    setSelectedOption({ primary: currentHex }); // Just for consistency state tracking
+    setSelectedOption({ colors: [currentHex] }); // Just for consistency state tracking
 
     // Calculate score based on RGB distance
     const rgb1 = colord(currentHex).toRgb();
@@ -244,7 +244,14 @@ export function GameCard({ brand, mode, onComplete }: GameCardProps) {
               <>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 {options.map((option, idx) => {
-                    const isCorrect = option.primary === brand.hex && option.secondary === brand.secondaryHex;
+                    const correctColors = [brand.hex];
+                    if (brand.extraColors && brand.extraColors.length > 0) {
+                        correctColors.push(...brand.extraColors);
+                    } else if (brand.secondaryHex) {
+                        correctColors.push(brand.secondaryHex);
+                    }
+                    
+                    const isCorrect = JSON.stringify(option.colors) === JSON.stringify(correctColors);
                     const isSelected = selectedOption === option;
                     
                     return (
@@ -256,15 +263,16 @@ export function GameCard({ brand, mode, onComplete }: GameCardProps) {
                         disabled={hasSubmitted}
                         className="h-40 rounded-2xl shadow-sm border-2 border-transparent hover:border-black/5 hover:shadow-md transition-all relative group cursor-pointer overflow-hidden flex bg-white"
                       >
-                         {/* Render Logic: Single or Dual Color */}
-                         {option.secondary ? (
-                             <div className="flex w-full h-full">
-                                <div className="flex-1 h-full transition-colors duration-300" style={{ backgroundColor: option.primary }} />
-                                <div className="flex-1 h-full transition-colors duration-300" style={{ backgroundColor: option.secondary }} />
-                             </div>
-                         ) : (
-                             <div className="w-full h-full transition-colors duration-300" style={{ backgroundColor: option.primary }} />
-                         )}
+                         {/* Render Logic: Multi Color Support */}
+                         <div className="flex w-full h-full">
+                            {option.colors.map((color, colorIdx) => (
+                                <div 
+                                    key={colorIdx} 
+                                    className="flex-1 h-full transition-colors duration-300" 
+                                    style={{ backgroundColor: color }} 
+                                />
+                            ))}
+                         </div>
 
                          {/* Feedback Overlay */}
                          <AnimatePresence>
@@ -304,15 +312,26 @@ export function GameCard({ brand, mode, onComplete }: GameCardProps) {
                     className="mt-8 bg-secondary/50 rounded-lg p-6 border border-border text-center"
                 >
                     <div className="flex flex-col items-center gap-2">
-                        {options.find(o => o.primary === brand.hex && o.secondary === brand.secondaryHex) === selectedOption ? (
-                            <div className="flex items-center gap-2 text-green-600 font-bold text-xl">
-                                <Check className="w-6 h-6" /> Correct!
-                            </div>
-                        ) : (
-                            <div className="flex items-center gap-2 text-red-500 font-bold text-xl">
-                                <X className="w-6 h-6" /> Incorrect
-                            </div>
-                        )}
+                        {/* Determine correctness for feedback message logic */}
+                        {(() => {
+                             const correctColors = [brand.hex];
+                             if (brand.extraColors && brand.extraColors.length > 0) {
+                                 correctColors.push(...brand.extraColors);
+                             } else if (brand.secondaryHex) {
+                                 correctColors.push(brand.secondaryHex);
+                             }
+                             const isSelectedCorrect = selectedOption && JSON.stringify(selectedOption.colors) === JSON.stringify(correctColors);
+                             
+                             return isSelectedCorrect ? (
+                                <div className="flex items-center gap-2 text-green-600 font-bold text-xl">
+                                    <Check className="w-6 h-6" /> Correct!
+                                </div>
+                            ) : (
+                                <div className="flex items-center gap-2 text-red-500 font-bold text-xl">
+                                    <X className="w-6 h-6" /> Incorrect
+                                </div>
+                            );
+                        })()}
                         
                         {brand.trivia && (
                             <div className="mt-2 space-y-1">
