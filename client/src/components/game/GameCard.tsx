@@ -12,15 +12,18 @@ extend([mixPlugin]);
 
 interface GameCardProps {
   brand: Brand;
-  mode: "easy" | "hard";
+  mode: "easy" | "hard" | "bonus";
+  allBrands?: Brand[]; // Needed for bonus mode to find distractors
   onComplete: (score: number) => void;
 }
 
 interface ColorOption {
-    colors: string[];
+    colors?: string[]; // For easy mode
+    name?: string;     // For bonus mode
+    id?: string;       // For bonus mode
 }
 
-export function GameCard({ brand, mode, onComplete }: GameCardProps) {
+export function GameCard({ brand, mode, allBrands, onComplete }: GameCardProps) {
   const [selectedOption, setSelectedOption] = useState<ColorOption | null>(null);
   const [currentHex, setCurrentHex] = useState<string>("#888888"); // For live preview in hard mode
   const [options, setOptions] = useState<ColorOption[]>([]);
@@ -60,7 +63,37 @@ export function GameCard({ brand, mode, onComplete }: GameCardProps) {
 
     const baseColor = colord(brand.hex);
 
-    if (mode === "easy") {
+    if (mode === "bonus") {
+        // Bonus Mode: Show Color -> Pick Brand
+        const correctOption = { name: brand.name, id: brand.id };
+        
+        // Find distractors with similar hue if possible
+        let distractors = allBrands 
+            ? allBrands
+                .filter(b => b.id !== brand.id)
+                .map(b => ({
+                    brand: b,
+                    diff: Math.abs(colord(b.hex).hue() - baseColor.hue())
+                }))
+                .sort((a, b) => a.diff - b.diff) // Sort by hue similarity
+                .slice(0, 2) // Take top 2 closest
+                .map(item => ({ name: item.brand.name, id: item.brand.id }))
+            : [];
+            
+        // If we don't have enough similar ones (or allBrands wasn't passed), pick randoms
+        if (distractors.length < 2 && allBrands) {
+             const randoms = allBrands
+                .filter(b => b.id !== brand.id && !distractors.find(d => d.id === b.id))
+                .sort(() => Math.random() - 0.5)
+                .slice(0, 2 - distractors.length)
+                .map(b => ({ name: b.name, id: b.id }));
+             distractors = [...distractors, ...randoms];
+        }
+
+        const allOptions = [correctOption, ...distractors].sort(() => Math.random() - 0.5);
+        setOptions(allOptions);
+
+    } else if (mode === "easy") {
       // Determine correct palette
       const correctColors = [brand.hex];
       if (brand.extraColors && brand.extraColors.length > 0) {
@@ -156,6 +189,25 @@ export function GameCard({ brand, mode, onComplete }: GameCardProps) {
     setHasSubmitted(true);
     setSelectedOption(option);
 
+    if (mode === "bonus") {
+        const isCorrect = option.id === brand.id;
+        const points = isCorrect ? 100 : 0; // Bonus points!
+
+        if (isCorrect) {
+             confetti({
+                particleCount: 150,
+                spread: 100,
+                origin: { y: 0.6 },
+                colors: [brand.hex, "#ffffff"] // Use brand color for confetti
+             });
+        }
+        
+        // Shorter delay for bonus round
+        setTimeout(() => onComplete(points), 1500);
+        return;
+    }
+
+    // Easy Mode Logic
     // Simple array equality check for correctness
     const correctColors = [brand.hex];
     if (brand.extraColors && brand.extraColors.length > 0) {
@@ -231,27 +283,49 @@ export function GameCard({ brand, mode, onComplete }: GameCardProps) {
       >
         <div className="p-8 md:p-12 text-center space-y-8">
           <div className="space-y-2">
-            <h1 className="text-5xl md:text-7xl font-display font-bold tracking-tighter text-foreground">
-              {brand.name}
-            </h1>
-            {mode === 'hard' && brand.secondaryHex && (
-                <p className="text-sm text-muted-foreground">(Match the primary color)</p>
+            {mode === "bonus" ? (
+                <>
+                    <h1 className="text-3xl md:text-5xl font-display font-bold tracking-tighter text-foreground mb-4">
+                        Which brand owns this color?
+                    </h1>
+                    <div className="flex justify-center py-6">
+                        <div 
+                            className="w-32 h-32 rounded-full shadow-2xl border-4 border-white ring-1 ring-black/10 animate-pulse"
+                            style={{ backgroundColor: brand.hex }}
+                        />
+                    </div>
+                </>
+            ) : (
+                <>
+                    <h1 className="text-5xl md:text-7xl font-display font-bold tracking-tighter text-foreground">
+                    {brand.name}
+                    </h1>
+                    {mode === 'hard' && brand.secondaryHex && (
+                        <p className="text-sm text-muted-foreground">(Match the primary color)</p>
+                    )}
+                </>
             )}
           </div>
 
           <div className="py-4">
-            {mode === "easy" ? (
+            {mode === "easy" || mode === "bonus" ? (
               <>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 {options.map((option, idx) => {
-                    const correctColors = [brand.hex];
-                    if (brand.extraColors && brand.extraColors.length > 0) {
-                        correctColors.push(...brand.extraColors);
-                    } else if (brand.secondaryHex) {
-                        correctColors.push(brand.secondaryHex);
+                    let isCorrect = false;
+                    
+                    if (mode === "bonus") {
+                        isCorrect = option.id === brand.id;
+                    } else {
+                        const correctColors = [brand.hex];
+                        if (brand.extraColors && brand.extraColors.length > 0) {
+                            correctColors.push(...brand.extraColors);
+                        } else if (brand.secondaryHex) {
+                            correctColors.push(brand.secondaryHex);
+                        }
+                        isCorrect = JSON.stringify(option.colors) === JSON.stringify(correctColors);
                     }
                     
-                    const isCorrect = JSON.stringify(option.colors) === JSON.stringify(correctColors);
                     const isSelected = selectedOption === option;
                     
                     return (
@@ -261,18 +335,22 @@ export function GameCard({ brand, mode, onComplete }: GameCardProps) {
                         whileTap={{ scale: 0.98 }}
                         onClick={() => handleEasySubmit(option)}
                         disabled={hasSubmitted}
-                        className="h-40 rounded-2xl shadow-sm border-2 border-transparent hover:border-black/5 hover:shadow-md transition-all relative group cursor-pointer overflow-hidden flex bg-white"
+                        className={`h-40 rounded-2xl shadow-sm border-2 border-transparent hover:border-black/5 hover:shadow-md transition-all relative group cursor-pointer overflow-hidden flex bg-white ${mode === 'bonus' ? 'items-center justify-center p-4' : ''}`}
                       >
-                         {/* Render Logic: Multi Color Support */}
-                         <div className="flex w-full h-full">
-                            {option.colors.map((color, colorIdx) => (
-                                <div 
-                                    key={colorIdx} 
-                                    className="flex-1 h-full transition-colors duration-300" 
-                                    style={{ backgroundColor: color }} 
-                                />
-                            ))}
-                         </div>
+                         {mode === "bonus" ? (
+                             <span className="text-xl font-bold text-foreground">{option.name}</span>
+                         ) : (
+                             /* Render Logic: Multi Color Support */
+                             <div className="flex w-full h-full">
+                                {option.colors && option.colors.map((color, colorIdx) => (
+                                    <div 
+                                        key={colorIdx} 
+                                        className="flex-1 h-full transition-colors duration-300" 
+                                        style={{ backgroundColor: color }} 
+                                    />
+                                ))}
+                             </div>
+                         )}
 
                          {/* Feedback Overlay */}
                          <AnimatePresence>
@@ -304,7 +382,7 @@ export function GameCard({ brand, mode, onComplete }: GameCardProps) {
                 })}
               </div>
 
-              {/* Feedback Message for Easy Mode */}
+              {/* Feedback Message for Easy Mode & Bonus */}
               {hasSubmitted && (
                 <motion.div
                     initial={{ opacity: 0, y: 10 }}
@@ -314,13 +392,18 @@ export function GameCard({ brand, mode, onComplete }: GameCardProps) {
                     <div className="flex flex-col items-center gap-2">
                         {/* Determine correctness for feedback message logic */}
                         {(() => {
-                             const correctColors = [brand.hex];
-                             if (brand.extraColors && brand.extraColors.length > 0) {
-                                 correctColors.push(...brand.extraColors);
-                             } else if (brand.secondaryHex) {
-                                 correctColors.push(brand.secondaryHex);
+                             let isSelectedCorrect = false;
+                             if (mode === "bonus") {
+                                 isSelectedCorrect = !!selectedOption && selectedOption.id === brand.id;
+                             } else {
+                                 const correctColors = [brand.hex];
+                                 if (brand.extraColors && brand.extraColors.length > 0) {
+                                     correctColors.push(...brand.extraColors);
+                                 } else if (brand.secondaryHex) {
+                                     correctColors.push(brand.secondaryHex);
+                                 }
+                                 isSelectedCorrect = !!selectedOption && JSON.stringify(selectedOption.colors) === JSON.stringify(correctColors);
                              }
-                             const isSelectedCorrect = selectedOption && JSON.stringify(selectedOption.colors) === JSON.stringify(correctColors);
                              
                              return isSelectedCorrect ? (
                                 <div className="flex items-center gap-2 text-green-600 font-bold text-xl">
@@ -333,7 +416,7 @@ export function GameCard({ brand, mode, onComplete }: GameCardProps) {
                             );
                         })()}
                         
-                        {brand.trivia && (
+                        {brand.trivia && mode !== "bonus" && (
                             <div className="mt-2 space-y-1">
                                 <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Did you know?</span>
                                 <p className="text-foreground max-w-md mx-auto">{brand.trivia}</p>

@@ -9,7 +9,7 @@ import { ArrowRight, Trophy, Palette, Play, Info, Layers, Sliders, Grid3X3, Chec
 export default function Home() {
   const [gameState, setGameState] = useState<"start" | "level-intro" | "playing" | "end">("start");
   const [currentLevel, setCurrentLevel] = useState(1);
-  const [currentMode, setCurrentMode] = useState<"easy" | "hard" | "match">("easy");
+  const [currentMode, setCurrentMode] = useState<"easy" | "hard" | "match" | "bonus">("easy");
   const [currentRound, setCurrentRound] = useState(0);
   const [score, setScore] = useState(0);
   
@@ -19,6 +19,7 @@ export default function Home() {
   const [level3Brands, setLevel3Brands] = useState<Brand[]>([]); // Slider Challenge
   const [level4Brands, setLevel4Brands] = useState<Brand[]>([]); // Matching Round
   const [level4ColorName, setLevel4ColorName] = useState("Color");
+  const [level5Brands, setLevel5Brands] = useState<Brand[]>([]); // Bonus Round
   
   // Current active list of brands being played
   const [activeBrands, setActiveBrands] = useState<Brand[]>([]);
@@ -75,11 +76,16 @@ export default function Home() {
         familyName = "Random";
     }
     
+    // Level 5: Bonus Round (Inverse)
+    // Pick 5 random brands for the "Reverse" challenge
+    const lvl5 = [...brands].sort(() => Math.random() - 0.5).slice(0, 5);
+
     setLevel1Brands(lvl1);
     setLevel2Brands(lvl2);
     setLevel3Brands(lvl3);
     setLevel4Brands(lvl4);
     setLevel4ColorName(familyName);
+    setLevel5Brands(lvl5);
     
     setScore(0);
     startLevel(1, lvl1);
@@ -89,7 +95,9 @@ export default function Home() {
     setCurrentLevel(level);
     setActiveBrands(roundBrands);
     
-    if (level === 4) {
+    if (level === 5) {
+        setCurrentMode("bonus");
+    } else if (level === 4) {
         setCurrentMode("match");
     } else if (level === 3) {
         setCurrentMode("hard");
@@ -106,7 +114,8 @@ export default function Home() {
     
     // If it's the matching mode, it's just one big round
     if (currentMode === 'match') {
-         setGameState("end");
+         // Go to level 5 after matching
+         startLevel(5, level5Brands);
          return;
     }
 
@@ -120,7 +129,7 @@ export default function Home() {
         startLevel(3, level3Brands);
       } else if (currentLevel === 3) {
         startLevel(4, level4Brands);
-      } else {
+      } else if (currentLevel === 5) {
         setGameState("end");
       }
     }
@@ -185,6 +194,17 @@ export default function Home() {
               ),
               color: "text-red-600"
           };
+          case 5: return {
+            title: "Bonus Level: Reverse",
+            desc: "Which brand owns this color?",
+            visual: (
+                <div className="h-32 w-full bg-secondary/30 rounded-2xl flex items-center justify-center p-6 gap-6">
+                    <div className="w-16 h-16 rounded-full bg-green-600 shadow-lg border-2 border-white animate-pulse" />
+                    <div className="text-4xl font-bold text-muted-foreground">?</div>
+                </div>
+            ),
+            color: "text-pink-600"
+        };
           default: return { title: "", desc: "", visual: null, color: "" };
       }
   };
@@ -308,6 +328,19 @@ export default function Home() {
                       <p className="text-muted-foreground/80 leading-relaxed">Group 5 brands with their specific hex codes.</p>
                   </div>
                </div>
+
+               {/* Level 5 Card (Bonus) */}
+               <div className="col-span-1 md:col-span-4 flex items-center justify-between gap-4 p-6 rounded-3xl bg-gradient-to-r from-pink-500/10 to-purple-500/10 border border-border/50 hover:border-pink-500/30 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group cursor-default relative overflow-hidden mt-4">
+                  <div className="flex items-center gap-6">
+                      <div className="h-16 w-16 bg-white rounded-full flex items-center justify-center shadow-sm text-2xl font-bold text-pink-500">?</div>
+                      <div>
+                        <div className="text-xs font-bold uppercase tracking-wider text-pink-600 mb-1">Bonus Level</div>
+                        <span className="font-bold text-foreground block text-xl">Reverse Mode</span>
+                        <p className="text-muted-foreground/80">Guess the brand from the color.</p>
+                      </div>
+                  </div>
+                  <div className="opacity-10 font-display font-bold text-6xl px-4">5</div>
+               </div>
             </div>
           </motion.div>
         )}
@@ -348,7 +381,8 @@ export default function Home() {
             <GameCard 
                 key={`${currentLevel}-${activeBrands[currentRound].id}`}
                 brand={activeBrands[currentRound]}
-                mode={currentMode as "easy" | "hard"}
+                mode={currentMode as "easy" | "hard" | "bonus"}
+                allBrands={brands} // Pass all brands for bonus mode distractor generation
                 onComplete={handleRoundComplete}
             />
           )
