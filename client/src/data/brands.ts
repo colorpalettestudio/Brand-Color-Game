@@ -327,13 +327,6 @@ export const brands: Brand[] = [
     trivia: "The Android robot is 'Android Green', representing growth, freshness, and the open-source nature of the OS."
   },
   {
-    id: 'nvidia',
-    name: "NVIDIA",
-    hex: "#76B900",
-    textColor: "#FFFFFF",
-    trivia: "NVIDIA Green symbolizes the company's vision of computing and graphics power."
-  },
-  {
     id: 'subway',
     name: "Subway",
     hex: "#008C15",
