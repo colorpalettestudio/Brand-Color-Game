@@ -96,10 +96,10 @@ function DroppableSlot({
                     className={`w-full h-full cursor-pointer hover:opacity-80 transition-opacity relative group`}
                     style={{ backgroundColor: assignedHex }}
                 >
-                     {/* Hover to remove indicator (desktop) */}
+                     {/* Always show remove X on mobile/touch, hover on desktop */}
                     {!hasSubmitted && (
-                         <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
-                             <X className="text-white w-6 h-6" />
+                         <div className="absolute inset-0 bg-black/10 md:bg-black/20 md:opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
+                             <X className="text-white w-4 h-4 md:w-6 md:h-6 drop-shadow-md" />
                          </div>
                     )}
                 </div>
@@ -133,8 +133,13 @@ function DroppableSlot({
   );
 }
 
+interface Assignment {
+  hex: string;
+  sourceId: string;
+}
+
 export function MatchingRound({ brands, onComplete, onScoreUpdate, colorFamilyName }: MatchingRoundProps) {
-  const [assignments, setAssignments] = useState<{ [key: string]: string }>({}); // brandId -> hex
+  const [assignments, setAssignments] = useState<{ [key: string]: Assignment }>({}); // brandId -> { hex, sourceId }
   const [shuffledColors, setShuffledColors] = useState<{id: string, hex: string}[]>([]);
   const [hasSubmitted, setHasSubmitted] = useState(false);
   const [score, setScore] = useState(0);
@@ -172,11 +177,12 @@ export function MatchingRound({ brands, onComplete, onScoreUpdate, colorFamilyNa
         // Dropped on a slot
         const brandId = over.id;
         const hex = active.data.current.hex;
+        const sourceId = active.id;
         
         // Assign color to brand
         setAssignments(prev => ({
             ...prev,
-            [brandId]: hex
+            [brandId]: { hex, sourceId }
         }));
     }
   };
@@ -194,7 +200,7 @@ export function MatchingRound({ brands, onComplete, onScoreUpdate, colorFamilyNa
     // Calculate Score
     let correctCount = 0;
     brands.forEach(brand => {
-        if (assignments[brand.id] === brand.hex) {
+        if (assignments[brand.id]?.hex === brand.hex) {
             correctCount++;
         }
     });
@@ -215,9 +221,10 @@ export function MatchingRound({ brands, onComplete, onScoreUpdate, colorFamilyNa
     }
   };
 
-  // Get colors that are NOT currently assigned to any brand
+  // Get colors that are NOT currently assigned to any brand (filter by ID)
+  const assignedSourceIds = Object.values(assignments).map(a => a.sourceId);
   const availableColorItems = shuffledColors.filter(item => 
-    !Object.values(assignments).includes(item.hex)
+    !assignedSourceIds.includes(item.id)
   );
 
   const allAssigned = brands.every(b => assignments[b.id]);
@@ -251,7 +258,8 @@ export function MatchingRound({ brands, onComplete, onScoreUpdate, colorFamilyNa
                 {/* Brands Column (Slots) */}
                 <div className="space-y-2 md:space-y-4">
                     {brands.map((brand) => {
-                        const assignedHex = assignments[brand.id];
+                        const assignment = assignments[brand.id];
+                        const assignedHex = assignment?.hex;
                         const isCorrect = hasSubmitted && assignedHex === brand.hex;
                         const isWrong = hasSubmitted && assignedHex !== brand.hex;
 
