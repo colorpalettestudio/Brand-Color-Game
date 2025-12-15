@@ -33,13 +33,13 @@ export default function Home() {
     const shuffledSingle = [...singleColor].sort(() => Math.random() - 0.5);
     const shuffledDual = [...dualColor].sort(() => Math.random() - 0.5);
     
-    // 3. Define Levels (5 rounds each)
-    const lvl1 = shuffledSingle.slice(0, 5);
-    const lvl2 = shuffledDual.slice(0, 5);
+    // 3. Define Levels (4 rounds for 1-3)
+    const lvl1 = shuffledSingle.slice(0, 4);
+    const lvl2 = shuffledDual.slice(0, 4);
     
     // Level 3: Slider
-    const remainingSingle = shuffledSingle.slice(5); 
-    const lvl3 = [...remainingSingle, ...shuffledSingle.slice(0, 5 - remainingSingle.length)].slice(0, 5);
+    const remainingSingle = shuffledSingle.slice(4); 
+    const lvl3 = [...remainingSingle, ...shuffledSingle.slice(0, 4 - remainingSingle.length)].slice(0, 4);
 
     // Level 4: Matching Round (Red or Blue family)
     // Simple hex-based proximity check or hardcoded lists
@@ -399,8 +399,8 @@ export default function Home() {
             <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-red-500 via-yellow-500 via-green-500 via-blue-500 to-purple-500" />
 
             {(() => {
-                const maxScore = 2000;
-                const percentage = Math.round((score / maxScore) * 100);
+                const maxBaseScore = 1700; // Levels 1-3 (4*100) + Level 4 (500)
+                const percentage = Math.round((score / maxBaseScore) * 100);
                 
                 let rank = "Design Intern";
                 let message = "Great start! Keep training your eye.";
@@ -454,7 +454,7 @@ export default function Home() {
                                     <div className="text-4xl font-bold font-mono tracking-tight text-foreground">
                                         {score}
                                     </div>
-                                    <p className="text-xs text-muted-foreground">/ {maxScore}</p>
+                                    <p className="text-xs text-muted-foreground">/ {maxBaseScore} {percentage > 100 && "(Extra Credit!)"}</p>
                                 </div>
                                 <div className="space-y-1">
                                     <p className="text-xs uppercase tracking-widest text-muted-foreground font-bold">Accuracy</p>
