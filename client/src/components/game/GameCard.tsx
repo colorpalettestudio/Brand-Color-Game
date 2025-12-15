@@ -284,43 +284,43 @@ export function GameCard({ brand, mode, allBrands, forceSingleColor = false, onC
   };
 
   return (
-    <div className="w-full max-w-2xl mx-auto p-6">
+    <div className="w-full max-w-2xl mx-auto p-2 md:p-6 h-full flex flex-col justify-center">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: -20 }}
-        className="bg-card border border-border rounded-xl shadow-xl overflow-hidden"
+        className="bg-card border border-border rounded-xl shadow-xl overflow-hidden flex flex-col max-h-full"
       >
-        <div className="p-8 md:p-12 text-center space-y-8">
-          <div className="space-y-2">
+        <div className="p-4 md:p-12 text-center space-y-4 md:space-y-8 flex-1 flex flex-col justify-center">
+          <div className="space-y-1 md:space-y-2 shrink-0">
             {mode === "bonus" ? (
                 <>
-                    <h1 className="text-3xl md:text-5xl font-display font-bold tracking-tighter text-foreground mb-4">
+                    <h1 className="text-2xl md:text-5xl font-display font-bold tracking-tighter text-foreground mb-2 md:mb-4">
                         Which brand uses this color?
                     </h1>
-                    <div className="flex justify-center py-6">
+                    <div className="flex justify-center py-2 md:py-6">
                         <div 
-                            className="w-32 h-32 rounded-full shadow-2xl border-4 border-white ring-1 ring-black/10"
+                            className="w-20 h-20 md:w-32 md:h-32 rounded-full shadow-2xl border-4 border-white ring-1 ring-black/10"
                             style={{ backgroundColor: brand.hex }}
                         />
                     </div>
                 </>
             ) : (
                 <>
-                    <h1 className="text-5xl md:text-7xl font-display font-bold tracking-tighter text-foreground">
+                    <h1 className="text-4xl md:text-7xl font-display font-bold tracking-tighter text-foreground">
                     {brand.name}
                     </h1>
                     {mode === 'hard' && brand.secondaryHex && (
-                        <p className="text-sm text-muted-foreground">(Match the primary color)</p>
+                        <p className="text-xs md:text-sm text-muted-foreground">(Match the primary color)</p>
                     )}
                 </>
             )}
           </div>
 
-          <div className="py-4">
+          <div className="py-2 md:py-4 w-full">
             {mode === "easy" || mode === "bonus" ? (
               <>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-6 w-full">
                 {options.map((option, idx) => {
                     let isCorrect = false;
                     
@@ -347,7 +347,7 @@ export function GameCard({ brand, mode, allBrands, forceSingleColor = false, onC
                         whileTap={{ scale: 0.98 }}
                         onClick={() => handleEasySubmit(option)}
                         disabled={hasSubmitted}
-                        className={`h-40 rounded-2xl shadow-sm border-2 border-transparent hover:border-black/5 hover:shadow-md transition-all relative group cursor-pointer overflow-hidden flex bg-white ${mode === 'bonus' ? 'items-center justify-center p-4' : ''}`}
+                        className={`h-20 md:h-40 rounded-xl md:rounded-2xl shadow-sm border-2 border-transparent hover:border-black/5 hover:shadow-md transition-all relative group cursor-pointer overflow-hidden flex bg-white ${mode === 'bonus' ? 'items-center justify-center p-2 md:p-4' : ''}`}
                       >
                          {mode === "bonus" ? (
                              <span className="text-xl font-bold text-foreground">{option.name}</span>
@@ -441,17 +441,17 @@ export function GameCard({ brand, mode, allBrands, forceSingleColor = false, onC
               )}
               </>
             ) : (
-              <div className="space-y-8">
+              <div className="space-y-4 md:space-y-8">
                 {/* Preview Swatches Area */}
-                <div className="flex justify-center gap-4 md:gap-12 items-end h-32 mb-8">
+                <div className="flex justify-center gap-4 md:gap-12 items-end h-24 md:h-32 mb-4 md:mb-8">
                     {/* Live Preview */}
                     <div className="flex flex-col items-center gap-2">
                         <motion.div 
-                            className="w-24 h-24 rounded-full shadow-lg border-4 border-white ring-1 ring-black/5"
+                            className="w-16 h-16 md:w-24 md:h-24 rounded-full shadow-lg border-4 border-white ring-1 ring-black/5"
                             style={{ backgroundColor: currentHex }}
                             animate={{ scale: hasSubmitted ? 0.9 : 1 }}
                         />
-                        <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">Your Pick</span>
+                        <span className="text-[10px] md:text-xs font-medium uppercase tracking-wider text-muted-foreground">Your Pick</span>
                     </div>
 
                     {/* Correct Answer (Hidden until submit) */}
@@ -462,16 +462,16 @@ export function GameCard({ brand, mode, allBrands, forceSingleColor = false, onC
                             className="flex flex-col items-center gap-2"
                         >
                             <div 
-                                className="w-24 h-24 rounded-full shadow-lg border-4 border-white ring-1 ring-black/5"
+                                className="w-16 h-16 md:w-24 md:h-24 rounded-full shadow-lg border-4 border-white ring-1 ring-black/5"
                                 style={{ backgroundColor: brand.hex }}
                             />
-                            <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">Correct Match</span>
+                            <span className="text-[10px] md:text-xs font-medium uppercase tracking-wider text-muted-foreground">Correct Match</span>
                         </motion.div>
                     )}
                 </div>
 
                 <div 
-                  className="h-16 rounded-xl w-full shadow-inner border border-border relative overflow-hidden mx-auto max-w-lg"
+                  className="h-10 md:h-16 rounded-xl w-full shadow-inner border border-border relative overflow-hidden mx-auto max-w-lg"
                 >
                    <div 
                       className="absolute inset-0 w-full h-full"

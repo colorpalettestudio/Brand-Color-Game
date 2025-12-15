@@ -308,12 +308,12 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center p-4 relative overflow-hidden">
+    <div className="h-[100dvh] flex flex-col items-center justify-center p-4 relative overflow-hidden bg-background">
       {/* Background Elements */}
       <div className="absolute -top-20 -left-20 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute top-1/2 -right-20 w-80 h-80 bg-purple-500/10 rounded-full blur-3xl pointer-events-none" />
 
-      <main className="w-full max-w-4xl z-10 relative">
+      <main className="w-full max-w-4xl z-10 relative flex-1 flex flex-col justify-center min-h-0 pb-16">
         <AnimatePresence mode="wait">
         {gameState === "start" && (
           <motion.div 
@@ -321,30 +321,30 @@ export default function Home() {
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, y: -20 }}
-            className="text-center space-y-12"
+            className="text-center flex flex-col h-full justify-center gap-4 md:gap-12"
           >
-            <div className="space-y-4">
-              <h1 className="text-6xl md:text-8xl font-display font-bold tracking-tighter text-foreground">
+            <div className="space-y-2 md:space-y-4 shrink-0">
+              <h1 className="text-4xl md:text-8xl font-display font-bold tracking-tighter text-foreground leading-tight">
                 Do you know your <br/>
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 via-yellow-500 via-green-500 via-blue-500 to-purple-500 animate-gradient-x bg-[length:200%_200%]">brand colors?</span>
               </h1>
-              <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+              <p className="text-base md:text-xl text-muted-foreground max-w-2xl mx-auto px-4">
                 Test your designer eye by matching iconic brands to their correct brand colors across 4 increasingly difficult levels.
-                <span className="block mt-4 text-lg font-medium text-primary bg-primary/10 w-fit mx-auto px-4 py-1 rounded-full">
+                <span className="block mt-2 md:mt-4 text-sm md:text-lg font-medium text-primary bg-primary/10 w-fit mx-auto px-4 py-1 rounded-full">
                     Takes less than 2 mins to play!
                 </span>
               </p>
             </div>
 
-            <div className="flex justify-center">
-              <Button size="lg" onClick={startGame} className="h-16 px-12 text-xl rounded-full gap-3 shadow-xl hover:scale-105 transition-transform">
-                Start Game <Play className="w-6 h-6 fill-current" />
+            <div className="flex justify-center shrink-0">
+              <Button size="lg" onClick={startGame} className="h-12 md:h-16 px-8 md:px-12 text-lg md:text-xl rounded-full gap-3 shadow-xl hover:scale-105 transition-transform">
+                Start Game <Play className="w-5 h-5 md:w-6 md:h-6 fill-current" />
               </Button>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-6 max-w-6xl mx-auto text-left text-sm text-muted-foreground">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6 max-w-6xl mx-auto text-left text-sm text-muted-foreground overflow-y-auto md:overflow-visible px-1 max-h-[30vh] md:max-h-none">
                {/* Level 1 Card */}
-               <div className="flex flex-col gap-4 p-6 rounded-3xl bg-card border border-border/50 hover:border-primary/20 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group cursor-default h-full relative overflow-hidden">
+               <div className="flex flex-col gap-2 md:gap-4 p-3 md:p-6 rounded-2xl md:rounded-3xl bg-card border border-border/50 hover:border-primary/20 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group cursor-default h-full relative overflow-hidden">
                   <div className="absolute top-0 right-0 p-4 opacity-10 font-display font-bold text-6xl group-hover:opacity-20 transition-opacity">1</div>
                   
                   {/* Visual: 3 Similar Shades */}
@@ -433,15 +433,15 @@ export default function Home() {
         )}
 
         {gameState === "playing" && (
-          <div className="w-full flex flex-col items-center">
+          <div className="w-full h-full flex flex-col items-center justify-center">
               {/* New Centered Score Display */}
               <motion.div 
                   initial={{ opacity: 0, y: -20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="flex flex-col items-center mb-6 md:mb-12"
+                  className="flex flex-col items-center mb-2 md:mb-12 shrink-0"
               >
-                  <span className="text-xs md:text-sm font-bold uppercase tracking-widest text-muted-foreground mb-2">Current Score</span>
-                  <div className="text-5xl md:text-8xl font-display font-bold text-foreground tabular-nums leading-none tracking-tight">
+                  <span className="text-[10px] md:text-sm font-bold uppercase tracking-widest text-muted-foreground mb-1 md:mb-2">Current Score</span>
+                  <div className="text-4xl md:text-8xl font-display font-bold text-foreground tabular-nums leading-none tracking-tight">
                       <ScoreCounter value={score} />
                   </div>
               </motion.div>

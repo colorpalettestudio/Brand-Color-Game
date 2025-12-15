@@ -43,9 +43,9 @@ function DraggableColor({ hex, id }: { hex: string; id: string }) {
       style={style}
       {...listeners}
       {...attributes}
-      className={`w-16 h-16 rounded-xl shadow-sm border-2 border-white ring-1 ring-black/5 cursor-grab active:cursor-grabbing touch-none ${isDragging ? 'opacity-0' : ''}`}
+      className={`w-12 h-12 md:w-16 md:h-16 rounded-lg md:rounded-xl shadow-sm border-2 border-white ring-1 ring-black/5 cursor-grab active:cursor-grabbing touch-none ${isDragging ? 'opacity-0' : ''}`}
     >
-        <div className="w-full h-full rounded-lg" style={{ backgroundColor: hex }} />
+        <div className="w-full h-full rounded-md md:rounded-lg" style={{ backgroundColor: hex }} />
     </div>
   );
 }
@@ -73,16 +73,16 @@ function DroppableSlot({
   });
 
   return (
-    <div className="flex items-center gap-4">
+    <div className="flex items-center gap-2 md:gap-4">
         {/* Brand Name */}
-        <div className="flex-1 text-right font-bold text-lg">
+        <div className="flex-1 text-right font-bold text-sm md:text-lg">
             {brand.name}
         </div>
         
         {/* Slot */}
         <div
             ref={setNodeRef}
-            className={`w-16 h-16 rounded-xl border-2 flex items-center justify-center relative overflow-hidden transition-all shadow-sm ${
+            className={`w-12 h-12 md:w-16 md:h-16 rounded-lg md:rounded-xl border-2 flex items-center justify-center relative overflow-hidden transition-all shadow-sm ${
                 assignedHex 
                     ? 'border-transparent' 
                     : isOver
@@ -232,24 +232,24 @@ export function MatchingRound({ brands, onComplete, onScoreUpdate, colorFamilyNa
         onDragStart={handleDragStart}
         onDragEnd={handleDragEnd}
     >
-        <div className="w-full max-w-4xl mx-auto p-6">
+        <div className="w-full max-w-4xl mx-auto p-2 md:p-6 h-full flex flex-col justify-center">
         <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-card border border-border rounded-xl shadow-xl overflow-hidden p-8 md:p-12 select-none"
+            className="bg-card border border-border rounded-xl shadow-xl overflow-hidden p-4 md:p-12 select-none flex flex-col h-full md:h-auto max-h-full"
         >
-            <div className="text-center mb-8 space-y-2">
-                <h2 className="text-3xl font-display font-bold">Match the {colorFamilyName}s</h2>
-                <p className="text-muted-foreground">
+            <div className="text-center mb-4 md:mb-8 space-y-1 md:space-y-2 shrink-0">
+                <h2 className="text-xl md:text-3xl font-display font-bold">Match the {colorFamilyName}s</h2>
+                <p className="text-xs md:text-base text-muted-foreground">
                     {hasSubmitted 
                         ? `You got ${score / 100} out of ${brands.length} correct!` 
                         : "Drag colors to their matching brands."}
                 </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-12 relative max-w-5xl mx-auto items-start">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-12 relative max-w-5xl mx-auto items-start overflow-y-auto flex-1 md:overflow-visible">
                 {/* Brands Column (Slots) */}
-                <div className="space-y-4">
+                <div className="space-y-2 md:space-y-4">
                     {brands.map((brand) => {
                         const assignedHex = assignments[brand.id];
                         const isCorrect = hasSubmitted && assignedHex === brand.hex;
@@ -270,13 +270,13 @@ export function MatchingRound({ brands, onComplete, onScoreUpdate, colorFamilyNa
                 </div>
 
                 {/* Colors Pool */}
-                <div className="bg-secondary/20 rounded-2xl p-6 border border-border/50 min-h-[300px]">
-                    <h3 className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-4 text-center">
+                <div className="bg-secondary/20 rounded-2xl p-3 md:p-6 border border-border/50 min-h-[100px] md:min-h-[300px]">
+                    <h3 className="text-[10px] md:text-xs font-bold uppercase tracking-wider text-muted-foreground mb-2 md:mb-4 text-center">
                         {hasSubmitted ? "Round Complete" : "Available Colors"}
                     </h3>
                     
                     {!hasSubmitted ? (
-                        <div className="grid grid-cols-3 gap-4">
+                        <div className="flex flex-wrap justify-center gap-2 md:grid md:grid-cols-3 md:gap-4">
                             {availableColorItems.map((item) => (
                                 <DraggableColor 
                                     key={item.id} 
@@ -286,17 +286,17 @@ export function MatchingRound({ brands, onComplete, onScoreUpdate, colorFamilyNa
                             ))}
                             
                             {availableColorItems.length === 0 && (
-                                <div className="col-span-3 py-8 text-center text-muted-foreground text-sm italic">
+                                <div className="col-span-3 py-4 md:py-8 text-center text-muted-foreground text-xs md:text-sm italic">
                                     All colors placed!
                                 </div>
                             )}
                         </div>
                     ) : (
-                        <div className="flex flex-col items-center justify-center h-full space-y-4 py-8">
-                            <div className="text-4xl font-bold">
-                                {score} <span className="text-lg text-muted-foreground font-normal">pts</span>
+                        <div className="flex flex-col items-center justify-center h-full space-y-4 py-4 md:py-8">
+                            <div className="text-2xl md:text-4xl font-bold">
+                                {score} <span className="text-sm md:text-lg text-muted-foreground font-normal">pts</span>
                             </div>
-                            <Button size="lg" onClick={() => onComplete(0)} className="w-full rounded-full">
+                            <Button onClick={() => onComplete(0)} className="w-full rounded-full h-10 md:h-14 text-sm md:text-lg">
                                 Next Level <ArrowRight className="w-4 h-4 ml-2" />
                             </Button>
                         </div>
@@ -305,12 +305,11 @@ export function MatchingRound({ brands, onComplete, onScoreUpdate, colorFamilyNa
             </div>
 
             {!hasSubmitted && (
-                <div className="mt-8 flex justify-center">
+                <div className="mt-4 md:mt-8 flex justify-center pb-4 md:pb-0">
                     <Button 
-                        size="lg" 
                         onClick={handleSubmit} 
                         disabled={!allAssigned}
-                        className="px-12 py-6 text-lg rounded-full shadow-lg hover:shadow-xl transition-all"
+                        className="px-8 md:px-12 py-4 md:py-6 h-12 md:h-16 text-base md:text-lg rounded-full shadow-lg hover:shadow-xl transition-all"
                     >
                         Check Matches
                     </Button>
