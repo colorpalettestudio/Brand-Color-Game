@@ -460,22 +460,22 @@ export default function Home() {
                 let Icon = Palette;
                 let color = "text-blue-500";
                 
-                if (percentage >= 95) {
+                if (percentage >= 105) {
                     rank = "Color God";
                     message = "Perfection. You see hex codes in your sleep.";
                     Icon = Trophy;
                     color = "text-yellow-500";
-                } else if (percentage >= 85) {
+                } else if (percentage >= 95) {
                     rank = "Creative Director";
                     message = "Amazing! Your color vision is elite.";
                     Icon = Layers;
                     color = "text-purple-500";
-                } else if (percentage >= 70) {
-                    rank = "Senior Art Director";
+                } else if (percentage >= 80) {
+                    rank = "Senior Designer";
                     message = "Impressive! You know your brands.";
                     Icon = Sliders;
                     color = "text-pink-500";
-                } else if (percentage >= 50) {
+                } else if (percentage >= 60) {
                     rank = "Junior Designer";
                     message = "Not bad! You've got potential.";
                     Icon = Grid3X3;
