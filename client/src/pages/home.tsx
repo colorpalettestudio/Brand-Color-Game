@@ -237,19 +237,6 @@ export default function Home() {
       <div className="absolute -top-20 -left-20 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute top-1/2 -right-20 w-80 h-80 bg-purple-500/10 rounded-full blur-3xl pointer-events-none" />
 
-      <header className="absolute top-0 left-0 w-full p-4 md:p-6 flex justify-end items-center z-50">
-        {gameState === "playing" && (
-            <div className="flex items-center gap-4 bg-background/80 backdrop-blur-md px-4 py-2 md:px-5 md:py-3 rounded-full border border-border/50 shadow-lg">
-                <div className="flex flex-col items-end leading-none">
-                    <span className="text-[10px] uppercase tracking-widest font-bold text-muted-foreground mb-0.5">Score</span>
-                    <div className="font-bold text-xl md:text-2xl text-primary font-mono flex items-center gap-1">
-                        <ScoreCounter value={score} />
-                    </div>
-                </div>
-            </div>
-        )}
-      </header>
-
       <main className="w-full max-w-4xl z-10 relative">
         <AnimatePresence mode="wait">
         {gameState === "start" && (
@@ -422,23 +409,37 @@ export default function Home() {
         )}
 
         {gameState === "playing" && (
-          currentMode === 'match' ? (
-              <MatchingRound 
-                brands={activeBrands}
-                onComplete={handleRoundComplete}
-                colorFamilyName={level4ColorName}
-              />
-          ) : (
-            <GameCard 
-                key={`${currentLevel}-${activeBrands[currentRound].id}`}
-                brand={activeBrands[currentRound]}
-                mode={currentMode as "easy" | "hard" | "bonus"}
-                allBrands={brands} // Pass all brands for bonus mode distractor generation
-                forceSingleColor={currentLevel === 1}
-                onComplete={() => handleRoundComplete(0)} // Pass 0 as score is updated immediately
-                onScoreUpdate={handleScoreUpdate}
-            />
-          )
+          <div className="w-full flex flex-col items-center">
+              {/* New Centered Score Display */}
+              <motion.div 
+                  initial={{ opacity: 0, y: -20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="flex flex-col items-center mb-6 md:mb-12"
+              >
+                  <span className="text-xs md:text-sm font-bold uppercase tracking-widest text-muted-foreground mb-2">Current Score</span>
+                  <div className="text-5xl md:text-8xl font-display font-bold text-foreground tabular-nums leading-none tracking-tight">
+                      <ScoreCounter value={score} />
+                  </div>
+              </motion.div>
+
+              {currentMode === 'match' ? (
+                  <MatchingRound 
+                    brands={activeBrands}
+                    onComplete={handleRoundComplete}
+                    colorFamilyName={level4ColorName}
+                  />
+              ) : (
+                <GameCard 
+                    key={`${currentLevel}-${activeBrands[currentRound].id}`}
+                    brand={activeBrands[currentRound]}
+                    mode={currentMode as "easy" | "hard" | "bonus"}
+                    allBrands={brands} // Pass all brands for bonus mode distractor generation
+                    forceSingleColor={currentLevel === 1}
+                    onComplete={() => handleRoundComplete(0)} // Pass 0 as score is updated immediately
+                    onScoreUpdate={handleScoreUpdate}
+                />
+              )}
+          </div>
         )}
 
         {gameState === "end" && (
