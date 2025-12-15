@@ -491,79 +491,83 @@ export default function Home() {
                     percentile = Math.max(1, percentage); // Bottom 30% are linear
                 } else {
                     // Logarithmic boost for higher scores to simulate a bell curve tail
-                    // If you have 95% accuracy, you're in the top 1% (99th percentile)
-                    // If you have 60% accuracy, you're maybe in the 60th percentile
-                    const p = percentage / 100;
-                    // Ease out cubic
-                    const curve = 1 - Math.pow(1 - p, 3);
-                    percentile = Math.round(curve * 99);
+                    // Normalize remaining 70% of score range to 70% of percentile range
+                    const normalized = (percentage - 30) / 70;
+                    // Apply easing
+                    const eased = 1 - Math.pow(1 - normalized, 3);
+                    percentile = 30 + Math.round(eased * 69);
                 }
                 
-                // Mock Player Count
-                const playerCount = 14832; 
+                if (score > 2000) percentile = 99; // Bonus points push you to top
 
                 return (
-                    <>
-                        <div className="space-y-2">
-                             <motion.div 
-                                initial={{ scale: 0, rotate: -20 }}
+                    <div className="space-y-10">
+                        <div className="space-y-4">
+                            <motion.div 
+                                initial={{ scale: 0 }}
                                 animate={{ scale: 1, rotate: 0 }}
                                 transition={{ type: "spring", bounce: 0.5 }}
-                                className={`inline-flex items-center justify-center w-24 h-24 rounded-full bg-secondary/50 mb-4 ${color}`}
-                             >
+                                className={`w-24 h-24 mx-auto rounded-full bg-secondary/30 flex items-center justify-center ${color}`}
+                            >
                                 <Icon className="w-12 h-12" />
-                             </motion.div>
-                             
-                             <h2 className="text-4xl md:text-5xl font-display font-bold text-foreground">
-                                {rank}
-                             </h2>
-                             <p className="text-muted-foreground text-lg">{message}</p>
-                        </div>
-
-                        <div className="py-8 space-y-6 bg-secondary/20 rounded-2xl border border-border/50 backdrop-blur-sm">
-                            <div className="grid grid-cols-2 gap-8 px-8">
-                                <div className="space-y-1">
-                                    <p className="text-xs uppercase tracking-widest text-muted-foreground font-bold">Total Score</p>
-                                    <div className="text-4xl font-bold font-mono tracking-tight text-foreground">
-                                        {score}
-                                    </div>
-                                    <p className="text-xs text-muted-foreground">/ {maxBaseScore + 500} max</p>
-                                </div>
-                                <div className="space-y-1">
-                                    <p className="text-xs uppercase tracking-widest text-muted-foreground font-bold">Accuracy</p>
-                                    <div className={`text-4xl font-bold font-mono tracking-tight ${percentage >= 80 ? 'text-green-600' : 'text-foreground'}`}>
-                                        {percentage}%
-                                    </div>
-                                    <p className="text-xs text-muted-foreground">Precision</p>
-                                </div>
-                            </div>
-                            
-                            {/* Global Stat Comparison */}
-                            <div className="mx-8 bg-background/50 rounded-xl p-4 border border-border/50 text-sm space-y-3">
-                                <div className="flex justify-between items-center text-muted-foreground">
-                                    <span>Global Rank</span>
-                                    <span>Top {100 - percentile}%</span>
-                                </div>
-                                <div className="w-full h-2 bg-secondary rounded-full overflow-hidden">
-                                    <motion.div 
-                                        initial={{ width: 0 }}
-                                        animate={{ width: `${percentile}%` }}
-                                        transition={{ delay: 0.5, duration: 1, ease: "easeOut" }}
-                                        className={`h-full rounded-full ${percentage > 80 ? 'bg-green-500' : 'bg-primary'}`}
-                                    />
-                                </div>
-                                <p className="text-xs text-muted-foreground text-center">
-                                    You scored better than <strong className="text-foreground">{percentile}%</strong> of {playerCount.toLocaleString()} designers.
-                                </p>
+                            </motion.div>
+                            <div>
+                                <h2 className="text-4xl font-display font-bold text-foreground mb-2">{rank}</h2>
+                                <p className="text-muted-foreground text-lg">{message}</p>
                             </div>
                         </div>
 
-                        <div className="flex justify-center gap-4">
-                            <Button size="lg" onClick={startGame} className="h-14 px-10 text-lg rounded-full shadow-lg hover:shadow-xl hover:scale-105 transition-all">
-                                Play Again <Play className="w-5 h-5 ml-2 fill-current" />
-                            </Button>
+                        {/* Percentile Highlight Card */}
+                         <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 p-1 shadow-xl transform hover:scale-[1.02] transition-transform duration-500">
+                             <div className="bg-card rounded-[22px] p-8 relative overflow-hidden">
+                                 {/* Confetti Effect Background */}
+                                 <div className="absolute top-0 left-0 w-full h-full opacity-10 bg-[radial-gradient(#cbd5e1_1px,transparent_1px)] [background-size:16px_16px]" />
+                                 
+                                 <div className="relative z-10 flex flex-col items-center gap-2">
+                                     <span className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Global Performance</span>
+                                     <div className="flex items-baseline gap-2">
+                                         <span className="text-5xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-pink-600">
+                                             Top {100 - percentile}%
+                                         </span>
+                                     </div>
+                                     <p className="text-lg font-medium text-foreground/80 mt-2">
+                                         You scored better than <span className="text-foreground font-bold">{percentile}%</span> of designers globally.
+                                     </p>
+                                     
+                                     {/* Simple Visual Bar */}
+                                     <div className="w-full max-w-xs h-3 bg-secondary rounded-full mt-6 overflow-hidden relative">
+                                         <motion.div 
+                                             initial={{ width: 0 }}
+                                             animate={{ width: `${percentile}%` }}
+                                             transition={{ duration: 1.5, ease: "easeOut", delay: 0.5 }}
+                                             className="h-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500"
+                                         />
+                                     </div>
+                                     <div className="w-full max-w-xs flex justify-between text-[10px] text-muted-foreground mt-1 px-1">
+                                         <span>0%</span>
+                                         <span>50%</span>
+                                         <span>100%</span>
+                                     </div>
+                                 </div>
+                             </div>
+                         </div>
+
+                        <div className="grid grid-cols-2 gap-4 max-w-sm mx-auto">
+                            <div className="bg-secondary/20 rounded-2xl p-4 border border-border/50">
+                                <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider block mb-1">Total Score</span>
+                                <span className="text-3xl font-mono font-bold text-foreground">{score}</span>
+                                <span className="text-xs text-muted-foreground ml-1">pts</span>
+                            </div>
+                            <div className="bg-secondary/20 rounded-2xl p-4 border border-border/50">
+                                <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider block mb-1">Accuracy</span>
+                                <span className="text-3xl font-mono font-bold text-foreground">{percentage}%</span>
+                            </div>
                         </div>
-                    </>
+
+                        <Button onClick={startGame} size="lg" className="h-14 px-10 text-lg rounded-full shadow-lg">
+                            Play Again <Play className="w-5 h-5 ml-2" />
+                        </Button>
+                    </div>
                 );
             })()}
           </motion.div>
