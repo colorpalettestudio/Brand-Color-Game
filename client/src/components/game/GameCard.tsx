@@ -300,7 +300,7 @@ export function GameCard({ brand, mode, allBrands, forceSingleColor = false, onC
                     </h1>
                     <div className="flex justify-center py-6">
                         <div 
-                            className="w-32 h-32 rounded-full shadow-2xl border-4 border-white ring-1 ring-black/10 animate-pulse"
+                            className="w-32 h-32 rounded-full shadow-2xl border-4 border-white ring-1 ring-black/10"
                             style={{ backgroundColor: brand.hex }}
                         />
                     </div>

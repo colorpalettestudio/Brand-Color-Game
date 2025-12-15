@@ -220,7 +220,7 @@ export default function Home() {
             desc: "Identify the brand from its color. These points are EXTRA CREDIT above the max score!",
             visual: (
                 <div className="h-32 w-full bg-black/20 rounded-2xl flex items-center justify-center p-6 gap-6 backdrop-blur-sm border border-white/10">
-                    <div className="w-20 h-20 rounded-full bg-gradient-to-br from-green-400 to-emerald-600 shadow-lg border-4 border-white animate-pulse flex items-center justify-center">
+                    <div className="w-20 h-20 rounded-full bg-gradient-to-br from-green-400 to-emerald-600 shadow-lg border-4 border-white flex items-center justify-center">
                          <span className="text-3xl font-bold text-white">?</span>
                     </div>
                 </div>
