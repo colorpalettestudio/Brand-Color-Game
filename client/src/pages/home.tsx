@@ -569,10 +569,10 @@ export default function Home() {
       </main>
 
       <footer className="relative z-10 w-full max-w-2xl mx-auto mt-12 text-center pb-6 px-4">
-        <p className="text-[10px] text-muted-foreground/50 leading-relaxed mb-4">
+        <p className="text-[10px] text-black leading-relaxed mb-4">
             This game is for educational and entertainment purposes only. Brand names and colors are the property of their respective owners and are used here for identification and educational reference. This product is not affiliated with or endorsed by any brand shown.
         </p>
-        <div className="flex justify-center gap-6 text-[10px] text-muted-foreground/70">
+        <div className="flex justify-center gap-6 text-[10px] text-black">
             <a href="https://thecolorpalettestudio.com/" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">
                 Color Palette Studio
             </a>
