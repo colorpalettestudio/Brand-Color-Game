@@ -25,21 +25,33 @@ export default function Home() {
   const [activeBrands, setActiveBrands] = useState<Brand[]>([]);
 
   const startGame = () => {
-    // 1. Separate brands
-    const singleColor = brands.filter(b => !b.secondaryHex);
-    const dualColor = brands.filter(b => b.secondaryHex);
+    // 1. Define Pools
+    const multiColorBrands = brands.filter(b => b.secondaryHex || (b.extraColors && b.extraColors.length > 0));
     
-    // 2. Shuffle
-    const shuffledSingle = [...singleColor].sort(() => Math.random() - 0.5);
-    const shuffledDual = [...dualColor].sort(() => Math.random() - 0.5);
+    // Level 1: Any 4 brands (will be forced to single color display)
+    const lvl1 = [...brands].sort(() => Math.random() - 0.5).slice(0, 4);
     
-    // 3. Define Levels (4 rounds for 1-3)
-    const lvl1 = shuffledSingle.slice(0, 4);
-    const lvl2 = shuffledDual.slice(0, 4);
+    // Level 2: 4 brands from multi-color pool
+    // Try to avoid repeats from Level 1 for variety, but it's okay if they appear again (progression)
+    let lvl2 = multiColorBrands
+        .filter(b => !lvl1.find(l1 => l1.id === b.id))
+        .sort(() => Math.random() - 0.5)
+        .slice(0, 4);
+        
+    // Fallback if we filtered too many
+    if (lvl2.length < 4) {
+        const remaining = 4 - lvl2.length;
+        const others = multiColorBrands.filter(b => !lvl2.find(l2 => l2.id === b.id)).slice(0, remaining);
+        lvl2 = [...lvl2, ...others];
+    }
     
-    // Level 3: Slider
-    const remainingSingle = shuffledSingle.slice(4); 
-    const lvl3 = [...remainingSingle, ...shuffledSingle.slice(0, 4 - remainingSingle.length)].slice(0, 4);
+    // Level 3: Slider (Any 4 brands, avoid recent usage for variety)
+    const usedIds = new Set([...lvl1, ...lvl2].map(b => b.id));
+    let lvl3 = brands.filter(b => !usedIds.has(b.id)).sort(() => Math.random() - 0.5).slice(0, 4);
+    
+    if (lvl3.length < 4) {
+        lvl3 = [...brands].sort(() => Math.random() - 0.5).slice(0, 4);
+    }
 
     // Level 4: Matching Round (Red or Blue family)
     // Simple hex-based proximity check or hardcoded lists
@@ -383,6 +395,7 @@ export default function Home() {
                 brand={activeBrands[currentRound]}
                 mode={currentMode as "easy" | "hard" | "bonus"}
                 allBrands={brands} // Pass all brands for bonus mode distractor generation
+                forceSingleColor={currentLevel === 1}
                 onComplete={handleRoundComplete}
             />
           )

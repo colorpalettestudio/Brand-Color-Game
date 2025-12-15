@@ -14,6 +14,7 @@ interface GameCardProps {
   brand: Brand;
   mode: "easy" | "hard" | "bonus";
   allBrands?: Brand[]; // Needed for bonus mode to find distractors
+  forceSingleColor?: boolean; // New prop to force single color display in Level 1
   onComplete: (score: number) => void;
 }
 
@@ -23,7 +24,7 @@ interface ColorOption {
     id?: string;       // For bonus mode
 }
 
-export function GameCard({ brand, mode, allBrands, onComplete }: GameCardProps) {
+export function GameCard({ brand, mode, allBrands, forceSingleColor = false, onComplete }: GameCardProps) {
   const [selectedOption, setSelectedOption] = useState<ColorOption | null>(null);
   const [currentHex, setCurrentHex] = useState<string>("#888888"); // For live preview in hard mode
   const [options, setOptions] = useState<ColorOption[]>([]);
@@ -96,10 +97,14 @@ export function GameCard({ brand, mode, allBrands, onComplete }: GameCardProps) 
     } else if (mode === "easy") {
       // Determine correct palette
       const correctColors = [brand.hex];
-      if (brand.extraColors && brand.extraColors.length > 0) {
-        correctColors.push(...brand.extraColors);
-      } else if (brand.secondaryHex) {
-        correctColors.push(brand.secondaryHex);
+      
+      // Only add extra colors if we are NOT forcing single color mode
+      if (!forceSingleColor) {
+          if (brand.extraColors && brand.extraColors.length > 0) {
+            correctColors.push(...brand.extraColors);
+          } else if (brand.secondaryHex) {
+            correctColors.push(brand.secondaryHex);
+          }
       }
       
       const correctOption: ColorOption = { colors: correctColors };
@@ -210,10 +215,14 @@ export function GameCard({ brand, mode, allBrands, onComplete }: GameCardProps) 
     // Easy Mode Logic
     // Simple array equality check for correctness
     const correctColors = [brand.hex];
-    if (brand.extraColors && brand.extraColors.length > 0) {
-        correctColors.push(...brand.extraColors);
-    } else if (brand.secondaryHex) {
-        correctColors.push(brand.secondaryHex);
+    
+    // Only add extra colors if we are NOT forcing single color mode
+    if (!forceSingleColor) {
+        if (brand.extraColors && brand.extraColors.length > 0) {
+            correctColors.push(...brand.extraColors);
+        } else if (brand.secondaryHex) {
+            correctColors.push(brand.secondaryHex);
+        }
     }
     
     const isCorrect = JSON.stringify(option.colors) === JSON.stringify(correctColors);
@@ -318,10 +327,12 @@ export function GameCard({ brand, mode, allBrands, onComplete }: GameCardProps) 
                         isCorrect = option.id === brand.id;
                     } else {
                         const correctColors = [brand.hex];
-                        if (brand.extraColors && brand.extraColors.length > 0) {
-                            correctColors.push(...brand.extraColors);
-                        } else if (brand.secondaryHex) {
-                            correctColors.push(brand.secondaryHex);
+                        if (!forceSingleColor) {
+                            if (brand.extraColors && brand.extraColors.length > 0) {
+                                correctColors.push(...brand.extraColors);
+                            } else if (brand.secondaryHex) {
+                                correctColors.push(brand.secondaryHex);
+                            }
                         }
                         isCorrect = JSON.stringify(option.colors) === JSON.stringify(correctColors);
                     }
@@ -397,10 +408,12 @@ export function GameCard({ brand, mode, allBrands, onComplete }: GameCardProps) 
                                  isSelectedCorrect = !!selectedOption && selectedOption.id === brand.id;
                              } else {
                                  const correctColors = [brand.hex];
-                                 if (brand.extraColors && brand.extraColors.length > 0) {
-                                     correctColors.push(...brand.extraColors);
-                                 } else if (brand.secondaryHex) {
-                                     correctColors.push(brand.secondaryHex);
+                                 if (!forceSingleColor) {
+                                     if (brand.extraColors && brand.extraColors.length > 0) {
+                                         correctColors.push(...brand.extraColors);
+                                     } else if (brand.secondaryHex) {
+                                         correctColors.push(brand.secondaryHex);
+                                     }
                                  }
                                  isSelectedCorrect = !!selectedOption && JSON.stringify(selectedOption.colors) === JSON.stringify(correctColors);
                              }
