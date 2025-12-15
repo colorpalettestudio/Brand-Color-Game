@@ -574,7 +574,7 @@ export default function Home() {
         </p>
         <div className="flex justify-center gap-6 text-[10px] text-black">
             <a href="https://thecolorpalettestudio.com/" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">
-                Color Palette Studio
+                Created with ❤︎ by the Color Palette Studio
             </a>
             <a href="https://thecolorpalettestudio.com/policies/privacy-policy" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">
                 Privacy Policy
