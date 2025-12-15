@@ -6,6 +6,13 @@ import { X, Cookie } from "lucide-react";
 export function CookieConsent() {
   const [isVisible, setIsVisible] = useState(false);
 
+  const enableTracking = () => {
+    if (typeof window !== 'undefined' && (window as any).fbq) {
+        (window as any).fbq('init', '997560767984355');
+        (window as any).fbq('track', 'PageView');
+    }
+  };
+
   useEffect(() => {
     // Check if user has already made a choice
     const consent = localStorage.getItem("cookie-consent");
@@ -13,13 +20,15 @@ export function CookieConsent() {
       // Small delay before showing
       const timer = setTimeout(() => setIsVisible(true), 1000);
       return () => clearTimeout(timer);
+    } else if (consent === "accepted") {
+      enableTracking();
     }
   }, []);
 
   const handleAccept = () => {
     localStorage.setItem("cookie-consent", "accepted");
     setIsVisible(false);
-    // In a real app, you would initialize your tracking scripts here
+    enableTracking();
   };
 
   const handleDecline = () => {
