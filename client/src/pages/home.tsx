@@ -308,12 +308,12 @@ export default function Home() {
   };
 
   return (
-    <div className="h-[100dvh] flex flex-col items-center justify-center p-4 relative overflow-hidden bg-background">
+    <div className="h-[100dvh] flex flex-col items-center justify-center p-2 md:p-4 relative overflow-hidden bg-background">
       {/* Background Elements */}
       <div className="absolute -top-20 -left-20 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute top-1/2 -right-20 w-80 h-80 bg-purple-500/10 rounded-full blur-3xl pointer-events-none" />
 
-      <main className="w-full max-w-4xl z-10 relative flex-1 flex flex-col justify-center min-h-0 pb-16">
+      <main className="w-full max-w-4xl z-10 relative flex-1 flex flex-col justify-center min-h-0">
         <AnimatePresence mode="wait">
         {gameState === "start" && (
           <motion.div 
@@ -601,11 +601,11 @@ export default function Home() {
         </AnimatePresence>
       </main>
 
-      <footer className="absolute bottom-2 z-20 w-full max-w-2xl mx-auto text-center pb-4 px-4 left-1/2 -translate-x-1/2">
-        <p className="text-[10px] text-black leading-relaxed mb-4">
+      <footer className="w-full max-w-2xl mx-auto text-center py-2 px-4 shrink-0 z-20 relative">
+        <p className="text-[7px] md:text-[10px] text-black/40 leading-tight mb-1 md:mb-4">
             This game is for educational and entertainment purposes only. Brand names and colors are the property of their respective owners and are used here for identification and educational reference. This product is not affiliated with or endorsed by any brand shown.
         </p>
-        <div className="flex justify-center gap-6 text-[10px] text-black">
+        <div className="flex justify-center gap-4 md:gap-6 text-[8px] md:text-[10px] text-black/60">
             <a href="https://thecolorpalettestudio.com/" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">
                 Created with ❤︎ by the Color Palette Studio
             </a>
