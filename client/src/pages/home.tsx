@@ -3,6 +3,7 @@ import { GameCard } from "@/components/game/GameCard";
 import { MatchingRound } from "@/components/game/MatchingRound";
 import { brands, Brand } from "@/data/brands";
 import { Button } from "@/components/ui/button";
+import { ScoreCounter } from "@/components/ui/score-counter";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowRight, Trophy, Palette, Play, Info, Layers, Sliders, Grid3X3, Check } from "lucide-react";
 
@@ -229,9 +230,12 @@ export default function Home() {
 
       <header className="absolute top-0 left-0 w-full p-6 flex justify-end items-center z-10">
         {gameState === "playing" && (
-            <div className="flex items-center gap-4 bg-background/50 backdrop-blur-md p-2 pr-4 rounded-full border border-border/50 shadow-sm">
-                <div className="font-bold text-sm text-primary">
-                    {score} pts
+            <div className="flex items-center gap-4 bg-background/80 backdrop-blur-md px-5 py-3 rounded-full border border-border/50 shadow-lg">
+                <div className="flex flex-col items-end leading-none">
+                    <span className="text-[10px] uppercase tracking-widest font-bold text-muted-foreground mb-0.5">Score</span>
+                    <div className="font-bold text-2xl text-primary font-mono flex items-center gap-1">
+                        <ScoreCounter value={score} />
+                    </div>
                 </div>
             </div>
         )}
