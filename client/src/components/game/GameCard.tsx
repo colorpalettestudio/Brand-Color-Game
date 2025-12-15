@@ -15,7 +15,6 @@ interface GameCardProps {
   mode: "easy" | "hard" | "bonus";
   allBrands?: Brand[]; // Needed for bonus mode to find distractors
   forceSingleColor?: boolean; // New prop to force single color display in Level 1
-  missingColorMode?: boolean; // New prop for Level 2 "complete the palette"
   onComplete: (score: number) => void;
 }
 
@@ -25,7 +24,7 @@ interface ColorOption {
     id?: string;       // For bonus mode
 }
 
-export function GameCard({ brand, mode, allBrands, forceSingleColor = false, missingColorMode = false, onComplete }: GameCardProps) {
+export function GameCard({ brand, mode, allBrands, forceSingleColor = false, onComplete }: GameCardProps) {
   const [selectedOption, setSelectedOption] = useState<ColorOption | null>(null);
   const [currentHex, setCurrentHex] = useState<string>("#888888"); // For live preview in hard mode
   const [options, setOptions] = useState<ColorOption[]>([]);
@@ -34,10 +33,6 @@ export function GameCard({ brand, mode, allBrands, forceSingleColor = false, mis
   const [hardModeGradient, setHardModeGradient] = useState<{ start: string; end: string }>({ start: "#000", end: "#fff" });
   const [resultStats, setResultStats] = useState<{ accuracy: number; points: number } | null>(null);
   const [targetPosition, setTargetPosition] = useState<number>(50);
-  
-  // New state for missing color mode
-  const [givenColors, setGivenColors] = useState<string[]>([]);
-  const [targetColor, setTargetColor] = useState<string>("");
 
   // Helper to generate a similar color
   const generateSimilarColor = (hex: string) => {
@@ -324,31 +319,12 @@ export function GameCard({ brand, mode, allBrands, forceSingleColor = false, mis
           <div className="py-4">
             {mode === "easy" || mode === "bonus" ? (
               <>
-              {missingColorMode && (
-                  <div className="flex justify-center mb-8 gap-4 items-center">
-                       {givenColors.map((color, idx) => (
-                           <motion.div 
-                                key={`given-${idx}`}
-                                initial={{ scale: 0 }}
-                                animate={{ scale: 1 }}
-                                className="w-20 h-20 rounded-xl shadow-md border-2 border-white ring-1 ring-black/5"
-                                style={{ backgroundColor: color }}
-                           />
-                       ))}
-                       <div className="w-20 h-20 rounded-xl border-4 border-dashed border-muted-foreground/30 flex items-center justify-center bg-secondary/20">
-                           <span className="text-3xl font-bold text-muted-foreground/50">?</span>
-                       </div>
-                  </div>
-              )}
-
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 {options.map((option, idx) => {
                     let isCorrect = false;
                     
                     if (mode === "bonus") {
                         isCorrect = option.id === brand.id;
-                    } else if (missingColorMode) {
-                        isCorrect = option.colors?.[0] === targetColor;
                     } else {
                         const correctColors = [brand.hex];
                         if (!forceSingleColor) {
@@ -370,18 +346,12 @@ export function GameCard({ brand, mode, allBrands, forceSingleColor = false, mis
                         whileTap={{ scale: 0.98 }}
                         onClick={() => handleEasySubmit(option)}
                         disabled={hasSubmitted}
-                        className={`h-40 rounded-2xl shadow-sm border-2 border-transparent hover:border-black/5 hover:shadow-md transition-all relative group cursor-pointer overflow-hidden flex bg-white ${mode === 'bonus' || missingColorMode ? 'items-center justify-center p-4' : ''}`}
+                        className={`h-40 rounded-2xl shadow-sm border-2 border-transparent hover:border-black/5 hover:shadow-md transition-all relative group cursor-pointer overflow-hidden flex bg-white ${mode === 'bonus' ? 'items-center justify-center p-4' : ''}`}
                       >
                          {mode === "bonus" ? (
                              <span className="text-xl font-bold text-foreground">{option.name}</span>
-                         ) : missingColorMode ? (
-                             /* Missing Color Mode: Show single color swatch */
-                             <div 
-                                className="w-24 h-24 rounded-full shadow-sm border border-black/5"
-                                style={{ backgroundColor: option.colors?.[0] }}
-                             />
                          ) : (
-                             /* Standard Easy Mode: Multi Color Support */
+                             /* Render Logic: Multi Color Support */
                              <div className="flex w-full h-full">
                                 {option.colors && option.colors.map((color, colorIdx) => (
                                     <div 
@@ -436,8 +406,6 @@ export function GameCard({ brand, mode, allBrands, forceSingleColor = false, mis
                              let isSelectedCorrect = false;
                              if (mode === "bonus") {
                                  isSelectedCorrect = !!selectedOption && selectedOption.id === brand.id;
-                             } else if (missingColorMode) {
-                                 isSelectedCorrect = !!selectedOption && selectedOption.colors?.[0] === targetColor;
                              } else {
                                  const correctColors = [brand.hex];
                                  if (!forceSingleColor) {

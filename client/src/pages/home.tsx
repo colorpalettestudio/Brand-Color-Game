@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { ScoreDisplay } from "@/components/game/ScoreDisplay";
 import { GameCard } from "@/components/game/GameCard";
 import { MatchingRound } from "@/components/game/MatchingRound";
 import { brands, Brand } from "@/data/brands";
@@ -221,19 +220,21 @@ export default function Home() {
           default: return { title: "", desc: "", visual: null, color: "" };
       }
   };
-  
+
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-4 relative overflow-hidden">
       {/* Background Elements */}
       <div className="absolute -top-20 -left-20 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute top-1/2 -right-20 w-80 h-80 bg-purple-500/10 rounded-full blur-3xl pointer-events-none" />
 
-      <header className="absolute top-0 left-0 w-full p-6 flex justify-end items-start z-50 pointer-events-none">
-        <div className="pointer-events-auto">
-            {gameState === "playing" && (
-                <ScoreDisplay score={score} />
-            )}
-        </div>
+      <header className="absolute top-0 left-0 w-full p-6 flex justify-end items-center z-10">
+        {gameState === "playing" && (
+            <div className="flex items-center gap-4 bg-background/50 backdrop-blur-md p-2 pr-4 rounded-full border border-border/50 shadow-sm">
+                <div className="font-bold text-sm text-primary">
+                    {score} pts
+                </div>
+            </div>
+        )}
       </header>
 
       <main className="w-full max-w-4xl z-10 relative">
@@ -395,7 +396,6 @@ export default function Home() {
                 mode={currentMode as "easy" | "hard" | "bonus"}
                 allBrands={brands} // Pass all brands for bonus mode distractor generation
                 forceSingleColor={currentLevel === 1}
-                missingColorMode={currentLevel === 2}
                 onComplete={handleRoundComplete}
             />
           )
