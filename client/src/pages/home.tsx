@@ -5,7 +5,90 @@ import { brands, Brand } from "@/data/brands";
 import { Button } from "@/components/ui/button";
 import { ScoreCounter } from "@/components/ui/score-counter";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowRight, Trophy, Palette, Play, Info, Layers, Sliders, Grid3X3, Check } from "lucide-react";
+import confetti from "canvas-confetti";
+import { useEffect } from "react";
+import { ArrowRight, Trophy, Palette, Play, Info, Layers, Sliders, Grid3X3, Check, Sparkles } from "lucide-react";
+
+const LevelIntro = ({ level, info, onStart }: { level: number, info: any, onStart: () => void }) => {
+    useEffect(() => {
+        if (level === 5) {
+            const duration = 3 * 1000;
+            const animationEnd = Date.now() + duration;
+            const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+
+            const randomInRange = (min: number, max: number) => Math.random() * (max - min) + min;
+
+            const interval: any = setInterval(function() {
+                const timeLeft = animationEnd - Date.now();
+
+                if (timeLeft <= 0) {
+                    return clearInterval(interval);
+                }
+
+                const particleCount = 50 * (timeLeft / duration);
+                confetti({
+                    ...defaults, 
+                    particleCount,
+                    origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 }
+                });
+                confetti({
+                    ...defaults, 
+                    particleCount,
+                    origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 }
+                });
+            }, 250);
+
+            return () => clearInterval(interval);
+        }
+    }, [level]);
+
+    return (
+        <motion.div 
+            key="intro"
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 1.1 }}
+            className={`text-center space-y-6 max-w-md mx-auto p-12 rounded-3xl shadow-2xl relative overflow-hidden bg-card border border-border`}
+        >
+            {/* Bonus Round Background Effects */}
+            {level === 5 && (
+                <>
+                    <div className="absolute top-0 left-0 w-full h-full bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 pointer-events-none" />
+                    <div className="absolute -top-20 -right-20 w-64 h-64 bg-pink-400/10 rounded-full blur-3xl animate-pulse pointer-events-none" />
+                    <div className="absolute -bottom-20 -left-20 w-64 h-64 bg-purple-400/10 rounded-full blur-3xl animate-pulse delay-75 pointer-events-none" />
+                </>
+            )}
+
+            <div className="mx-auto flex justify-center mb-6 relative z-10">
+                {info.visual}
+            </div>
+            <div className="relative z-10">
+                {level === 5 && (
+                    <div className="inline-block bg-gradient-to-r from-pink-500/10 to-purple-500/10 text-pink-600 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest mb-4 border border-pink-200/50 shadow-sm">
+                        Extra Credit
+                    </div>
+                )}
+                <h2 className={`text-3xl font-bold font-display mb-2 ${level === 5 ? "text-transparent bg-clip-text bg-gradient-to-r from-pink-600 to-purple-600" : ""}`}>
+                    {info.title}
+                </h2>
+                <p className="text-lg text-muted-foreground">
+                    {info.desc}
+                </p>
+            </div>
+            <Button 
+                onClick={onStart} 
+                size="lg" 
+                className={`w-full rounded-full relative z-10 ${
+                    level === 5 
+                        ? "bg-gradient-to-r from-pink-600 to-purple-600 text-white hover:opacity-90 hover:scale-105 transition-all font-bold shadow-xl border-none" 
+                        : ""
+                }`}
+            >
+                Start Level {level}
+            </Button>
+        </motion.div>
+    );
+};
 
 export default function Home() {
   const [gameState, setGameState] = useState<"start" | "level-intro" | "playing" | "end">("start");
@@ -210,13 +293,15 @@ export default function Home() {
             title: "Bonus Round: Reverse Mode",
             desc: "Identify the brand from its color. These points are EXTRA CREDIT above the max score!",
             visual: (
-                <div className="h-32 w-full bg-black/20 rounded-2xl flex items-center justify-center p-6 gap-6 backdrop-blur-sm border border-white/10">
-                    <div className="w-20 h-20 rounded-full bg-gradient-to-br from-green-400 to-emerald-600 shadow-lg border-4 border-white flex items-center justify-center">
-                         <span className="text-3xl font-bold text-white">?</span>
+                <div className="h-32 w-full bg-secondary/30 rounded-2xl flex items-center justify-center p-6 gap-6 relative overflow-hidden">
+                    <div className="absolute inset-0 bg-gradient-to-r from-pink-500/10 to-purple-500/10" />
+                    <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-pink-500 to-purple-600 shadow-lg flex items-center justify-center transform rotate-3 relative z-10">
+                         <Sparkles className="w-10 h-10 text-white" />
                     </div>
+                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 bg-white/20 blur-2xl rounded-full" />
                 </div>
             ),
-            color: "text-white"
+            color: "text-pink-600"
         };
           default: return { title: "", desc: "", visual: null, color: "" };
       }
@@ -340,54 +425,11 @@ export default function Home() {
         )}
 
         {gameState === "level-intro" && (
-             <motion.div 
-                key="intro"
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 1.1 }}
-                className={`text-center space-y-6 max-w-md mx-auto p-12 rounded-3xl shadow-2xl relative overflow-hidden ${
-                    currentLevel === 5 
-                        ? "bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-600 text-white border-none" 
-                        : "bg-card border border-border"
-                }`}
-             >
-                {/* Bonus Round Background Effects */}
-                {currentLevel === 5 && (
-                    <>
-                        <div className="absolute top-0 left-0 w-full h-full bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 pointer-events-none" />
-                        <div className="absolute -top-20 -right-20 w-64 h-64 bg-yellow-400/30 rounded-full blur-3xl animate-pulse pointer-events-none" />
-                        <div className="absolute -bottom-20 -left-20 w-64 h-64 bg-cyan-400/30 rounded-full blur-3xl animate-pulse delay-75 pointer-events-none" />
-                    </>
-                )}
-
-                <div className="mx-auto flex justify-center mb-6 relative z-10">
-                    {getLevelInfo(currentLevel).visual}
-                </div>
-                <div className="relative z-10">
-                    {currentLevel === 5 && (
-                        <div className="inline-block bg-white/20 backdrop-blur-md px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest mb-4 border border-white/20 shadow-sm">
-                            Extra Credit
-                        </div>
-                    )}
-                    <h2 className={`text-3xl font-bold font-display mb-2 ${currentLevel === 5 ? "text-white" : ""}`}>
-                        {getLevelInfo(currentLevel).title}
-                    </h2>
-                    <p className={`text-lg ${currentLevel === 5 ? "text-white/90 font-medium" : "text-muted-foreground"}`}>
-                        {getLevelInfo(currentLevel).desc}
-                    </p>
-                </div>
-                <Button 
-                    onClick={startNextLevel} 
-                    size="lg" 
-                    className={`w-full rounded-full relative z-10 ${
-                        currentLevel === 5 
-                            ? "bg-white text-purple-600 hover:bg-white/90 hover:scale-105 transition-all font-bold shadow-xl border-none" 
-                            : ""
-                    }`}
-                >
-                    Start Level {currentLevel}
-                </Button>
-             </motion.div>
+             <LevelIntro 
+                level={currentLevel} 
+                info={getLevelInfo(currentLevel)} 
+                onStart={startNextLevel} 
+             />
         )}
 
         {gameState === "playing" && (
