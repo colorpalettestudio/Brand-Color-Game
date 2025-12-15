@@ -15,7 +15,8 @@ interface GameCardProps {
   mode: "easy" | "hard" | "bonus";
   allBrands?: Brand[]; // Needed for bonus mode to find distractors
   forceSingleColor?: boolean; // New prop to force single color display in Level 1
-  onComplete: (score: number) => void;
+  onComplete: (score: number) => void; // Used for transitioning to next card
+  onScoreUpdate?: (points: number) => void; // New: Immediate score update
 }
 
 interface ColorOption {
@@ -24,7 +25,7 @@ interface ColorOption {
     id?: string;       // For bonus mode
 }
 
-export function GameCard({ brand, mode, allBrands, forceSingleColor = false, onComplete }: GameCardProps) {
+export function GameCard({ brand, mode, allBrands, forceSingleColor = false, onComplete, onScoreUpdate }: GameCardProps) {
   const [selectedOption, setSelectedOption] = useState<ColorOption | null>(null);
   const [currentHex, setCurrentHex] = useState<string>("#888888"); // For live preview in hard mode
   const [options, setOptions] = useState<ColorOption[]>([]);
@@ -205,6 +206,8 @@ export function GameCard({ brand, mode, allBrands, forceSingleColor = false, onC
                 origin: { y: 0.6 },
                 colors: [brand.hex, "#ffffff"] // Use brand color for confetti
              });
+             // Immediate Score Update
+             if (onScoreUpdate) onScoreUpdate(points);
         }
         
         // Shorter delay for bonus round
@@ -235,6 +238,8 @@ export function GameCard({ brand, mode, allBrands, forceSingleColor = false, onC
         origin: { y: 0.6 },
         colors: correctColors
       });
+      // Immediate Score Update
+      if (onScoreUpdate) onScoreUpdate(points);
     }
     
     // Wait longer to read trivia regardless of result
@@ -271,6 +276,10 @@ export function GameCard({ brand, mode, allBrands, forceSingleColor = false, onC
     else points = 0;
 
     setResultStats({ accuracy, points });
+
+    if (points >= 10) { // Update score for any points > 0
+        if (onScoreUpdate) onScoreUpdate(points);
+    }
 
     if (points >= 60) {
       confetti({
