@@ -335,18 +335,6 @@ export default function Home() {
                   </div>
                </div>
 
-               {/* Level 5 Card (Bonus) */}
-               <div className="col-span-1 md:col-span-4 flex items-center justify-between gap-4 p-6 rounded-3xl bg-gradient-to-r from-pink-500/10 to-purple-500/10 border border-border/50 hover:border-pink-500/30 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group cursor-default relative overflow-hidden mt-4">
-                  <div className="flex items-center gap-6">
-                      <div className="h-16 w-16 bg-white rounded-full flex items-center justify-center shadow-sm text-2xl font-bold text-pink-500">?</div>
-                      <div>
-                        <div className="text-xs font-bold uppercase tracking-wider text-pink-600 mb-1">Bonus Level (Extra Credit)</div>
-                        <span className="font-bold text-foreground block text-xl">Reverse Mode</span>
-                        <p className="text-muted-foreground/80">Guess the brand from the color for bonus points.</p>
-                      </div>
-                  </div>
-                  <div className="opacity-10 font-display font-bold text-6xl px-4">5</div>
-               </div>
             </div>
           </motion.div>
         )}
