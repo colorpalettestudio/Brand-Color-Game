@@ -396,6 +396,7 @@ export default function Home() {
                 mode={currentMode as "easy" | "hard" | "bonus"}
                 allBrands={brands} // Pass all brands for bonus mode distractor generation
                 forceSingleColor={currentLevel === 1}
+                missingColorMode={currentLevel === 2}
                 onComplete={handleRoundComplete}
             />
           )
