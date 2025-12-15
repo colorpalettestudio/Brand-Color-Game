@@ -289,6 +289,10 @@ export function GameCard({ brand, mode, allBrands, forceSingleColor = false, onC
         colors: [brand.hex, currentHex]
       });
     }
+
+    // Auto-advance after delay (longer if trivia exists)
+    const delay = brand.trivia ? 4500 : 2000;
+    setTimeout(() => onComplete(points), delay);
   };
 
   return (
@@ -548,13 +552,6 @@ export function GameCard({ brand, mode, allBrands, forceSingleColor = false, onC
                                 {brand.trivia}
                             </div>
                         )}
-
-                        <Button 
-                            className="w-full mt-4" 
-                            onClick={() => onComplete(resultStats.points)}
-                        >
-                            Next Brand <ArrowRight className="w-4 h-4 ml-2" />
-                        </Button>
                     </motion.div>
                 )}
 
