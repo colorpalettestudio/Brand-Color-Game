@@ -317,10 +317,10 @@ export function GameCard({ brand, mode, allBrands, forceSingleColor = false, onC
             )}
           </div>
 
-          <div className="py-2 md:py-4 w-full">
+          <div className="py-2 w-full">
             {mode === "easy" || mode === "bonus" ? (
               <>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-6 w-full">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-2 md:gap-6 w-full">
                 {options.map((option, idx) => {
                     let isCorrect = false;
                     
@@ -347,7 +347,7 @@ export function GameCard({ brand, mode, allBrands, forceSingleColor = false, onC
                         whileTap={{ scale: 0.98 }}
                         onClick={() => handleEasySubmit(option)}
                         disabled={hasSubmitted}
-                        className={`h-20 md:h-40 rounded-xl md:rounded-2xl shadow-sm border-2 border-transparent hover:border-black/5 hover:shadow-md transition-all relative group cursor-pointer overflow-hidden flex bg-white ${mode === 'bonus' ? 'items-center justify-center p-2 md:p-4' : ''}`}
+                        className={`h-14 md:h-40 rounded-lg md:rounded-2xl shadow-sm border-2 border-transparent hover:border-black/5 hover:shadow-md transition-all relative group cursor-pointer overflow-hidden flex bg-white ${mode === 'bonus' ? 'items-center justify-center p-2 md:p-4' : ''}`}
                       >
                          {mode === "bonus" ? (
                              <span className="text-xl font-bold text-foreground">{option.name}</span>
@@ -399,9 +399,9 @@ export function GameCard({ brand, mode, allBrands, forceSingleColor = false, onC
                 <motion.div
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="mt-8 bg-secondary/50 rounded-lg p-6 border border-border text-center"
+                    className="mt-4 md:mt-8 bg-secondary/50 rounded-lg p-3 md:p-6 border border-border text-center"
                 >
-                    <div className="flex flex-col items-center gap-2">
+                    <div className="flex flex-col items-center gap-1 md:gap-2">
                         {/* Determine correctness for feedback message logic */}
                         {(() => {
                              let isSelectedCorrect = false;
@@ -420,20 +420,20 @@ export function GameCard({ brand, mode, allBrands, forceSingleColor = false, onC
                              }
                              
                              return isSelectedCorrect ? (
-                                <div className="flex items-center gap-2 text-green-600 font-bold text-xl">
-                                    <Check className="w-6 h-6" /> Correct!
+                                <div className="flex items-center gap-2 text-green-600 font-bold text-base md:text-xl">
+                                    <Check className="w-4 h-4 md:w-6 md:h-6" /> Correct!
                                 </div>
                             ) : (
-                                <div className="flex items-center gap-2 text-red-500 font-bold text-xl">
-                                    <X className="w-6 h-6" /> Incorrect
+                                <div className="flex items-center gap-2 text-red-500 font-bold text-base md:text-xl">
+                                    <X className="w-4 h-4 md:w-6 md:h-6" /> Incorrect
                                 </div>
                             );
                         })()}
                         
                         {brand.trivia && mode !== "bonus" && (
-                            <div className="mt-2 space-y-1">
-                                <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Did you know?</span>
-                                <p className="text-foreground max-w-md mx-auto">{brand.trivia}</p>
+                            <div className="mt-1 md:mt-2 space-y-0.5 md:space-y-1">
+                                <span className="text-[10px] md:text-xs font-bold uppercase tracking-wider text-muted-foreground">Did you know?</span>
+                                <p className="text-foreground max-w-md mx-auto text-xs md:text-base leading-snug">{brand.trivia}</p>
                             </div>
                         )}
                     </div>
