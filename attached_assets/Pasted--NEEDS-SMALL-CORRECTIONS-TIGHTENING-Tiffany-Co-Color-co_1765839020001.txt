@@ -1,0 +1,128 @@
+⚠️ NEEDS SMALL CORRECTIONS / TIGHTENING
+Tiffany & Co.
+
+Color code: #0ABAB5 ❌
+
+Issue: This is too green. Tiffany Blue is closer to:
+
+HEX: #81D8D0
+
+Fun fact: ✔️ Correct, but clarify wording:
+
+PMS 1837 (not “PMS 1837 Blue”) is correct.
+
+✅ Fix: Update hex only.
+
+Target
+
+Color code: #CC0000 ✔️ acceptable
+
+Fun fact: ⚠️ Not provably documented
+
+Target did standardize red carefully, but “tested various shades and found this specific one” is marketing lore.
+
+✅ Safer wording:
+
+“Target’s bold red was chosen to be instantly recognizable and energetic across stores and advertising.”
+
+Coca-Cola
+
+Color code: #F40009 ✔️ reasonable
+
+Fun fact: ⚠️ Slightly misleading
+
+Coke does use Pantone matches internally (commonly referenced: Pantone 484), even though it’s treated as proprietary.
+
+✅ Safer wording:
+
+“Coca-Cola Red is proprietary and carefully controlled, with custom formulations across different materials.”
+
+Hermès
+
+Color code: #F37021 ⚠️ Slightly off
+
+More accurate common approximation: #FF7A00
+
+Fun fact: ✔️ Correct
+
+John Deere
+
+Fun fact: ⚠️ Slightly interpretive
+
+The symbolism is commonly stated but not officially branded as “harvest time.”
+
+✅ Safer wording:
+
+“The green and yellow reflect agriculture and visibility in outdoor environments.”
+
+Barbie
+
+Color code: #E0218A ✔️ acceptable
+
+Fun fact: ⚠️ Trademark nuance
+
+Mattel does not fully own all pink, but owns specific trademarked uses.
+
+✅ Safer wording:
+
+“Barbie Pink is a trademarked color used by Mattel to represent femininity, optimism, and playfulness.”
+
+NBC
+
+Color code: #FFC200 ⚠️ Peacock actually uses multiple colors
+
+Fun fact: ✔️ Correct
+
+✅ Optional: Note that the peacock uses a rainbow palette, not a single yellow.
+
+IBM
+
+Color code: #006699 ⚠️
+
+IBM’s common hex is closer to #1F70C1 or #0062FF
+
+Fun fact: ✔️ Correct
+
+Pepsi
+
+Fun fact: ❌ WWII claim is incorrect
+
+Pepsi introduced blue prominently after WWII, but not specifically “to show support during WWII.”
+
+✅ Corrected fact:
+
+“Pepsi added blue to its logo in the 1950s to differentiate from Coca-Cola and emphasize its American identity.”
+
+Cadbury
+
+Color code: #482683 ✔️
+
+Fun fact: ❌ Incorrect
+
+Cadbury purple was not Queen Victoria’s favorite color.
+
+It was registered to honor Queen Victoria’s Royal Warrant.
+
+✅ Corrected fact:
+
+“Cadbury purple was chosen to honor Queen Victoria after Cadbury received a Royal Warrant in 1901.”
+
+Yahoo
+
+Color code: #410093 ✔️
+
+Fun fact: ⚠️ Oversimplified
+
+Early offices were painted purple, but the choice was also about standing out digitally.
+
+✅ Safer wording:
+
+“Yahoo adopted purple to stand out online and embraced it early in the company’s startup culture.”
+
+Roku
+
+Formatting issue:
+
+**Fun Fact :** line break glitch
+
+Fact: ✔️ Correct

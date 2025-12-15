@@ -12,7 +12,7 @@ export const brands: Brand[] = [
   { 
     id: 'tiffany', 
     name: "Tiffany & Co.", 
-    hex: "#0ABAB5", 
+    hex: "#81D8D0", 
     textColor: "#000000",
     trivia: "Tiffany Blue (PMS 1837) is trademarked and was chosen by Charles Lewis Tiffany for the cover of his Blue Book in 1845."
   },
@@ -21,7 +21,7 @@ export const brands: Brand[] = [
     name: "Target", 
     hex: "#CC0000", 
     textColor: "#FFFFFF",
-    trivia: "Target tested various shades of red and found this specific bold red was the most attention-grabbing while remaining friendly."
+    trivia: "Target’s bold red was chosen to be instantly recognizable and energetic across stores and advertising."
   },
   { 
     id: 'ikea', 
@@ -36,7 +36,7 @@ export const brands: Brand[] = [
     name: "Coca-Cola", 
     hex: "#F40009", 
     textColor: "#FFFFFF",
-    trivia: "Coca-Cola Red is so distinct it doesn't have a single Pantone number; it's a custom blend of three different reds."
+    trivia: "Coca-Cola Red is proprietary and carefully controlled, with custom formulations across different materials."
   },
   { 
     id: 'starbucks', 
@@ -91,7 +91,7 @@ export const brands: Brand[] = [
   { 
     id: 'hermes', 
     name: "Hermès", 
-    hex: "#F37021", 
+    hex: "#FF7A00", 
     textColor: "#FFFFFF",
     trivia: "Hermès only started using orange boxes after WWII because it was the only color of paperboard available during shortages."
   },
@@ -130,14 +130,14 @@ export const brands: Brand[] = [
     hex: "#367C2B", 
     secondaryHex: "#FCEE21", 
     textColor: "#FFFFFF", 
-    trivia: "The green and yellow scheme represents growing crops (green) and harvest time (yellow)."
+    trivia: "The green and yellow reflect agriculture and visibility in outdoor environments."
   },
   { 
     id: 'barbie', 
     name: "Barbie", 
     hex: "#E0218A", 
     textColor: "#FFFFFF",
-    trivia: "Barbie Pink (Pantone 219C) is trademarked by Mattel and represents femininity, optimism, and playfulness."
+    trivia: "Barbie Pink is a trademarked color used by Mattel to represent femininity, optimism, and playfulness."
   },
   { 
     id: 'ups', 
@@ -231,7 +231,7 @@ export const brands: Brand[] = [
   {
     id: 'ibm',
     name: "IBM",
-    hex: "#006699",
+    hex: "#0062FF",
     textColor: "#FFFFFF",
     trivia: "Known as 'Big Blue', IBM's color represents stability, intelligence, and corporate strength."
   },
@@ -275,7 +275,7 @@ export const brands: Brand[] = [
     name: "Pepsi",
     hex: "#004B93",
     textColor: "#FFFFFF",
-    trivia: "Pepsi introduced blue to their logo in 1950 to show support for the US during WWII (Red, White, and Blue)."
+    trivia: "Pepsi added blue to its logo in the 1950s to differentiate from Coca-Cola and emphasize its American identity."
   },
   {
     id: 'visa',
@@ -434,14 +434,14 @@ export const brands: Brand[] = [
     name: "Cadbury",
     hex: "#482683",
     textColor: "#FFFFFF",
-    trivia: "Cadbury purple (Pantone 2685C) was Queen Victoria's favorite color and has been used by the brand since 1914."
+    trivia: "Cadbury purple was chosen to honor Queen Victoria after Cadbury received a Royal Warrant in 1901."
   },
   {
     id: 'yahoo',
     name: "Yahoo",
     hex: "#410093",
     textColor: "#FFFFFF",
-    trivia: "Yahoo used purple because it was a cheap paint color to buy for their office walls in the early startup days."
+    trivia: "Yahoo adopted purple to stand out online and embraced it early in the company’s startup culture."
   },
   {
     id: 'roku',
