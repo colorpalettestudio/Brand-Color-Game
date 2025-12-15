@@ -121,17 +121,8 @@ export default function Home() {
   };
 
   const handleRoundComplete = (points: number) => {
-    // Score is now handled immediately in handleScoreUpdate for GameCard
-    // But for MatchingRound, it might still pass points here since we didn't update it yet
-    // To avoid double counting, GameCard will pass 0 or we check mode.
-    // Actually, cleaner way: GameCard still passes points to onComplete for consistency but we ignore it if we used handleScoreUpdate?
-    // Let's just update GameCard to pass 0 to onComplete if it already called onScoreUpdate?
-    // Or better: handleRoundComplete ONLY handles navigation.
-    
-    // Check if it's MatchingRound (which doesn't use onScoreUpdate yet)
-    if (currentMode === 'match') {
-         setScore(prev => prev + points);
-    }
+    // Score is now handled immediately in handleScoreUpdate for GameCard AND MatchingRound
+    // So we don't need to add points here anymore for any mode.
     
     // If it's the matching mode, it's just one big round
     if (currentMode === 'match') {
@@ -426,6 +417,7 @@ export default function Home() {
                   <MatchingRound 
                     brands={activeBrands}
                     onComplete={handleRoundComplete}
+                    onScoreUpdate={handleScoreUpdate}
                     colorFamilyName={level4ColorName}
                   />
               ) : (

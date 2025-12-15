@@ -22,6 +22,7 @@ import {
 interface MatchingRoundProps {
   brands: Brand[];
   onComplete: (score: number) => void;
+  onScoreUpdate: (points: number) => void;
   colorFamilyName: string; // e.g. "Red", "Blue"
 }
 
@@ -132,7 +133,7 @@ function DroppableSlot({
   );
 }
 
-export function MatchingRound({ brands, onComplete, colorFamilyName }: MatchingRoundProps) {
+export function MatchingRound({ brands, onComplete, onScoreUpdate, colorFamilyName }: MatchingRoundProps) {
   const [assignments, setAssignments] = useState<{ [key: string]: string }>({}); // brandId -> hex
   const [shuffledColors, setShuffledColors] = useState<{id: string, hex: string}[]>([]);
   const [hasSubmitted, setHasSubmitted] = useState(false);
@@ -201,6 +202,9 @@ export function MatchingRound({ brands, onComplete, colorFamilyName }: MatchingR
     // Score: 100 points per correct match
     const finalScore = correctCount * 100;
     setScore(finalScore);
+
+    // Update global score immediately
+    onScoreUpdate(finalScore);
 
     if (correctCount === brands.length) {
         confetti({
@@ -292,7 +296,7 @@ export function MatchingRound({ brands, onComplete, colorFamilyName }: MatchingR
                             <div className="text-4xl font-bold">
                                 {score} <span className="text-lg text-muted-foreground font-normal">pts</span>
                             </div>
-                            <Button size="lg" onClick={() => onComplete(score)} className="w-full rounded-full">
+                            <Button size="lg" onClick={() => onComplete(0)} className="w-full rounded-full">
                                 Next Level <ArrowRight className="w-4 h-4 ml-2" />
                             </Button>
                         </div>
