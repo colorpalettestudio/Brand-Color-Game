@@ -216,15 +216,16 @@ export default function Home() {
               color: "text-red-600"
           };
           case 5: return {
-            title: "Bonus Level: Reverse",
-            desc: "Which brand uses this color? (Extra Credit!)",
+            title: "Bonus Round: Reverse Mode",
+            desc: "Identify the brand from its color. These points are EXTRA CREDIT above the max score!",
             visual: (
-                <div className="h-32 w-full bg-secondary/30 rounded-2xl flex items-center justify-center p-6 gap-6">
-                    <div className="w-16 h-16 rounded-full bg-green-600 shadow-lg border-2 border-white animate-pulse" />
-                    <div className="text-4xl font-bold text-muted-foreground">?</div>
+                <div className="h-32 w-full bg-black/20 rounded-2xl flex items-center justify-center p-6 gap-6 backdrop-blur-sm border border-white/10">
+                    <div className="w-20 h-20 rounded-full bg-gradient-to-br from-green-400 to-emerald-600 shadow-lg border-4 border-white animate-pulse flex items-center justify-center">
+                         <span className="text-3xl font-bold text-white">?</span>
+                    </div>
                 </div>
             ),
-            color: "text-pink-600"
+            color: "text-white"
         };
           default: return { title: "", desc: "", visual: null, color: "" };
       }
@@ -375,20 +376,46 @@ export default function Home() {
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 1.1 }}
-                className="text-center space-y-6 max-w-md mx-auto bg-card p-12 rounded-3xl border border-border shadow-2xl"
+                className={`text-center space-y-6 max-w-md mx-auto p-12 rounded-3xl shadow-2xl relative overflow-hidden ${
+                    currentLevel === 5 
+                        ? "bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-600 text-white border-none" 
+                        : "bg-card border border-border"
+                }`}
              >
-                <div className="mx-auto flex justify-center mb-6">
+                {/* Bonus Round Background Effects */}
+                {currentLevel === 5 && (
+                    <>
+                        <div className="absolute top-0 left-0 w-full h-full bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 pointer-events-none" />
+                        <div className="absolute -top-20 -right-20 w-64 h-64 bg-yellow-400/30 rounded-full blur-3xl animate-pulse pointer-events-none" />
+                        <div className="absolute -bottom-20 -left-20 w-64 h-64 bg-cyan-400/30 rounded-full blur-3xl animate-pulse delay-75 pointer-events-none" />
+                    </>
+                )}
+
+                <div className="mx-auto flex justify-center mb-6 relative z-10">
                     {getLevelInfo(currentLevel).visual}
                 </div>
-                <div>
-                    <h2 className="text-3xl font-bold font-display mb-2">
+                <div className="relative z-10">
+                    {currentLevel === 5 && (
+                        <div className="inline-block bg-white/20 backdrop-blur-md px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest mb-4 border border-white/20 shadow-sm">
+                            Extra Credit
+                        </div>
+                    )}
+                    <h2 className={`text-3xl font-bold font-display mb-2 ${currentLevel === 5 ? "text-white" : ""}`}>
                         {getLevelInfo(currentLevel).title}
                     </h2>
-                    <p className="text-muted-foreground text-lg">
+                    <p className={`text-lg ${currentLevel === 5 ? "text-white/90 font-medium" : "text-muted-foreground"}`}>
                         {getLevelInfo(currentLevel).desc}
                     </p>
                 </div>
-                <Button onClick={startNextLevel} size="lg" className="w-full rounded-full">
+                <Button 
+                    onClick={startNextLevel} 
+                    size="lg" 
+                    className={`w-full rounded-full relative z-10 ${
+                        currentLevel === 5 
+                            ? "bg-white text-purple-600 hover:bg-white/90 hover:scale-105 transition-all font-bold shadow-xl border-none" 
+                            : ""
+                    }`}
+                >
                     Start Level {currentLevel}
                 </Button>
              </motion.div>
