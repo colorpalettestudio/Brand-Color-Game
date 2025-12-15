@@ -575,8 +575,13 @@ export default function Home() {
         </AnimatePresence>
       </main>
 
-      <footer className="absolute bottom-4 text-center w-full text-xs text-muted-foreground opacity-50">
-        Designed for designers.
+      <footer className="absolute bottom-4 text-center w-full text-xs text-muted-foreground opacity-70 flex flex-col items-center gap-1">
+        <p>
+            Created by the <a href="https://thecolorpalettestudio.com/" target="_blank" rel="noopener noreferrer" className="hover:text-foreground underline underline-offset-2 transition-colors">Color Palette Studio</a>
+        </p>
+        <a href="https://thecolorpalettestudio.com/policies/privacy-policy" target="_blank" rel="noopener noreferrer" className="hover:text-foreground underline underline-offset-2 transition-colors">
+            Privacy Policy
+        </a>
       </footer>
     </div>
   );
