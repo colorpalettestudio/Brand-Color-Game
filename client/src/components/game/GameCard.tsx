@@ -142,18 +142,11 @@ export function GameCard({ brand, mode, allBrands, forceSingleColor = false, onC
 
       let start, end;
       
-      if (variation === 'hue') {
-          // Keep this logic just in case we want to revert or mix later
-          const range = 40; 
-          start = baseColor.rotate(-range * targetPos).toHex();
-          end = baseColor.rotate(range * (1 - targetPos)).toHex();
-      } else {
-          // Increased range for better contrast (0.4 -> 0.5)
-          const range = 0.5; 
-          start = baseColor.darken(range * targetPos).toHex();
-          end = baseColor.lighten(range * (1 - targetPos)).toHex();
-      }
-      
+      // Increased range for better contrast (0.4 -> 0.5)
+      const range = 0.5; 
+      start = baseColor.darken(range * targetPos).toHex();
+      end = baseColor.lighten(range * (1 - targetPos)).toHex();
+
       setHardModeGradient({ start, end });
       // Set initial preview color - default to middle of slider, calculating correctly based on 3-stop logic
       const initialMix = 0.5;

@@ -455,6 +455,26 @@ export default function Home() {
                     color = "text-green-500";
                 }
 
+                // Calculate Percentile (Mock distribution)
+                // A score of 0 is 0th percentile. Max score (approx 2200 with bonus) is 99.9th.
+                // We'll use a sigmoid-like curve to distribute players.
+                // Most players score around 50-70% accuracy.
+                let percentile = 0;
+                if (percentage < 30) {
+                    percentile = Math.max(1, percentage); // Bottom 30% are linear
+                } else {
+                    // Logarithmic boost for higher scores to simulate a bell curve tail
+                    // If you have 95% accuracy, you're in the top 1% (99th percentile)
+                    // If you have 60% accuracy, you're maybe in the 60th percentile
+                    const p = percentage / 100;
+                    // Ease out cubic
+                    const curve = 1 - Math.pow(1 - p, 3);
+                    percentile = Math.round(curve * 99);
+                }
+                
+                // Mock Player Count
+                const playerCount = 14832; 
+
                 return (
                     <>
                         <div className="space-y-2">
@@ -473,14 +493,14 @@ export default function Home() {
                              <p className="text-muted-foreground text-lg">{message}</p>
                         </div>
 
-                        <div className="py-8 space-y-6 bg-secondary/20 rounded-2xl border border-border/50">
+                        <div className="py-8 space-y-6 bg-secondary/20 rounded-2xl border border-border/50 backdrop-blur-sm">
                             <div className="grid grid-cols-2 gap-8 px-8">
                                 <div className="space-y-1">
                                     <p className="text-xs uppercase tracking-widest text-muted-foreground font-bold">Total Score</p>
                                     <div className="text-4xl font-bold font-mono tracking-tight text-foreground">
                                         {score}
                                     </div>
-                                    <p className="text-xs text-muted-foreground">/ {maxBaseScore} {percentage > 100 && "(Extra Credit!)"}</p>
+                                    <p className="text-xs text-muted-foreground">/ {maxBaseScore + 500} max</p>
                                 </div>
                                 <div className="space-y-1">
                                     <p className="text-xs uppercase tracking-widest text-muted-foreground font-bold">Accuracy</p>
@@ -491,16 +511,23 @@ export default function Home() {
                                 </div>
                             </div>
                             
-                            {/* Simple Progress Bar */}
-                            <div className="px-8">
-                                <div className="h-3 w-full bg-secondary rounded-full overflow-hidden">
+                            {/* Global Stat Comparison */}
+                            <div className="mx-8 bg-background/50 rounded-xl p-4 border border-border/50 text-sm space-y-3">
+                                <div className="flex justify-between items-center text-muted-foreground">
+                                    <span>Global Rank</span>
+                                    <span>Top {100 - percentile}%</span>
+                                </div>
+                                <div className="w-full h-2 bg-secondary rounded-full overflow-hidden">
                                     <motion.div 
                                         initial={{ width: 0 }}
-                                        animate={{ width: `${percentage}%` }}
+                                        animate={{ width: `${percentile}%` }}
                                         transition={{ delay: 0.5, duration: 1, ease: "easeOut" }}
-                                        className={`h-full ${percentage >= 80 ? 'bg-green-500' : 'bg-primary'}`}
+                                        className={`h-full rounded-full ${percentage > 80 ? 'bg-green-500' : 'bg-primary'}`}
                                     />
                                 </div>
+                                <p className="text-xs text-muted-foreground text-center">
+                                    You scored better than <strong className="text-foreground">{percentile}%</strong> of {playerCount.toLocaleString()} designers.
+                                </p>
                             </div>
                         </div>
 
