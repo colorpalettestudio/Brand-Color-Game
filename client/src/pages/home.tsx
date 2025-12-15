@@ -27,26 +27,20 @@ export default function Home() {
 
   const startGame = () => {
     // 1. Define Pools
+    // Level 1: Strictly single-color brands (no secondary, no extra)
+    const singleColorBrands = brands.filter(b => !b.secondaryHex && (!b.extraColors || b.extraColors.length === 0));
+    
+    // Level 2: Multi-color brands (has secondary OR extra colors)
     const multiColorBrands = brands.filter(b => b.secondaryHex || (b.extraColors && b.extraColors.length > 0));
     
-    // Level 1: Any 4 brands (will be forced to single color display)
-    const lvl1 = [...brands].sort(() => Math.random() - 0.5).slice(0, 4);
+    // Level 1: 4 random single-color brands
+    const lvl1 = [...singleColorBrands].sort(() => Math.random() - 0.5).slice(0, 4);
     
-    // Level 2: 4 brands from multi-color pool
-    // Try to avoid repeats from Level 1 for variety, but it's okay if they appear again (progression)
-    let lvl2 = multiColorBrands
-        .filter(b => !lvl1.find(l1 => l1.id === b.id))
-        .sort(() => Math.random() - 0.5)
-        .slice(0, 4);
-        
-    // Fallback if we filtered too many
-    if (lvl2.length < 4) {
-        const remaining = 4 - lvl2.length;
-        const others = multiColorBrands.filter(b => !lvl2.find(l2 => l2.id === b.id)).slice(0, remaining);
-        lvl2 = [...lvl2, ...others];
-    }
+    // Level 2: 4 random multi-color brands
+    const lvl2 = [...multiColorBrands].sort(() => Math.random() - 0.5).slice(0, 4);
     
     // Level 3: Slider (Any 4 brands, avoid recent usage for variety)
+    // We can pull from the whole pool now
     const usedIds = new Set([...lvl1, ...lvl2].map(b => b.id));
     let lvl3 = brands.filter(b => !usedIds.has(b.id)).sort(() => Math.random() - 0.5).slice(0, 4);
     
@@ -167,8 +161,8 @@ export default function Home() {
               color: "text-blue-600"
           };
           case 2: return { 
-              title: "Level 2: Dual Colors", 
-              desc: "Match the correct pair of brand colors.", 
+              title: "Level 2: Multicolors", 
+              desc: "Match the correct brand color palette.", 
               visual: (
                   <div className="h-32 w-full bg-secondary/30 rounded-2xl flex items-center justify-center p-6">
                       <div className="w-24 h-24 rounded-2xl overflow-hidden flex shadow-lg rotate-3">
@@ -300,8 +294,8 @@ export default function Home() {
 
                   <div>
                       <div className="text-xs font-bold uppercase tracking-wider text-purple-600 mb-1">Level 2</div>
-                      <span className="font-bold text-foreground block text-xl mb-2">Dual Colors</span>
-                      <p className="text-muted-foreground/80 leading-relaxed">Find the correct secondary color pairing.</p>
+                      <span className="font-bold text-foreground block text-xl mb-2">Multicolors</span>
+                      <p className="text-muted-foreground/80 leading-relaxed">Find the correct color palette.</p>
                   </div>
                </div>
 
