@@ -304,7 +304,7 @@ export function GameCard({ brand, mode, allBrands, forceSingleColor = false, onC
             {mode === "bonus" ? (
                 <>
                     <h1 className="text-3xl md:text-5xl font-display font-bold tracking-tighter text-foreground mb-4">
-                        Which brand owns this color?
+                        Which brand uses this color?
                     </h1>
                     <div className="flex justify-center py-6">
                         <div 

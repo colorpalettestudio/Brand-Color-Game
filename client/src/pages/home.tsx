@@ -217,7 +217,7 @@ export default function Home() {
           };
           case 5: return {
             title: "Bonus Level: Reverse",
-            desc: "Which brand owns this color?",
+            desc: "Which brand uses this color? (Extra Credit!)",
             visual: (
                 <div className="h-32 w-full bg-secondary/30 rounded-2xl flex items-center justify-center p-6 gap-6">
                     <div className="w-16 h-16 rounded-full bg-green-600 shadow-lg border-2 border-white animate-pulse" />
@@ -358,9 +358,9 @@ export default function Home() {
                   <div className="flex items-center gap-6">
                       <div className="h-16 w-16 bg-white rounded-full flex items-center justify-center shadow-sm text-2xl font-bold text-pink-500">?</div>
                       <div>
-                        <div className="text-xs font-bold uppercase tracking-wider text-pink-600 mb-1">Bonus Level</div>
+                        <div className="text-xs font-bold uppercase tracking-wider text-pink-600 mb-1">Bonus Level (Extra Credit)</div>
                         <span className="font-bold text-foreground block text-xl">Reverse Mode</span>
-                        <p className="text-muted-foreground/80">Guess the brand from the color.</p>
+                        <p className="text-muted-foreground/80">Guess the brand from the color for bonus points.</p>
                       </div>
                   </div>
                   <div className="opacity-10 font-display font-bold text-6xl px-4">5</div>
