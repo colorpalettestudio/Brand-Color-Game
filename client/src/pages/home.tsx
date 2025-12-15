@@ -188,7 +188,7 @@ export default function Home() {
               color: "text-purple-600"
           };
           case 3: return { 
-              title: "Level 3: Color Perfect", 
+              title: "Level 3: Color Spectrum", 
               desc: "Use the slider to match the exact hex code.", 
               visual: (
                   <div className="h-32 w-full bg-secondary/30 rounded-2xl flex flex-col items-center justify-center px-8 gap-4">

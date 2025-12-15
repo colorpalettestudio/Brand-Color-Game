@@ -134,21 +134,22 @@ export function GameCard({ brand, mode, allBrands, forceSingleColor = false, onC
       setOptions(allOptions);
     } else {
       // Hard mode: Gradient setup
-      // Note: For dual/multi color brands in hard mode, we currently only test the PRIMARY color to keep the UI manageable.
-      const variation = Math.random() > 0.5 ? 'hue' : 'lightness';
+      // User requested "light green to dark green" style variations (Lightness) instead of Hue
+      // because some Hue shifts are too subtle. "Color Spectrum" name updated in Home.
+      const variation = 'lightness'; 
       const targetPos = 0.2 + (Math.random() * 0.6); 
       setTargetPosition(targetPos * 100);
 
       let start, end;
       
       if (variation === 'hue') {
-          // Reduced range to ensure RGB interpolation doesn't desaturate the center too much
-          // (RGB mix cuts through the color wheel, so wide angles lose saturation)
+          // Keep this logic just in case we want to revert or mix later
           const range = 40; 
           start = baseColor.rotate(-range * targetPos).toHex();
           end = baseColor.rotate(range * (1 - targetPos)).toHex();
       } else {
-          const range = 0.4; // Reduced lightness range for finer control
+          // Increased range for better contrast (0.4 -> 0.5)
+          const range = 0.5; 
           start = baseColor.darken(range * targetPos).toHex();
           end = baseColor.lighten(range * (1 - targetPos)).toHex();
       }
@@ -266,18 +267,12 @@ export function GameCard({ brand, mode, allBrands, forceSingleColor = false, onC
     let accuracy = Math.max(0, 100 - (distance / maxForgivableDistance * 100));
     accuracy = Math.round(accuracy);
     
-    // Points mapping
-    let points = 0;
-    if (accuracy >= 95) points = 100;
-    else if (accuracy >= 90) points = 80;
-    else if (accuracy >= 80) points = 60;
-    else if (accuracy >= 50) points = 40;
-    else if (accuracy >= 20) points = 10;
-    else points = 0;
+    // Points mapping: Direct percentage to points
+    let points = accuracy;
 
     setResultStats({ accuracy, points });
 
-    if (points >= 10) { // Update score for any points > 0
+    if (points > 0) { // Update score for any points > 0
         if (onScoreUpdate) onScoreUpdate(points);
     }
 
