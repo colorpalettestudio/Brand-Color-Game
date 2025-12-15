@@ -244,7 +244,7 @@ export default function Home() {
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 via-yellow-500 via-green-500 via-blue-500 to-purple-500 animate-gradient-x bg-[length:200%_200%]">brand colors?</span>
               </h1>
               <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-                Test your designer eye by matching iconic brands to their official hex codes across 4 increasingly difficult levels.
+                Test your designer eye by matching iconic brands to their correct brand colors across 4 increasingly difficult levels.
                 <span className="block mt-4 text-lg font-medium text-primary bg-primary/10 w-fit mx-auto px-4 py-1 rounded-full">
                     Takes less than 2 mins to play!
                 </span>
