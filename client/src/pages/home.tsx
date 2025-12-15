@@ -568,13 +568,18 @@ export default function Home() {
         </AnimatePresence>
       </main>
 
-      <footer className="absolute bottom-4 text-center w-full text-xs text-muted-foreground opacity-70 flex flex-col items-center gap-1">
-        <p>
-            Created by the <a href="https://thecolorpalettestudio.com/" target="_blank" rel="noopener noreferrer" className="hover:text-foreground underline underline-offset-2 transition-colors">Color Palette Studio</a>
+      <footer className="relative z-10 w-full max-w-2xl mx-auto mt-12 text-center pb-6 px-4">
+        <p className="text-[10px] text-muted-foreground/50 leading-relaxed mb-4">
+            This game is for educational and entertainment purposes only. Brand names and colors are the property of their respective owners and are used here for identification and educational reference. This product is not affiliated with or endorsed by any brand shown.
         </p>
-        <a href="https://thecolorpalettestudio.com/policies/privacy-policy" target="_blank" rel="noopener noreferrer" className="hover:text-foreground underline underline-offset-2 transition-colors">
-            Privacy Policy
-        </a>
+        <div className="flex justify-center gap-6 text-[10px] text-muted-foreground/70">
+            <a href="https://thecolorpalettestudio.com/" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">
+                Color Palette Studio
+            </a>
+            <a href="https://thecolorpalettestudio.com/policies/privacy-policy" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">
+                Privacy Policy
+            </a>
+        </div>
       </footer>
     </div>
   );
