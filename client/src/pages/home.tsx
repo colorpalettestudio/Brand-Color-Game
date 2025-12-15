@@ -245,6 +245,9 @@ export default function Home() {
               </h1>
               <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
                 Test your designer eye by matching iconic brands to their official hex codes across 4 increasingly difficult levels.
+                <span className="block mt-4 text-lg font-medium text-primary bg-primary/10 w-fit mx-auto px-4 py-1 rounded-full">
+                    Takes less than 2 mins to play!
+                </span>
               </p>
             </div>
 
