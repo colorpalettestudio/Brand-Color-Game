@@ -393,86 +393,86 @@ export default function Home() {
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, y: -20 }}
-            className="text-center flex flex-col h-full justify-center items-center gap-4 md:gap-6 lg:gap-12 py-4 md:py-8 lg:py-0"
+            className="text-center flex flex-col h-full justify-center items-center gap-2 md:gap-4 lg:gap-8 py-2 md:py-4 lg:py-0"
           >
-            <div className="space-y-2 md:space-y-3 lg:space-y-4 shrink-0 max-w-4xl">
-              <h1 className="text-4xl md:text-5xl lg:text-8xl font-display font-bold tracking-tighter text-foreground leading-tight">
+            <div className="space-y-1 md:space-y-2 lg:space-y-4 shrink-0 max-w-4xl">
+              <h1 className="text-3xl md:text-5xl lg:text-8xl font-display font-bold tracking-tighter text-foreground leading-tight">
                 Do you know your <br className="hidden md:block" />
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 via-yellow-500 via-green-500 via-blue-500 to-purple-500 animate-gradient-x bg-[length:200%_200%]">brand colors?</span>
               </h1>
-              <p className="text-sm md:text-base lg:text-xl text-muted-foreground max-w-2xl mx-auto px-4 leading-relaxed">
+              <p className="text-xs md:text-base lg:text-xl text-muted-foreground max-w-2xl mx-auto px-4 leading-relaxed">
                 Test your designer eye by matching iconic brands to their correct brand colors across 4 increasingly difficult levels.
-                <span className="block mt-2 md:mt-3 lg:mt-4 text-xs md:text-sm lg:text-lg font-medium text-primary bg-primary/10 w-fit mx-auto px-3 py-0.5 md:px-4 md:py-1 rounded-full">
+                <span className="block mt-1 md:mt-2 lg:mt-4 text-[10px] md:text-sm lg:text-lg font-medium text-primary bg-primary/10 w-fit mx-auto px-2 py-0.5 md:px-4 md:py-1 rounded-full">
                     Takes less than 2 mins to play!
                 </span>
               </p>
             </div>
 
-            <div className="flex justify-center shrink-0">
-              <Button size="lg" onClick={startGame} className="h-10 md:h-12 lg:h-16 px-6 md:px-10 lg:px-12 text-base md:text-lg lg:text-xl rounded-full gap-2 md:gap-3 shadow-xl hover:scale-105 transition-transform">
-                Start Game <Play className="w-4 h-4 md:w-5 md:h-5 lg:w-6 lg:h-6 fill-current" />
+            <div className="flex justify-center shrink-0 mb-2 md:mb-4 lg:mb-8">
+              <Button size="lg" onClick={startGame} className="h-9 md:h-12 lg:h-16 px-6 md:px-10 lg:px-12 text-sm md:text-lg lg:text-xl rounded-full gap-2 md:gap-3 shadow-xl hover:scale-105 transition-transform">
+                Start Game <Play className="w-3 h-3 md:w-5 md:h-5 lg:w-6 lg:h-6 fill-current" />
               </Button>
             </div>
 
             <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-3 lg:gap-6 max-w-6xl mx-auto text-left text-sm text-muted-foreground w-full px-2 md:px-4 lg:px-0">
                {/* Level 1 Card */}
-               <div className="flex flex-col gap-2 md:gap-3 lg:gap-4 p-3 md:p-4 lg:p-6 rounded-xl md:rounded-2xl lg:rounded-3xl bg-card border border-border/50 hover:border-primary/20 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group cursor-default h-full relative overflow-hidden">
-                  <div className="absolute top-0 right-0 p-2 md:p-4 opacity-10 font-display font-bold text-3xl md:text-4xl lg:text-6xl group-hover:opacity-20 transition-opacity">1</div>
+               <div className="flex flex-col gap-1.5 md:gap-2 lg:gap-4 p-2 md:p-3 lg:p-6 rounded-xl md:rounded-2xl lg:rounded-3xl bg-card border border-border/50 hover:border-primary/20 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group cursor-default h-full relative overflow-hidden">
+                  <div className="absolute top-0 right-0 p-1.5 md:p-3 lg:p-4 opacity-10 font-display font-bold text-2xl md:text-4xl lg:text-6xl group-hover:opacity-20 transition-opacity">1</div>
                   
                   {/* Visual: 3 Similar Shades */}
-                  <div className="h-12 md:h-16 lg:h-24 w-full bg-secondary/30 rounded-lg md:rounded-xl lg:rounded-2xl flex items-center justify-center gap-1.5 md:gap-3 p-2 md:p-4 group-hover:bg-blue-50/50 transition-colors">
-                      <div className="w-5 h-5 md:w-6 md:h-8 rounded md:rounded-lg bg-blue-500 shadow-sm transform group-hover:scale-110 transition-transform duration-500" />
-                      <div className="w-5 h-5 md:w-6 md:h-8 rounded md:rounded-lg bg-blue-400 shadow-sm transform group-hover:scale-90 transition-transform duration-500 delay-75" />
-                      <div className="w-5 h-5 md:w-6 md:h-8 rounded md:rounded-lg bg-blue-600 shadow-sm transform group-hover:scale-105 transition-transform duration-500 delay-150" />
+                  <div className="h-10 md:h-14 lg:h-24 w-full bg-secondary/30 rounded-lg md:rounded-xl lg:rounded-2xl flex items-center justify-center gap-1 md:gap-3 p-1.5 md:p-3 lg:p-4 group-hover:bg-blue-50/50 transition-colors">
+                      <div className="w-4 h-4 md:w-6 md:h-8 rounded md:rounded-lg bg-blue-500 shadow-sm transform group-hover:scale-110 transition-transform duration-500" />
+                      <div className="w-4 h-4 md:w-6 md:h-8 rounded md:rounded-lg bg-blue-400 shadow-sm transform group-hover:scale-90 transition-transform duration-500 delay-75" />
+                      <div className="w-4 h-4 md:w-6 md:h-8 rounded md:rounded-lg bg-blue-600 shadow-sm transform group-hover:scale-105 transition-transform duration-500 delay-150" />
                   </div>
                   
                   <div>
-                      <div className="text-[9px] md:text-[10px] lg:text-xs font-bold uppercase tracking-wider text-blue-600 mb-0.5 md:mb-1">Level 1</div>
-                      <span className="font-bold text-foreground block text-xs md:text-sm lg:text-xl mb-0.5 md:mb-2">Single Color</span>
-                      <p className="text-[9px] md:text-xs lg:text-base text-muted-foreground/80 leading-snug lg:leading-relaxed line-clamp-2 lg:line-clamp-none">Identify the primary brand color from similar shades.</p>
+                      <div className="text-[8px] md:text-[10px] lg:text-xs font-bold uppercase tracking-wider text-blue-600 mb-0.5 md:mb-1">Level 1</div>
+                      <span className="font-bold text-foreground block text-[10px] md:text-sm lg:text-xl mb-0.5 md:mb-2">Single Color</span>
+                      <p className="text-[8px] md:text-xs lg:text-base text-muted-foreground/80 leading-snug lg:leading-relaxed line-clamp-2 lg:line-clamp-none">Identify the primary brand color from similar shades.</p>
                   </div>
                </div>
 
                {/* Level 2 Card */}
-               <div className="flex flex-col gap-2 md:gap-3 lg:gap-4 p-3 md:p-4 lg:p-6 rounded-xl md:rounded-2xl lg:rounded-3xl bg-card border border-border/50 hover:border-primary/20 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group cursor-default h-full relative overflow-hidden">
-                  <div className="absolute top-0 right-0 p-2 md:p-4 opacity-10 font-display font-bold text-3xl md:text-4xl lg:text-6xl group-hover:opacity-20 transition-opacity">2</div>
+               <div className="flex flex-col gap-1.5 md:gap-2 lg:gap-4 p-2 md:p-3 lg:p-6 rounded-xl md:rounded-2xl lg:rounded-3xl bg-card border border-border/50 hover:border-primary/20 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group cursor-default h-full relative overflow-hidden">
+                  <div className="absolute top-0 right-0 p-1.5 md:p-3 lg:p-4 opacity-10 font-display font-bold text-2xl md:text-4xl lg:text-6xl group-hover:opacity-20 transition-opacity">2</div>
 
                   {/* Visual: Split Card */}
-                  <div className="h-12 md:h-16 lg:h-24 w-full bg-secondary/30 rounded-lg md:rounded-xl lg:rounded-2xl flex items-center justify-center p-2 md:p-4 group-hover:bg-purple-50/50 transition-colors">
-                      <div className="w-10 h-10 md:w-12 md:h-16 rounded-md md:rounded-xl overflow-hidden flex shadow-sm group-hover:rotate-3 transition-transform duration-500">
+                  <div className="h-10 md:h-14 lg:h-24 w-full bg-secondary/30 rounded-lg md:rounded-xl lg:rounded-2xl flex items-center justify-center p-1.5 md:p-3 lg:p-4 group-hover:bg-purple-50/50 transition-colors">
+                      <div className="w-8 h-8 md:w-12 md:h-16 rounded md:rounded-xl overflow-hidden flex shadow-sm group-hover:rotate-3 transition-transform duration-500">
                           <div className="w-1/2 h-full bg-purple-600" />
                           <div className="w-1/2 h-full bg-purple-300" />
                       </div>
                   </div>
 
                   <div>
-                      <div className="text-[9px] md:text-[10px] lg:text-xs font-bold uppercase tracking-wider text-purple-600 mb-0.5 md:mb-1">Level 2</div>
-                      <span className="font-bold text-foreground block text-xs md:text-sm lg:text-xl mb-0.5 md:mb-2">Multicolors</span>
-                      <p className="text-[9px] md:text-xs lg:text-base text-muted-foreground/80 leading-snug lg:leading-relaxed line-clamp-2 lg:line-clamp-none">Find the correct color palette.</p>
+                      <div className="text-[8px] md:text-[10px] lg:text-xs font-bold uppercase tracking-wider text-purple-600 mb-0.5 md:mb-1">Level 2</div>
+                      <span className="font-bold text-foreground block text-[10px] md:text-sm lg:text-xl mb-0.5 md:mb-2">Multicolors</span>
+                      <p className="text-[8px] md:text-xs lg:text-base text-muted-foreground/80 leading-snug lg:leading-relaxed line-clamp-2 lg:line-clamp-none">Find the correct color palette.</p>
                   </div>
                </div>
 
                {/* Level 3 Card */}
-               <div className="flex flex-col gap-2 md:gap-3 lg:gap-4 p-3 md:p-4 lg:p-6 rounded-xl md:rounded-2xl lg:rounded-3xl bg-card border border-border/50 hover:border-primary/20 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group cursor-default h-full relative overflow-hidden">
-                  <div className="absolute top-0 right-0 p-2 md:p-4 opacity-10 font-display font-bold text-3xl md:text-4xl lg:text-6xl group-hover:opacity-20 transition-opacity">3</div>
+               <div className="flex flex-col gap-1.5 md:gap-2 lg:gap-4 p-2 md:p-3 lg:p-6 rounded-xl md:rounded-2xl lg:rounded-3xl bg-card border border-border/50 hover:border-primary/20 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group cursor-default h-full relative overflow-hidden">
+                  <div className="absolute top-0 right-0 p-1.5 md:p-3 lg:p-4 opacity-10 font-display font-bold text-2xl md:text-4xl lg:text-6xl group-hover:opacity-20 transition-opacity">3</div>
 
                   {/* Visual: Slider Gradient */}
-                  <div className="h-12 md:h-16 lg:h-24 w-full bg-secondary/30 rounded-lg md:rounded-xl lg:rounded-2xl flex flex-col items-center justify-center px-3 md:px-6 group-hover:bg-orange-50/50 transition-colors gap-1 md:gap-2">
-                       <div className="w-full h-1.5 md:h-4 rounded-full bg-gradient-to-r from-orange-300 via-orange-500 to-red-500 shadow-sm" />
+                  <div className="h-10 md:h-14 lg:h-24 w-full bg-secondary/30 rounded-lg md:rounded-xl lg:rounded-2xl flex flex-col items-center justify-center px-2 md:px-6 group-hover:bg-orange-50/50 transition-colors gap-1 md:gap-2">
+                       <div className="w-full h-1 md:h-4 rounded-full bg-gradient-to-r from-orange-300 via-orange-500 to-red-500 shadow-sm" />
                        <div className="w-full flex justify-center">
-                           <div className="w-1 h-1.5 md:h-3 bg-foreground/20 rounded-full group-hover:translate-x-4 transition-transform duration-1000 ease-in-out" />
+                           <div className="w-1 h-1 md:h-3 bg-foreground/20 rounded-full group-hover:translate-x-4 transition-transform duration-1000 ease-in-out" />
                        </div>
                   </div>
 
                   <div>
-                      <div className="text-[9px] md:text-[10px] lg:text-xs font-bold uppercase tracking-wider text-orange-600 mb-0.5 md:mb-1">Level 3</div>
-                      <span className="font-bold text-foreground block text-xs md:text-sm lg:text-xl mb-0.5 md:mb-2">Slider</span>
-                      <p className="text-[9px] md:text-xs lg:text-base text-muted-foreground/80 leading-snug lg:leading-relaxed line-clamp-2 lg:line-clamp-none">Pinpoint the exact hex code on a gradient.</p>
+                      <div className="text-[8px] md:text-[10px] lg:text-xs font-bold uppercase tracking-wider text-orange-600 mb-0.5 md:mb-1">Level 3</div>
+                      <span className="font-bold text-foreground block text-[10px] md:text-sm lg:text-xl mb-0.5 md:mb-2">Slider</span>
+                      <p className="text-[8px] md:text-xs lg:text-base text-muted-foreground/80 leading-snug lg:leading-relaxed line-clamp-2 lg:line-clamp-none">Pinpoint the exact hex code on a gradient.</p>
                   </div>
                </div>
 
                {/* Level 4 Card */}
-               <div className="flex flex-col gap-2 md:gap-3 lg:gap-4 p-3 md:p-4 lg:p-6 rounded-xl md:rounded-2xl lg:rounded-3xl bg-card border border-border/50 hover:border-primary/20 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group cursor-default h-full relative overflow-hidden">
+               <div className="flex flex-col gap-1.5 md:gap-2 lg:gap-4 p-2 md:p-3 lg:p-6 rounded-xl md:rounded-2xl lg:rounded-3xl bg-card border border-border/50 hover:border-primary/20 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group cursor-default h-full relative overflow-hidden">
                   <div className="absolute top-0 right-0 p-2 md:p-4 opacity-10 font-display font-bold text-4xl md:text-5xl xl:text-6xl group-hover:opacity-20 transition-opacity">4</div>
 
                   {/* Visual: Grid Match */}
