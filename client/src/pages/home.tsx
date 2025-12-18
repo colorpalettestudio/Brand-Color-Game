@@ -473,22 +473,22 @@ export default function Home() {
 
                {/* Level 4 Card */}
                <div className="flex flex-col gap-1.5 md:gap-2 lg:gap-4 p-2 md:p-3 lg:p-6 rounded-xl md:rounded-2xl lg:rounded-3xl bg-card border border-border/50 hover:border-primary/20 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group cursor-default h-full relative overflow-hidden">
-                  <div className="absolute top-0 right-0 p-2 md:p-4 opacity-10 font-display font-bold text-4xl md:text-5xl xl:text-6xl group-hover:opacity-20 transition-opacity">4</div>
+                  <div className="absolute top-0 right-0 p-1.5 md:p-3 lg:p-4 opacity-10 font-display font-bold text-2xl md:text-4xl lg:text-6xl group-hover:opacity-20 transition-opacity">4</div>
 
                   {/* Visual: Grid Match */}
-                  <div className="h-16 md:h-20 xl:h-24 w-full bg-secondary/30 rounded-xl md:rounded-2xl flex items-center justify-center p-2 md:p-4 group-hover:bg-red-50/50 transition-colors">
-                      <div className="grid grid-cols-2 gap-1.5 md:gap-2 group-hover:gap-3 transition-all duration-500">
-                          <div className="w-4 h-4 md:w-6 md:h-6 rounded bg-red-500 shadow-sm" />
-                          <div className="w-4 h-4 md:w-6 md:h-6 rounded bg-green-500 shadow-sm" />
-                          <div className="w-4 h-4 md:w-6 md:h-6 rounded bg-blue-500 shadow-sm" />
-                          <div className="w-4 h-4 md:w-6 md:h-6 rounded bg-yellow-500 shadow-sm" />
+                  <div className="h-10 md:h-14 lg:h-24 w-full bg-secondary/30 rounded-lg md:rounded-xl lg:rounded-2xl flex items-center justify-center p-1.5 md:p-3 lg:p-4 group-hover:bg-red-50/50 transition-colors">
+                      <div className="grid grid-cols-2 gap-1 md:gap-1.5 group-hover:gap-2 transition-all duration-500">
+                          <div className="w-3.5 h-3.5 md:w-5 md:h-5 lg:w-6 lg:h-6 rounded bg-red-500 shadow-sm" />
+                          <div className="w-3.5 h-3.5 md:w-5 md:h-5 lg:w-6 lg:h-6 rounded bg-green-500 shadow-sm" />
+                          <div className="w-3.5 h-3.5 md:w-5 md:h-5 lg:w-6 lg:h-6 rounded bg-blue-500 shadow-sm" />
+                          <div className="w-3.5 h-3.5 md:w-5 md:h-5 lg:w-6 lg:h-6 rounded bg-yellow-500 shadow-sm" />
                       </div>
                   </div>
 
                   <div>
-                      <div className="text-[10px] md:text-xs font-bold uppercase tracking-wider text-red-600 mb-0.5 md:mb-1">Level 4</div>
-                      <span className="font-bold text-foreground block text-sm md:text-lg xl:text-xl mb-1 md:mb-2">Match</span>
-                      <p className="text-[10px] md:text-sm xl:text-base text-muted-foreground/80 leading-relaxed line-clamp-2 md:line-clamp-none">Group 5 brands with their specific hex codes.</p>
+                      <div className="text-[8px] md:text-[10px] lg:text-xs font-bold uppercase tracking-wider text-red-600 mb-0.5 md:mb-1">Level 4</div>
+                      <span className="font-bold text-foreground block text-[10px] md:text-sm lg:text-xl mb-0.5 md:mb-2">Match</span>
+                      <p className="text-[8px] md:text-xs lg:text-base text-muted-foreground/80 leading-snug lg:leading-relaxed line-clamp-2 lg:line-clamp-none">Group 5 brands with their specific hex codes.</p>
                   </div>
                </div>
 
