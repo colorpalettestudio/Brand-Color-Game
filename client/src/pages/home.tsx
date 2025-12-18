@@ -385,7 +385,7 @@ export default function Home() {
       <div className="absolute -top-20 -left-20 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute top-1/2 -right-20 w-80 h-80 bg-purple-500/10 rounded-full blur-3xl pointer-events-none" />
 
-      <main className="w-full max-w-7xl z-10 relative flex-1 flex flex-col justify-center min-h-0">
+      <main className="w-full max-w-7xl z-10 relative flex-1 min-h-0 overflow-y-auto overflow-x-hidden block">
         <AnimatePresence mode="wait">
         {gameState === "start" && (
           <motion.div 
@@ -393,7 +393,7 @@ export default function Home() {
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, y: -20 }}
-            className="text-center flex flex-col h-full justify-center items-center gap-2 md:gap-4 lg:gap-6 xl:gap-10 py-2 md:py-4 lg:py-0"
+            className="text-center flex flex-col min-h-full justify-center items-center gap-2 md:gap-4 lg:gap-6 xl:gap-10 py-2 md:py-4 lg:py-0"
           >
             <div className="space-y-1 md:space-y-2 lg:space-y-3 xl:space-y-4 shrink-0 max-w-5xl">
               <h1 className="text-3xl md:text-5xl lg:text-6xl xl:text-8xl font-display font-bold tracking-tighter text-foreground leading-tight">
@@ -497,11 +497,13 @@ export default function Home() {
         )}
 
         {gameState === "level-intro" && (
-             <LevelIntro 
-                level={currentLevel} 
-                info={getLevelInfo(currentLevel)} 
-                onStart={startNextLevel} 
-             />
+             <div className="min-h-full w-full flex flex-col justify-center items-center p-4">
+                 <LevelIntro 
+                    level={currentLevel} 
+                    info={getLevelInfo(currentLevel)} 
+                    onStart={startNextLevel} 
+                 />
+             </div>
         )}
 
         {gameState === "playing" && (
@@ -540,12 +542,13 @@ export default function Home() {
         )}
 
         {gameState === "end" && (
-          <motion.div 
-            key="end"
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="text-center space-y-8 bg-card border border-border p-8 md:p-12 rounded-3xl shadow-2xl max-w-xl mx-auto overflow-hidden md:overflow-hidden relative max-h-full overflow-y-auto"
-          >
+          <div className="min-h-full w-full flex flex-col justify-center items-center p-4 md:p-8">
+            <motion.div 
+                key="end"
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="text-center space-y-8 bg-card border border-border p-8 md:p-12 rounded-3xl shadow-2xl max-w-xl mx-auto relative"
+            >
             {/* Background Gradient */}
             <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-red-500 via-yellow-500 via-green-500 via-blue-500 to-purple-500" />
 
@@ -669,6 +672,7 @@ export default function Home() {
                 );
             })()}
           </motion.div>
+          </div>
         )}
         </AnimatePresence>
       </main>
