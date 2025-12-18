@@ -243,7 +243,7 @@ export function MatchingRound({ brands, onComplete, onScoreUpdate, colorFamilyNa
         <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-card border border-border rounded-xl shadow-xl overflow-hidden p-4 md:p-6 lg:p-12 select-none flex flex-col h-full md:h-auto max-h-full shrink-1"
+            className="bg-card border border-border rounded-xl shadow-xl overflow-hidden p-4 md:p-6 lg:p-12 select-none flex flex-col h-full md:h-auto max-h-full shrink-1 md:overflow-y-auto"
         >
             <div className="text-center mb-2 md:mb-4 lg:mb-8 space-y-1 md:space-y-2 shrink-0">
                 <h2 className="text-xl md:text-2xl lg:text-3xl font-display font-bold">Match the {colorFamilyName}s</h2>
@@ -254,9 +254,9 @@ export function MatchingRound({ brands, onComplete, onScoreUpdate, colorFamilyNa
                 </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-12 relative max-w-5xl mx-auto items-start overflow-y-auto flex-1 md:overflow-visible">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8 lg:gap-12 relative max-w-5xl mx-auto items-start overflow-y-auto flex-1 md:overflow-visible">
                 {/* Brands Column (Slots) */}
-                <div className="space-y-2 md:space-y-4">
+                <div className="space-y-2 md:space-y-3 lg:space-y-4">
                     {brands.map((brand) => {
                         const assignment = assignments[brand.id];
                         const assignedHex = assignment?.hex;
@@ -278,13 +278,13 @@ export function MatchingRound({ brands, onComplete, onScoreUpdate, colorFamilyNa
                 </div>
 
                 {/* Colors Pool */}
-                <div className="bg-secondary/20 rounded-2xl p-3 md:p-6 border border-border/50 min-h-[100px] md:min-h-[300px]">
+                <div className="bg-secondary/20 rounded-2xl p-3 md:p-4 lg:p-6 border border-border/50 min-h-[100px] md:min-h-[300px]">
                     <h3 className="text-[10px] md:text-xs font-bold uppercase tracking-wider text-muted-foreground mb-2 md:mb-4 text-center">
                         {hasSubmitted ? "Round Complete" : "Available Colors"}
                     </h3>
                     
                     {!hasSubmitted ? (
-                        <div className="flex flex-wrap justify-center gap-2 md:grid md:grid-cols-3 md:gap-4">
+                        <div className="flex flex-wrap justify-center gap-2 md:grid md:grid-cols-3 md:gap-3 lg:gap-4">
                             {availableColorItems.map((item) => (
                                 <DraggableColor 
                                     key={item.id} 
