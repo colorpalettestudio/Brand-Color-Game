@@ -505,15 +505,15 @@ export default function Home() {
         )}
 
         {gameState === "playing" && (
-          <div className="w-full h-full flex flex-col items-center justify-center min-h-0 pt-8 md:pt-0">
+          <div className="w-full h-full flex flex-col items-center justify-center min-h-0 pt-4 md:pt-0">
               {/* New Centered Score Display */}
               <motion.div 
                   initial={{ opacity: 0, y: -20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="flex flex-col items-center mb-2 md:mb-4 xl:mb-12 shrink-0"
+                  className="flex flex-col items-center mb-1 md:mb-2 xl:mb-8 shrink-0 relative z-20"
               >
-                  <span className="text-[8px] md:text-[10px] xl:text-sm font-bold uppercase tracking-widest text-muted-foreground mb-0.5 md:mb-1 xl:mb-2">Current Score</span>
-                  <div className="text-3xl md:text-5xl xl:text-8xl font-display font-bold text-foreground tabular-nums leading-none tracking-tight">
+                  <span className="text-[8px] md:text-[9px] xl:text-xs font-bold uppercase tracking-widest text-muted-foreground mb-0.5 md:mb-1">Current Score</span>
+                  <div className="text-3xl md:text-4xl lg:text-5xl xl:text-8xl font-display font-bold text-foreground tabular-nums leading-none tracking-tight">
                       <ScoreCounter value={score} />
                   </div>
               </motion.div>

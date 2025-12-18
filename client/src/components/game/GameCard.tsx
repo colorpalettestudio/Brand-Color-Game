@@ -284,43 +284,43 @@ export function GameCard({ brand, mode, allBrands, forceSingleColor = false, onC
   };
 
   return (
-    <div className="w-full max-w-2xl mx-auto p-2 md:p-6 h-full flex flex-col justify-center">
+    <div className="w-full max-w-2xl mx-auto p-2 md:p-4 lg:p-6 h-full flex flex-col justify-center min-h-0">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: -20 }}
-        className="bg-card border border-border rounded-xl shadow-xl overflow-hidden flex flex-col max-h-full"
+        className="bg-card border border-border rounded-xl shadow-xl overflow-hidden flex flex-col max-h-full shrink-1"
       >
-        <div className="p-4 md:p-12 text-center space-y-4 md:space-y-8 flex-1 flex flex-col justify-center">
+        <div className="p-4 md:p-6 lg:p-10 text-center space-y-3 md:space-y-4 lg:space-y-8 flex-1 flex flex-col justify-center min-h-0">
           <div className="space-y-1 md:space-y-2 shrink-0">
             {mode === "bonus" ? (
                 <>
-                    <h1 className="text-2xl md:text-5xl font-display font-bold tracking-tighter text-foreground mb-2 md:mb-4">
+                    <h1 className="text-2xl md:text-3xl lg:text-5xl font-display font-bold tracking-tighter text-foreground mb-2 md:mb-4">
                         Which brand uses this color?
                     </h1>
-                    <div className="flex justify-center py-2 md:py-6">
+                    <div className="flex justify-center py-2 md:py-4 lg:py-6">
                         <div 
-                            className="w-20 h-20 md:w-32 md:h-32 rounded-full shadow-2xl border-4 border-white ring-1 ring-black/10"
+                            className="w-16 h-16 md:w-24 md:h-24 lg:w-32 lg:h-32 rounded-full shadow-2xl border-4 border-white ring-1 ring-black/10"
                             style={{ backgroundColor: brand.hex }}
                         />
                     </div>
                 </>
             ) : (
                 <>
-                    <h1 className="text-4xl md:text-7xl font-display font-bold tracking-tighter text-foreground">
+                    <h1 className="text-3xl md:text-5xl lg:text-7xl font-display font-bold tracking-tighter text-foreground">
                     {brand.name}
                     </h1>
                     {mode === 'hard' && brand.secondaryHex && (
-                        <p className="text-xs md:text-sm text-muted-foreground">(Match the primary color)</p>
+                        <p className="text-[10px] md:text-xs lg:text-sm text-muted-foreground">(Match the primary color)</p>
                     )}
                 </>
             )}
           </div>
 
-          <div className="py-2 w-full">
+          <div className="py-1 md:py-2 w-full min-h-0 flex flex-col justify-center">
             {mode === "easy" || mode === "bonus" ? (
               <>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-2 md:gap-6 w-full">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-2 md:gap-4 lg:gap-6 w-full">
                 {options.map((option, idx) => {
                     let isCorrect = false;
                     
@@ -347,10 +347,10 @@ export function GameCard({ brand, mode, allBrands, forceSingleColor = false, onC
                         whileTap={{ scale: 0.98 }}
                         onClick={() => handleEasySubmit(option)}
                         disabled={hasSubmitted}
-                        className={`h-14 md:h-40 rounded-lg md:rounded-2xl shadow-sm border-2 border-transparent hover:border-black/5 hover:shadow-md transition-all relative group cursor-pointer overflow-hidden flex bg-white ${mode === 'bonus' ? 'items-center justify-center p-2 md:p-4' : ''}`}
+                        className={`h-14 md:h-28 lg:h-40 rounded-lg md:rounded-2xl shadow-sm border-2 border-transparent hover:border-black/5 hover:shadow-md transition-all relative group cursor-pointer overflow-hidden flex bg-white ${mode === 'bonus' ? 'items-center justify-center p-2 md:p-4' : ''}`}
                       >
                          {mode === "bonus" ? (
-                             <span className="text-xl font-bold text-foreground">{option.name}</span>
+                             <span className="text-base md:text-lg lg:text-xl font-bold text-foreground leading-tight">{option.name}</span>
                          ) : (
                              /* Render Logic: Multi Color Support */
                              <div className="flex w-full h-full">
@@ -372,8 +372,8 @@ export function GameCard({ brand, mode, allBrands, forceSingleColor = false, onC
                             animate={{ opacity: 1 }}
                             className="absolute inset-0 flex items-center justify-center z-10"
                            >
-                             <div className="bg-white rounded-full p-3 shadow-xl">
-                                <Check className="w-8 h-8 text-green-600" />
+                             <div className="bg-white rounded-full p-2 md:p-3 shadow-xl">
+                                <Check className="w-6 h-6 md:w-8 md:h-8 text-green-600" />
                              </div>
                            </motion.div>
                          )}
@@ -383,8 +383,8 @@ export function GameCard({ brand, mode, allBrands, forceSingleColor = false, onC
                             animate={{ opacity: 1 }}
                             className="absolute inset-0 flex items-center justify-center z-10"
                            >
-                             <div className="bg-white rounded-full p-3 shadow-xl">
-                                <X className="w-8 h-8 text-red-500" />
+                             <div className="bg-white rounded-full p-2 md:p-3 shadow-xl">
+                                <X className="w-6 h-6 md:w-8 md:h-8 text-red-500" />
                              </div>
                            </motion.div>
                          )}
@@ -399,7 +399,7 @@ export function GameCard({ brand, mode, allBrands, forceSingleColor = false, onC
                 <motion.div
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="mt-4 md:mt-8 bg-secondary/50 rounded-lg p-3 md:p-6 border border-border text-center"
+                    className="mt-2 md:mt-4 lg:mt-8 bg-secondary/50 rounded-lg p-2 md:p-4 lg:p-6 border border-border text-center shrink-0"
                 >
                     <div className="flex flex-col items-center gap-1 md:gap-2">
                         {/* Determine correctness for feedback message logic */}
@@ -441,17 +441,17 @@ export function GameCard({ brand, mode, allBrands, forceSingleColor = false, onC
               )}
               </>
             ) : (
-              <div className="space-y-4 md:space-y-8">
+              <div className="space-y-3 md:space-y-6 lg:space-y-8">
                 {/* Preview Swatches Area */}
-                <div className="flex justify-center gap-4 md:gap-12 items-end h-24 md:h-32 mb-4 md:mb-8">
+                <div className="flex justify-center gap-4 md:gap-8 lg:gap-12 items-end h-20 md:h-24 lg:h-32 mb-2 md:mb-6 lg:mb-8">
                     {/* Live Preview */}
-                    <div className="flex flex-col items-center gap-2">
+                    <div className="flex flex-col items-center gap-1 md:gap-2">
                         <motion.div 
-                            className="w-16 h-16 md:w-24 md:h-24 rounded-full shadow-lg border-4 border-white ring-1 ring-black/5"
+                            className="w-14 h-14 md:w-20 md:h-20 lg:w-24 lg:h-24 rounded-full shadow-lg border-4 border-white ring-1 ring-black/5"
                             style={{ backgroundColor: currentHex }}
                             animate={{ scale: hasSubmitted ? 0.9 : 1 }}
                         />
-                        <span className="text-[10px] md:text-xs font-medium uppercase tracking-wider text-muted-foreground">Your Pick</span>
+                        <span className="text-[9px] md:text-[10px] lg:text-xs font-medium uppercase tracking-wider text-muted-foreground">Your Pick</span>
                     </div>
 
                     {/* Correct Answer (Hidden until submit) */}
@@ -459,19 +459,19 @@ export function GameCard({ brand, mode, allBrands, forceSingleColor = false, onC
                         <motion.div 
                             initial={{ opacity: 0, x: 20 }}
                             animate={{ opacity: 1, x: 0 }}
-                            className="flex flex-col items-center gap-2"
+                            className="flex flex-col items-center gap-1 md:gap-2"
                         >
                             <div 
-                                className="w-16 h-16 md:w-24 md:h-24 rounded-full shadow-lg border-4 border-white ring-1 ring-black/5"
+                                className="w-14 h-14 md:w-20 md:h-20 lg:w-24 lg:h-24 rounded-full shadow-lg border-4 border-white ring-1 ring-black/5"
                                 style={{ backgroundColor: brand.hex }}
                             />
-                            <span className="text-[10px] md:text-xs font-medium uppercase tracking-wider text-muted-foreground">Correct Match</span>
+                            <span className="text-[9px] md:text-[10px] lg:text-xs font-medium uppercase tracking-wider text-muted-foreground">Correct Match</span>
                         </motion.div>
                     )}
                 </div>
 
                 <div 
-                  className="h-10 md:h-16 rounded-xl w-full shadow-inner border border-border relative overflow-hidden mx-auto max-w-lg"
+                  className="h-10 md:h-12 lg:h-16 rounded-xl w-full shadow-inner border border-border relative overflow-hidden mx-auto max-w-lg"
                 >
                    <div 
                       className="absolute inset-0 w-full h-full"
@@ -481,7 +481,7 @@ export function GameCard({ brand, mode, allBrands, forceSingleColor = false, onC
                    />
                 </div>
 
-                <div className="px-4 max-w-lg mx-auto relative">
+                <div className="px-2 md:px-4 max-w-lg mx-auto relative">
                     <Slider 
                       value={[sliderValue]} 
                       onValueChange={handleSliderChange} 
@@ -497,14 +497,14 @@ export function GameCard({ brand, mode, allBrands, forceSingleColor = false, onC
                             <motion.div 
                                 initial={{ opacity: 0, scale: 0 }}
                                 animate={{ opacity: 1, scale: 1 }}
-                                className="absolute top-1/2 -translate-y-1/2 w-4 h-4 bg-green-500 rounded-full border-2 border-white shadow-lg z-10"
-                                style={{ left: `calc(${targetPosition}% - 8px)` }}
+                                className="absolute top-1/2 -translate-y-1/2 w-3 h-3 md:w-4 md:h-4 bg-green-500 rounded-full border-2 border-white shadow-lg z-10"
+                                style={{ left: `calc(${targetPosition}% - 6px)` }}
                             />
                              <motion.div 
                                 initial={{ opacity: 0, y: 10 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ delay: 0.2 }}
-                                className="absolute top-6 -translate-x-1/2 text-[10px] font-bold text-green-600 bg-green-100 px-2 py-0.5 rounded-full whitespace-nowrap"
+                                className="absolute top-5 md:top-6 -translate-x-1/2 text-[9px] md:text-[10px] font-bold text-green-600 bg-green-100 px-2 py-0.5 rounded-full whitespace-nowrap"
                                 style={{ left: `${targetPosition}%` }}
                             >
                                 Correct
@@ -513,7 +513,7 @@ export function GameCard({ brand, mode, allBrands, forceSingleColor = false, onC
                     )}
 
                     {!hasSubmitted && (
-                        <p className="text-xs text-muted-foreground mt-4">Slide to match the brand color above</p>
+                        <p className="text-[10px] md:text-xs text-muted-foreground mt-2 md:mt-4">Slide to match the brand color above</p>
                     )}
                 </div>
                 
@@ -521,10 +521,10 @@ export function GameCard({ brand, mode, allBrands, forceSingleColor = false, onC
                     <motion.div 
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
-                        className="bg-secondary/50 rounded-lg p-6 max-w-sm mx-auto space-y-4"
+                        className="bg-secondary/50 rounded-lg p-3 md:p-6 max-w-sm mx-auto space-y-2 md:space-y-4"
                     >
-                        <div className="flex justify-between items-center border-b border-border pb-4">
-                            <span className="text-muted-foreground">Accuracy</span>
+                        <div className="flex justify-between items-center border-b border-border pb-2 md:pb-4">
+                            <span className="text-xs md:text-sm text-muted-foreground">Accuracy</span>
                             <span className={`font-bold text-xl ${resultStats.accuracy > 80 ? 'text-green-600' : 'text-orange-600'}`}>
                                 {resultStats.accuracy}% Match
                             </span>

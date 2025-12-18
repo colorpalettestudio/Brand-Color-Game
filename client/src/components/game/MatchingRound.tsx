@@ -239,15 +239,15 @@ export function MatchingRound({ brands, onComplete, onScoreUpdate, colorFamilyNa
         onDragStart={handleDragStart}
         onDragEnd={handleDragEnd}
     >
-        <div className="w-full max-w-4xl mx-auto p-2 md:p-6 h-full flex flex-col justify-center">
+        <div className="w-full max-w-4xl mx-auto p-2 md:p-4 h-full flex flex-col justify-center min-h-0">
         <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-card border border-border rounded-xl shadow-xl overflow-hidden p-4 md:p-12 select-none flex flex-col h-full md:h-auto max-h-full"
+            className="bg-card border border-border rounded-xl shadow-xl overflow-hidden p-4 md:p-6 lg:p-12 select-none flex flex-col h-full md:h-auto max-h-full shrink-1"
         >
-            <div className="text-center mb-4 md:mb-8 space-y-1 md:space-y-2 shrink-0">
-                <h2 className="text-xl md:text-3xl font-display font-bold">Match the {colorFamilyName}s</h2>
-                <p className="text-xs md:text-base text-muted-foreground">
+            <div className="text-center mb-2 md:mb-4 lg:mb-8 space-y-1 md:space-y-2 shrink-0">
+                <h2 className="text-xl md:text-2xl lg:text-3xl font-display font-bold">Match the {colorFamilyName}s</h2>
+                <p className="text-xs md:text-sm lg:text-base text-muted-foreground">
                     {hasSubmitted 
                         ? `You got ${score / 100} out of ${brands.length} correct!` 
                         : "Drag colors to their matching brands."}
