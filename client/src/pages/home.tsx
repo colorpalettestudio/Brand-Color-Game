@@ -7,7 +7,7 @@ import { ScoreCounter } from "@/components/ui/score-counter";
 import { motion, AnimatePresence } from "framer-motion";
 import confetti from "canvas-confetti";
 import { useEffect } from "react";
-import { ArrowRight, Trophy, Palette, Play, Info, Layers, Sliders, Grid3X3, Check, Sparkles } from "lucide-react";
+import { ArrowRight, Trophy, Palette, Play, Info, Layers, Sliders, Grid3X3, Check, Sparkles, RotateCcw } from "lucide-react";
 
 const LevelIntro = ({ level, info, onStart }: { level: number, info: any, onStart: () => void }) => {
     useEffect(() => {
@@ -107,6 +107,65 @@ export default function Home() {
   
   // Current active list of brands being played
   const [activeBrands, setActiveBrands] = useState<Brand[]>([]);
+
+  // State persistence
+  useEffect(() => {
+    // Load state from localStorage on mount
+    const savedState = localStorage.getItem("brandColorGameState");
+    if (savedState) {
+        try {
+            const parsed = JSON.parse(savedState);
+            if (parsed.gameState !== "start" && parsed.gameState !== "end") {
+                setGameState(parsed.gameState);
+                setCurrentLevel(parsed.currentLevel);
+                setCurrentMode(parsed.currentMode);
+                setCurrentRound(parsed.currentRound);
+                setScore(parsed.score);
+                setLevel1Brands(parsed.level1Brands);
+                setLevel2Brands(parsed.level2Brands);
+                setLevel3Brands(parsed.level3Brands);
+                setLevel4Brands(parsed.level4Brands);
+                setLevel4ColorName(parsed.level4ColorName);
+                setLevel5Brands(parsed.level5Brands);
+                setActiveBrands(parsed.activeBrands);
+            }
+        } catch (e) {
+            console.error("Failed to load saved state", e);
+        }
+    }
+  }, []);
+
+  // Save state to localStorage whenever relevant state changes
+  useEffect(() => {
+    if (gameState === "start" || gameState === "end") {
+        localStorage.removeItem("brandColorGameState");
+    } else {
+        const stateToSave = {
+            gameState,
+            currentLevel,
+            currentMode,
+            currentRound,
+            score,
+            level1Brands,
+            level2Brands,
+            level3Brands,
+            level4Brands,
+            level4ColorName,
+            level5Brands,
+            activeBrands
+        };
+        localStorage.setItem("brandColorGameState", JSON.stringify(stateToSave));
+    }
+  }, [gameState, currentLevel, currentMode, currentRound, score, activeBrands]);
+
+  const resetGame = () => {
+    setGameState("start");
+    setCurrentLevel(1);
+    setScore(0);
+    setCurrentRound(0);
+    setActiveBrands([]);
+    localStorage.removeItem("brandColorGameState");
+  };
 
   const startGame = () => {
     // 1. Define Pools
@@ -309,6 +368,19 @@ export default function Home() {
 
   return (
     <div className="h-[100dvh] flex flex-col items-center justify-center p-2 md:p-4 relative overflow-hidden bg-background">
+      {/* Start Over Button - Only visible when game is in progress (not start or end) */}
+      {gameState !== "start" && gameState !== "end" && (
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            onClick={resetGame}
+            className="absolute top-2 left-2 md:top-4 md:left-4 z-50 text-muted-foreground hover:text-foreground text-xs md:text-sm"
+          >
+            <RotateCcw className="w-3 h-3 md:w-4 md:h-4 mr-1 md:mr-2" />
+            Start Over
+          </Button>
+      )}
+
       {/* Background Elements */}
       <div className="absolute -top-20 -left-20 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute top-1/2 -right-20 w-80 h-80 bg-purple-500/10 rounded-full blur-3xl pointer-events-none" />
